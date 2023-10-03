@@ -40,12 +40,12 @@ Terraform v0.13.0-dev`,
 		},
 		{
 			mustVersion(t, "0.13.0-dev"), map[string]*version.Version{
-				"registry.terraform.io/hashicorp/null": mustVersion(t, "2.1.2"),
-				"registry.terraform.io/paultyng/null":  mustVersion(t, "0.1.0"),
+				"registry.opentofu.org/hashicorp/null": mustVersion(t, "2.1.2"),
+				"registry.opentofu.org/paultyng/null":  mustVersion(t, "0.1.0"),
 			}, `
 Terraform v0.13.0-dev
-+ provider registry.terraform.io/hashicorp/null v2.1.2
-+ provider registry.terraform.io/paultyng/null v0.1.0`,
++ provider registry.opentofu.org/hashicorp/null v2.1.2
++ provider registry.opentofu.org/paultyng/null v0.1.0`,
 		},
 		{
 			mustVersion(t, "0.13.0-dev"), nil, `
@@ -56,12 +56,12 @@ is 0.13.1. You can update by downloading from https://www.terraform.io/downloads
 		},
 		{
 			mustVersion(t, "0.13.0-dev"), map[string]*version.Version{
-				"registry.terraform.io/hashicorp/null": mustVersion(t, "2.1.2"),
-				"registry.terraform.io/paultyng/null":  mustVersion(t, "0.1.0"),
+				"registry.opentofu.org/hashicorp/null": mustVersion(t, "2.1.2"),
+				"registry.opentofu.org/paultyng/null":  mustVersion(t, "0.1.0"),
 			}, `
 Terraform v0.13.0-dev
-+ provider registry.terraform.io/hashicorp/null v2.1.2
-+ provider registry.terraform.io/paultyng/null v0.1.0
++ provider registry.opentofu.org/hashicorp/null v2.1.2
++ provider registry.opentofu.org/paultyng/null v0.1.0
 
 Your version of Terraform is out of date! The latest version
 is 0.13.1. You can update by downloading from https://www.terraform.io/downloads.html`,
@@ -129,8 +129,8 @@ func TestParseJsonVersionOutput(t *testing.T) {
   "terraform_version": "0.15.0-beta1",
   "platform": "darwin_amd64",
   "provider_selections": {
-    "registry.terraform.io/hashicorp/aws": "3.31.0",
-    "registry.terraform.io/hashicorp/google": "3.58.0"
+    "registry.opentofu.org/hashicorp/aws": "3.31.0",
+    "registry.opentofu.org/hashicorp/google": "3.58.0"
   },
   "terraform_outdated": false
 }
@@ -147,8 +147,8 @@ func TestParseJsonVersionOutput(t *testing.T) {
 	}
 
 	expectedPvs := map[string]*version.Version{
-		"registry.terraform.io/hashicorp/aws":    mustVersion(t, "3.31.0"),
-		"registry.terraform.io/hashicorp/google": mustVersion(t, "3.58.0"),
+		"registry.opentofu.org/hashicorp/aws":    mustVersion(t, "3.31.0"),
+		"registry.opentofu.org/hashicorp/google": mustVersion(t, "3.58.0"),
 	}
 	if diff := cmp.Diff(expectedPvs, pvs); diff != "" {
 		t.Fatalf("provider versions don't match: %s", diff)
