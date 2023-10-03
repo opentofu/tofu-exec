@@ -177,7 +177,7 @@ same can now be achieved using [locals](https://www.terraform.io/docs/language/v
 											AttributeType:   cty.String,
 											Computed:        true,
 											DescriptionKind: tfjson.SchemaDescriptionKindMarkdown,
-											Description:     "A random value. This is primarily for testing and has little practical use; prefer the [hashicorp/random provider](https://registry.opentofu.org/providers/hashicorp/random) for more practical random number use-cases.",
+											Description:     "A random value. This is primarily for testing and has little practical use; prefer the [hashicorp/random provider](https://registry.terraform.io/providers/hashicorp/random) for more practical random number use-cases.",
 										},
 									},
 								},
