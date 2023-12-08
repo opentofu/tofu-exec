@@ -20,7 +20,7 @@ func TestStateMv(t *testing.T) {
 			t.Skip("state file provider FQNs not compatible with this Terraform version")
 		}
 
-		providerName := "registry.opentofu.org/hashicorp/null"
+		providerName := "registry.opentofu.org/opentofu/null"
 
 		err := tf.Init(context.Background())
 		if err != nil {
