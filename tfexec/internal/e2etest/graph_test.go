@@ -84,12 +84,12 @@ func expectedGraphOutput(tfv *version.Version) string {
 	newrank = "true"
 	subgraph "root" {
 		"[root] null_resource.foo (expand)" [label = "null_resource.foo", shape = "box"]
-		"[root] provider[\"registry.opentofu.org/opentofu/null\"]" [label = "provider[\"registry.opentofu.org/opentofu/null\"]", shape = "diamond"]
+		"[root] provider[\"registry.opentofu.org/hashicorp/null\"]" [label = "provider[\"registry.opentofu.org/hashicorp/null\"]", shape = "diamond"]
 		"[root] meta.count-boundary (EachMode fixup)" -> "[root] null_resource.foo (expand)"
-		"[root] null_resource.foo (expand)" -> "[root] provider[\"registry.opentofu.org/opentofu/null\"]"
-		"[root] provider[\"registry.opentofu.org/opentofu/null\"] (close)" -> "[root] null_resource.foo (expand)"
+		"[root] null_resource.foo (expand)" -> "[root] provider[\"registry.opentofu.org/hashicorp/null\"]"
+		"[root] provider[\"registry.opentofu.org/hashicorp/null\"] (close)" -> "[root] null_resource.foo (expand)"
 		"[root] root" -> "[root] meta.count-boundary (EachMode fixup)"
-		"[root] root" -> "[root] provider[\"registry.opentofu.org/opentofu/null\"] (close)"
+		"[root] root" -> "[root] provider[\"registry.opentofu.org/hashicorp/null\"] (close)"
 	}
 }
 
@@ -102,10 +102,10 @@ func expectedGraphOutput(tfv *version.Version) string {
 	newrank = "true"
 	subgraph "root" {
 		"[root] null_resource.foo (expand)" [label = "null_resource.foo", shape = "box"]
-		"[root] provider[\"registry.opentofu.org/opentofu/null\"]" [label = "provider[\"registry.opentofu.org/opentofu/null\"]", shape = "diamond"]
-		"[root] null_resource.foo (expand)" -> "[root] provider[\"registry.opentofu.org/opentofu/null\"]"
-		"[root] provider[\"registry.opentofu.org/opentofu/null\"] (close)" -> "[root] null_resource.foo (expand)"
-		"[root] root" -> "[root] provider[\"registry.opentofu.org/opentofu/null\"] (close)"
+		"[root] provider[\"registry.opentofu.org/hashicorp/null\"]" [label = "provider[\"registry.opentofu.org/hashicorp/null\"]", shape = "diamond"]
+		"[root] null_resource.foo (expand)" -> "[root] provider[\"registry.opentofu.org/hashicorp/null\"]"
+		"[root] provider[\"registry.opentofu.org/hashicorp/null\"] (close)" -> "[root] null_resource.foo (expand)"
+		"[root] root" -> "[root] provider[\"registry.opentofu.org/hashicorp/null\"] (close)"
 	}
 }
 
