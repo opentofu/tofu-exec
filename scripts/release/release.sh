@@ -1,5 +1,7 @@
 #!/bin/bash
-# Copyright (c) HashiCorp, Inc.
+# Copyright (c) The OpenTofu Authors
+# SPDX-License-Identifier: MPL-2.0
+# Copyright (c) 2023 HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
 
 
@@ -24,8 +26,8 @@ function init {
   DATE=$(date '+%B %d, %Y')
 
   if [ "$CI" = true ] ; then
-    git config --global user.email "proj-terraform-exec@hashicorp.com"
-    git config --global user.name "terraform-exec [bot]"
+    git config --global user.email "proj-tofu-exec@hashicorp.com"
+    git config --global user.name "tofu-exec [bot]"
     git config --global gpg.program scripts/release/signore-wrapper.sh
   fi
 

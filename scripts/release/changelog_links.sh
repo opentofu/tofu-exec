@@ -1,5 +1,7 @@
 #!/bin/bash
-# Copyright (c) HashiCorp, Inc.
+# Copyright (c) The OpenTofu Authors
+# SPDX-License-Identifier: MPL-2.0
+# Copyright (c) 2023 HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
 
 
@@ -27,6 +29,6 @@ else
     SED="sed -i.bak -r -e"
 fi
 
-$SED 's/GH-([0-9]+)/\[#\1\]\(https:\/\/github.com\/hashicorp\/terraform-exec\/issues\/\1\)/g' -e 's/\[\[#(.+)([0-9])\)]$/(\[#\1\2))/g' CHANGELOG.md
+$SED 's/GH-([0-9]+)/\[#\1\]\(https:\/\/github.com\/opentofu\/tofu-exec\/issues\/\1\)/g' -e 's/\[\[#(.+)([0-9])\)]$/(\[#\1\2))/g' CHANGELOG.md
 
 rm CHANGELOG.md.bak
