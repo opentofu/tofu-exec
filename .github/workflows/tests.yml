@@ -111,10 +111,10 @@ jobs:
         run: go build ./...
       -
         name: Run unit tests
-        run: go test -race $(go list ./... | grep -v /tfexec/internal/e2etest)
+        run: go test -race $(go list ./... | grep -v /tofuexec/internal/e2etest)
 
   e2e-tests:
-    name: e2e-tests (${{ matrix.os }}, go ${{ matrix.go_version }}, terraform ${{ matrix.terraform_version }})
+    name: e2e-tests (${{ matrix.os }}, go ${{ matrix.go_version }}, tofu ${{ matrix.tofu_version }})
     needs:
       - resolve-versions
       - static-checks
@@ -132,16 +132,9 @@ jobs:
           - ${{ needs.resolve-versions.outputs.oldstable }}
           - ${{ needs.resolve-versions.outputs.stable }}
         terraform_version:
-          - "0.11.15"
-          - "0.12.31"
-          - "0.13.7"
-          - "0.14.11"
-          - "0.15.5"
-          - "1.0.11"
-          - "1.1.9"
-          - "1.2.9"
-          - "1.3.7"
-          - "refs/heads/main"
+          - "1.7.0"
+          - "1.8.0"
+          - "1.9.0"
     steps:
       -
         name: Checkout
@@ -154,5 +147,5 @@ jobs:
       -
         name: Run E2E tests
         env:
-          TFEXEC_E2ETEST_VERSIONS: ${{ matrix.terraform_version }}
-        run: go test -race -timeout=30m -v ./tfexec/internal/e2etest
+          TOFUEXEC_E2ETEST_VERSIONS: ${{ matrix.tofu_version }}
+        run: go test -race -timeout=30m -v ./tofuexec/internal/e2etest

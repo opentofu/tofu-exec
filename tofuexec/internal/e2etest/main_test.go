@@ -1,0 +1,29 @@
+// Copyright (c) The OpenTofu Authors
+// SPDX-License-Identifier: MPL-2.0
+// Copyright (c) 2023 HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
+package e2etest
+
+import (
+	"io/ioutil"
+	"os"
+	"testing"
+
+	"github.com/opentofu/tofu-exec/tofuexec/internal/testutil"
+)
+
+var tfcache *testutil.TofuCache
+
+func TestMain(m *testing.M) {
+	os.Exit(func() int {
+		installDir, err := ioutil.TempDir("", "tfinstall")
+		if err != nil {
+			panic(err)
+		}
+		defer os.RemoveAll(installDir)
+
+		tfcache = testutil.NewTofuCache(installDir)
+		return m.Run()
+	}())
+}
