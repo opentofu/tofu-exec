@@ -1,7 +1,8 @@
 #!/bin/bash
+# Copyright (c) The OpenTofu Authors
+# SPDX-License-Identifier: MPL-2.0
 # Copyright (c) HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
-
 
 set -e
 set -x
