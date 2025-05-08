@@ -1,3 +1,10 @@
+# This repository is work in progress
+
+This repository is currently not usable and requires large set of changes, to make it so.
+We are going to update this respository for the sole purpose of using it in [`tofu-ls`](https://github.com/opentofu/tofu-ls).
+This document will be updated as a part of those changes. Currently, we do not recommend using this library for the uses outside of `tofu-ls`. [Link to the Issue](https://github.com/opentofu/opentofu/issues/2455#issuecomment-2858320418)
+
+
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/hashicorp/terraform-exec)](https://pkg.go.dev/github.com/hashicorp/terraform-exec)
 
 # terraform-exec
