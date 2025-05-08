@@ -1,16 +1,18 @@
-# Contributing to terraform-exec
+# This repository is a work in progress
 
-While terraform-exec is already widely used, please note that this module is **not yet at v1.0.0**, and that therefore breaking changes may occur in minor releases.
+This repository is currently not usable and requires a large set of changes to make it so.
+We are going to update this repository solely to use it in [`tofu-ls`](https://github.com/opentofu/tofu-ls).
+This document will be updated as part of those changes. We do not recommend using this library outside of `tofu-ls`. [Link to the Issue](https://github.com/opentofu/opentofu/issues/2455#issuecomment-2858320418)
 
-We strictly follow [semantic versioning](https://semver.org).
+# Contributing to tofu-exec
 
 ## Repository structure
 
-Three packages comprise the public API of the terraform-exec Go module:
+Three packages comprise the public API of the tofu-exec Go module:
 
 ### `tfexec`
 
-Package `github.com/hashicorp/terraform-exec/tfexec` exposes functionality for constructing and running Terraform CLI commands. Structured return values use the data types defined in the [hashicorp/terraform-json](https://github.com/hashicorp/terraform-json) package.
+Package `github.com/opentofu/tofu-exec/tfexec` exposes functionality for constructing and running Terraform CLI commands. Structured return values use the data types defined in the [hashicorp/terraform-json](https://github.com/hashicorp/terraform-json) package.
 
 #### Adding a new Terraform CLI command to `tfexec`
 
@@ -65,17 +67,17 @@ Subject to [compatibility guarantees](https://www.terraform.io/language/v1-compa
  - Change stdout or stderr output
  - Change the format of output files, e.g. the state file
  - Change a command's exit code
- 
+
 These and any other differences between versions should be specified in test assertions.
 
 If the command implemented differs in any way between Terraform versions (e.g. a flag is added or removed, or the subcommand does not exist in earlier versions), use `t.Skip()` directives and version checks to adapt test behaviour as appropriate. For example:
-https://github.com/hashicorp/terraform-exec/blob/d0cb3efafda90dd47bbfabdccde3cf7e45e0376d/tfexec/internal/e2etest/validate_test.go#L15-L23
+https://github.com/opentofu/tofu-exec/blob/d0cb3efafda90dd47bbfabdccde3cf7e45e0376d/tfexec/internal/e2etest/validate_test.go#L15-L23
 
 The `runTestWithVersions()` helper can be used to run tests against specific Terraform versions. This should be used only alongside a test using `runTest()` to cover the remaining past and future versions.
 
 ## Versioning
 
-The `github.com/hashicorp/terraform-exec` Go module in its entirety is versioned according to [Go module versioning](https://golang.org/ref/mod#versions) with Git tags. The latest version is automatically written to `internal/version/version.go` during the release process.
+The `github.com/opentofu/tofu-exec` Go module in its entirety is versioned according to [Go module versioning](https://golang.org/ref/mod#versions) with Git tags. The latest version is automatically written to `internal/version/version.go` during the release process.
 
 ## Releases
 
@@ -83,12 +85,12 @@ Releases are made on a reasonably regular basis by the Terraform team, using our
 
 The following notes are only relevant to maintainers.
 
-1. Make sure [CHANGELOG.md](https://github.com/hashicorp/terraform-exec/blob/main/CHANGELOG.md) has all **changes** and the first line has the **version** you're intending to release (with ` (Unreleased)` suffix).
-1. Trigger the [`release` workflow](https://github.com/hashicorp/terraform-exec/actions/workflows/release.yml) from GitHub UI. This will run the [release script](https://github.com/hashicorp/terraform-exec/blob/main/scripts/release/release.sh). As part of that script:
+1. Make sure [CHANGELOG.md](https://github.com/opentofu/tofu-exec/blob/main/CHANGELOG.md) has all **changes** and the first line has the **version** you're intending to release (with ` (Unreleased)` suffix).
+1. Trigger the [`release` workflow](https://github.com/opentofu/tofu-exec/actions/workflows/release.yml) from GitHub UI. This will run the [release script](https://github.com/opentofu/tofu-exec/blob/main/scripts/release/release.sh). As part of that script:
   - `Unreleased`, `[GH-XXX]` will be replaced.
-  - The [version](https://github.com/hashicorp/terraform-exec/blob/main/internal/version/version.go#L3) will be bumped to match the one parsed from `CHANGELOG.md`.
+  - The [version](https://github.com/opentofu/tofu-exec/blob/main/internal/version/version.go#L3) will be bumped to match the one parsed from `CHANGELOG.md`.
   - Tag will be pushed
-1. [Create new release](https://github.com/hashicorp/terraform-exec/releases/new) via GitHub UI to point to the new tag and copy the appropriate part of the CHANGELOG.md there.
+1. [Create new release](https://github.com/opentofu/tofu-exec/releases/new) via GitHub UI to point to the new tag and copy the appropriate part of the CHANGELOG.md there.
 
 ## Security vulnerabilities
 
@@ -103,7 +105,7 @@ In general we do not accept PRs containing only the following changes:
  - Correcting spelling or typos
  - Code formatting, including whitespace
  - Other cosmetic changes that do not affect functionality
- 
+
 While we appreciate the effort that goes into preparing PRs, there is always a tradeoff between benefit and cost. The costs involved in accepting such contributions include the time taken for thorough review, the noise created in the git history, and the increased number of GitHub notifications that maintainers must attend to.
 
 #### Exceptions

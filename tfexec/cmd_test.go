@@ -11,7 +11,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/hashicorp/terraform-exec/internal/version"
+	"github.com/opentofu/tofu-exec/internal/version"
 )
 
 func TestMergeUserAgent(t *testing.T) {
