@@ -9,7 +9,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/hashicorp/terraform-exec/tfexec/internal/testutil"
+	"github.com/opentofu/tofu-exec/tfexec/internal/testutil"
 )
 
 func TestDestroyCmd(t *testing.T) {

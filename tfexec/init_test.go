@@ -10,7 +10,7 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/hashicorp/terraform-exec/tfexec/internal/testutil"
+	"github.com/opentofu/tofu-exec/tfexec/internal/testutil"
 )
 
 func TestInitCmd_v012(t *testing.T) {
