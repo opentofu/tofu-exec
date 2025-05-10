@@ -41,7 +41,7 @@ func (opt *ForceOption) configureWorkspaceDelete(conf *workspaceDeleteConfig) {
 }
 
 // WorkspaceDelete represents the workspace delete subcommand to the Terraform CLI.
-func (tf *Terraform) WorkspaceDelete(ctx context.Context, workspace string, opts ...WorkspaceDeleteCmdOption) error {
+func (tf *Tofu) WorkspaceDelete(ctx context.Context, workspace string, opts ...WorkspaceDeleteCmdOption) error {
 	cmd, err := tf.workspaceDeleteCmd(ctx, workspace, opts...)
 	if err != nil {
 		return err
@@ -49,7 +49,7 @@ func (tf *Terraform) WorkspaceDelete(ctx context.Context, workspace string, opts
 	return tf.runTerraformCmd(ctx, cmd)
 }
 
-func (tf *Terraform) workspaceDeleteCmd(ctx context.Context, workspace string, opts ...WorkspaceDeleteCmdOption) (*exec.Cmd, error) {
+func (tf *Tofu) workspaceDeleteCmd(ctx context.Context, workspace string, opts ...WorkspaceDeleteCmdOption) (*exec.Cmd, error) {
 	c := defaultWorkspaceDeleteOptions
 
 	for _, o := range opts {

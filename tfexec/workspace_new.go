@@ -41,7 +41,7 @@ func (opt *CopyStateOption) configureWorkspaceNew(conf *workspaceNewConfig) {
 }
 
 // WorkspaceNew represents the workspace new subcommand to the Terraform CLI.
-func (tf *Terraform) WorkspaceNew(ctx context.Context, workspace string, opts ...WorkspaceNewCmdOption) error {
+func (tf *Tofu) WorkspaceNew(ctx context.Context, workspace string, opts ...WorkspaceNewCmdOption) error {
 	cmd, err := tf.workspaceNewCmd(ctx, workspace, opts...)
 	if err != nil {
 		return err
@@ -49,7 +49,7 @@ func (tf *Terraform) WorkspaceNew(ctx context.Context, workspace string, opts ..
 	return tf.runTerraformCmd(ctx, cmd)
 }
 
-func (tf *Terraform) workspaceNewCmd(ctx context.Context, workspace string, opts ...WorkspaceNewCmdOption) (*exec.Cmd, error) {
+func (tf *Tofu) workspaceNewCmd(ctx context.Context, workspace string, opts ...WorkspaceNewCmdOption) (*exec.Cmd, error) {
 	// TODO: [DIR] param option
 
 	c := defaultWorkspaceNewOptions

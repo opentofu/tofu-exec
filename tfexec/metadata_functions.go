@@ -14,7 +14,7 @@ import (
 )
 
 // MetadataFunctions represents the terraform metadata functions -json subcommand.
-func (tf *Terraform) MetadataFunctions(ctx context.Context) (*tfjson.MetadataFunctions, error) {
+func (tf *Tofu) MetadataFunctions(ctx context.Context) (*tfjson.MetadataFunctions, error) {
 	err := tf.compatible(ctx, tf1_4_0, nil)
 	if err != nil {
 		return nil, fmt.Errorf("terraform metadata functions was added in 1.4.0: %w", err)
@@ -31,7 +31,7 @@ func (tf *Terraform) MetadataFunctions(ctx context.Context) (*tfjson.MetadataFun
 	return &ret, nil
 }
 
-func (tf *Terraform) metadataFunctionsCmd(ctx context.Context, args ...string) *exec.Cmd {
+func (tf *Tofu) metadataFunctionsCmd(ctx context.Context, args ...string) *exec.Cmd {
 	allArgs := []string{"metadata", "functions", "-json"}
 	allArgs = append(allArgs, args...)
 

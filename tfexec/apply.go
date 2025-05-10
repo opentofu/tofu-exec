@@ -108,7 +108,7 @@ func (opt *DestroyFlagOption) configureApply(conf *applyConfig) {
 }
 
 // Apply represents the terraform apply subcommand.
-func (tf *Terraform) Apply(ctx context.Context, opts ...ApplyOption) error {
+func (tf *Tofu) Apply(ctx context.Context, opts ...ApplyOption) error {
 	cmd, err := tf.applyCmd(ctx, opts...)
 	if err != nil {
 		return err
@@ -121,7 +121,7 @@ func (tf *Terraform) Apply(ctx context.Context, opts ...ApplyOption) error {
 // [machine-readable](https://developer.hashicorp.com/terraform/internals/machine-readable-ui)
 // JSON being written to the supplied `io.Writer`. ApplyJSON is likely to be
 // removed in a future major version in favour of Apply returning JSON by default.
-func (tf *Terraform) ApplyJSON(ctx context.Context, w io.Writer, opts ...ApplyOption) error {
+func (tf *Tofu) ApplyJSON(ctx context.Context, w io.Writer, opts ...ApplyOption) error {
 	err := tf.compatible(ctx, tf0_15_3, nil)
 	if err != nil {
 		return fmt.Errorf("terraform apply -json was added in 0.15.3: %w", err)
@@ -137,7 +137,7 @@ func (tf *Terraform) ApplyJSON(ctx context.Context, w io.Writer, opts ...ApplyOp
 	return tf.runTerraformCmd(ctx, cmd)
 }
 
-func (tf *Terraform) applyCmd(ctx context.Context, opts ...ApplyOption) (*exec.Cmd, error) {
+func (tf *Tofu) applyCmd(ctx context.Context, opts ...ApplyOption) (*exec.Cmd, error) {
 	c := defaultApplyOptions
 
 	for _, o := range opts {
@@ -152,7 +152,7 @@ func (tf *Terraform) applyCmd(ctx context.Context, opts ...ApplyOption) (*exec.C
 	return tf.buildApplyCmd(ctx, c, args)
 }
 
-func (tf *Terraform) applyJSONCmd(ctx context.Context, opts ...ApplyOption) (*exec.Cmd, error) {
+func (tf *Tofu) applyJSONCmd(ctx context.Context, opts ...ApplyOption) (*exec.Cmd, error) {
 	c := defaultApplyOptions
 
 	for _, o := range opts {
@@ -169,7 +169,7 @@ func (tf *Terraform) applyJSONCmd(ctx context.Context, opts ...ApplyOption) (*ex
 	return tf.buildApplyCmd(ctx, c, args)
 }
 
-func (tf *Terraform) buildApplyArgs(ctx context.Context, c applyConfig) ([]string, error) {
+func (tf *Tofu) buildApplyArgs(ctx context.Context, c applyConfig) ([]string, error) {
 	args := []string{"apply", "-no-color", "-auto-approve", "-input=false"}
 
 	// string opts: only pass if set
@@ -237,7 +237,7 @@ func (tf *Terraform) buildApplyArgs(ctx context.Context, c applyConfig) ([]strin
 	return args, nil
 }
 
-func (tf *Terraform) buildApplyCmd(ctx context.Context, c applyConfig, args []string) (*exec.Cmd, error) {
+func (tf *Tofu) buildApplyCmd(ctx context.Context, c applyConfig, args []string) (*exec.Cmd, error) {
 	// string argument: pass if set
 	if c.dirOrPlan != "" {
 		args = append(args, c.dirOrPlan)

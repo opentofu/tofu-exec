@@ -33,7 +33,7 @@ var (
 	metadataFunctionsMinVersion = version.Must(version.NewVersion("1.4.0"))
 )
 
-func runTest(t *testing.T, fixtureName string, cb func(t *testing.T, tfVersion *version.Version, tf *tfexec.Terraform)) {
+func runTest(t *testing.T, fixtureName string, cb func(t *testing.T, tfVersion *version.Version, tf *tfexec.Tofu)) {
 	t.Helper()
 
 	versions := []string{
@@ -83,7 +83,7 @@ func runTest(t *testing.T, fixtureName string, cb func(t *testing.T, tfVersion *
 	runTestWithVersions(t, versions, fixtureName, cb)
 }
 
-func runTestWithVersions(t *testing.T, versions []string, fixtureName string, cb func(t *testing.T, tfVersion *version.Version, tf *tfexec.Terraform)) {
+func runTestWithVersions(t *testing.T, versions []string, fixtureName string, cb func(t *testing.T, tfVersion *version.Version, tf *tfexec.Tofu)) {
 	t.Helper()
 
 	alreadyRunVersions := map[string]bool{}

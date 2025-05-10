@@ -19,7 +19,7 @@ func Test_runTerraformCmd_linux(t *testing.T) {
 	// go test -race -run Test_runTerraformCmd_linux ./tfexec -tags=linux
 	var buf bytes.Buffer
 
-	tf := &Terraform{
+	tf := &Tofu{
 		logger:   log.New(&buf, "", 0),
 		execPath: "echo",
 	}

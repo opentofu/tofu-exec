@@ -46,7 +46,7 @@ func FormatString(ctx context.Context, execPath string, content string) (string,
 }
 
 // FormatString formats a passed string.
-func (tf *Terraform) FormatString(ctx context.Context, content string) (string, error) {
+func (tf *Tofu) FormatString(ctx context.Context, content string) (string, error) {
 	in := strings.NewReader(content)
 	var outBuf strings.Builder
 	err := tf.Format(ctx, in, &outBuf)
@@ -58,7 +58,7 @@ func (tf *Terraform) FormatString(ctx context.Context, content string) (string, 
 
 // Format performs formatting on the unformatted io.Reader (as stdin to the CLI) and returns
 // the formatted result on the formatted io.Writer.
-func (tf *Terraform) Format(ctx context.Context, unformatted io.Reader, formatted io.Writer) error {
+func (tf *Tofu) Format(ctx context.Context, unformatted io.Reader, formatted io.Writer) error {
 	cmd, err := tf.formatCmd(ctx, nil, Dir("-"))
 	if err != nil {
 		return err
@@ -71,7 +71,7 @@ func (tf *Terraform) Format(ctx context.Context, unformatted io.Reader, formatte
 }
 
 // FormatWrite attempts to format and modify all config files in the working or selected (via DirOption) directory.
-func (tf *Terraform) FormatWrite(ctx context.Context, opts ...FormatOption) error {
+func (tf *Tofu) FormatWrite(ctx context.Context, opts ...FormatOption) error {
 	for _, o := range opts {
 		switch o := o.(type) {
 		case *DirOption:
@@ -90,7 +90,7 @@ func (tf *Terraform) FormatWrite(ctx context.Context, opts ...FormatOption) erro
 }
 
 // FormatCheck returns true if the config files in the working or selected (via DirOption) directory are already formatted.
-func (tf *Terraform) FormatCheck(ctx context.Context, opts ...FormatOption) (bool, []string, error) {
+func (tf *Tofu) FormatCheck(ctx context.Context, opts ...FormatOption) (bool, []string, error) {
 	for _, o := range opts {
 		switch o := o.(type) {
 		case *DirOption:
@@ -130,7 +130,7 @@ func (tf *Terraform) FormatCheck(ctx context.Context, opts ...FormatOption) (boo
 	return false, nil, err
 }
 
-func (tf *Terraform) formatCmd(ctx context.Context, args []string, opts ...FormatOption) (*exec.Cmd, error) {
+func (tf *Tofu) formatCmd(ctx context.Context, args []string, opts ...FormatOption) (*exec.Cmd, error) {
 	err := tf.compatible(ctx, tf0_7_7, nil)
 	if err != nil {
 		return nil, fmt.Errorf("fmt was first introduced in Terraform 0.7.7: %w", err)

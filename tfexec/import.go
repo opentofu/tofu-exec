@@ -78,7 +78,7 @@ func (opt *VarFileOption) configureImport(conf *importConfig) {
 }
 
 // Import represents the terraform import subcommand.
-func (tf *Terraform) Import(ctx context.Context, address, id string, opts ...ImportOption) error {
+func (tf *Tofu) Import(ctx context.Context, address, id string, opts ...ImportOption) error {
 	cmd, err := tf.importCmd(ctx, address, id, opts...)
 	if err != nil {
 		return err
@@ -86,7 +86,7 @@ func (tf *Terraform) Import(ctx context.Context, address, id string, opts ...Imp
 	return tf.runTerraformCmd(ctx, cmd)
 }
 
-func (tf *Terraform) importCmd(ctx context.Context, address, id string, opts ...ImportOption) (*exec.Cmd, error) {
+func (tf *Tofu) importCmd(ctx context.Context, address, id string, opts ...ImportOption) (*exec.Cmd, error) {
 	c := defaultImportOptions
 
 	for _, o := range opts {

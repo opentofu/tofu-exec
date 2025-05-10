@@ -41,7 +41,7 @@ func (opt *ProviderOption) configureProvidersLock(conf *providersLockConfig) {
 }
 
 // ProvidersLock represents the `terraform providers lock` command
-func (tf *Terraform) ProvidersLock(ctx context.Context, opts ...ProvidersLockOption) error {
+func (tf *Tofu) ProvidersLock(ctx context.Context, opts ...ProvidersLockOption) error {
 	err := tf.compatible(ctx, tf0_14_0, nil)
 	if err != nil {
 		return fmt.Errorf("terraform providers lock was added in 0.14.0: %w", err)
@@ -57,7 +57,7 @@ func (tf *Terraform) ProvidersLock(ctx context.Context, opts ...ProvidersLockOpt
 	return err
 }
 
-func (tf *Terraform) providersLockCmd(ctx context.Context, opts ...ProvidersLockOption) *exec.Cmd {
+func (tf *Tofu) providersLockCmd(ctx context.Context, opts ...ProvidersLockOption) *exec.Cmd {
 	c := defaultProvidersLockOptions
 
 	for _, o := range opts {

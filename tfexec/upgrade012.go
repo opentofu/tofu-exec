@@ -40,7 +40,7 @@ func (opt *ReattachOption) configureUpgrade012(conf *upgrade012Config) {
 }
 
 // Upgrade012 represents the terraform 0.12upgrade subcommand.
-func (tf *Terraform) Upgrade012(ctx context.Context, opts ...Upgrade012Option) error {
+func (tf *Tofu) Upgrade012(ctx context.Context, opts ...Upgrade012Option) error {
 	cmd, err := tf.upgrade012Cmd(ctx, opts...)
 	if err != nil {
 		return err
@@ -48,7 +48,7 @@ func (tf *Terraform) Upgrade012(ctx context.Context, opts ...Upgrade012Option) e
 	return tf.runTerraformCmd(ctx, cmd)
 }
 
-func (tf *Terraform) upgrade012Cmd(ctx context.Context, opts ...Upgrade012Option) (*exec.Cmd, error) {
+func (tf *Tofu) upgrade012Cmd(ctx context.Context, opts ...Upgrade012Option) (*exec.Cmd, error) {
 	err := tf.compatible(ctx, tf0_12_0, tf0_13_0)
 	if err != nil {
 		return nil, fmt.Errorf("terraform 0.12upgrade is only supported in 0.12 releases: %w", err)

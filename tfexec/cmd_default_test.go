@@ -22,7 +22,7 @@ func Test_runTerraformCmd_default(t *testing.T) {
 	// go test -race -run Test_runTerraformCmd_default ./tfexec
 	var buf bytes.Buffer
 
-	tf := &Terraform{
+	tf := &Tofu{
 		logger:   log.New(&buf, "", 0),
 		execPath: "echo",
 	}

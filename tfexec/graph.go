@@ -36,7 +36,7 @@ func (opt *GraphTypeOption) configureGraph(conf *graphConfig) {
 	conf.graphType = opt.graphType
 }
 
-func (tf *Terraform) Graph(ctx context.Context, opts ...GraphOption) (string, error) {
+func (tf *Tofu) Graph(ctx context.Context, opts ...GraphOption) (string, error) {
 	graphCmd, err := tf.graphCmd(ctx, opts...)
 	if err != nil {
 		return "", err
@@ -52,7 +52,7 @@ func (tf *Terraform) Graph(ctx context.Context, opts ...GraphOption) (string, er
 
 }
 
-func (tf *Terraform) graphCmd(ctx context.Context, opts ...GraphOption) (*exec.Cmd, error) {
+func (tf *Tofu) graphCmd(ctx context.Context, opts ...GraphOption) (*exec.Cmd, error) {
 	c := defaultGraphOptions
 
 	for _, o := range opts {

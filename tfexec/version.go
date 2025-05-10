@@ -40,7 +40,7 @@ var (
 // Version returns structured output from the terraform version command including both the Terraform CLI version
 // and any initialized provider versions. This will read cached values when present unless the skipCache parameter
 // is set to true.
-func (tf *Terraform) Version(ctx context.Context, skipCache bool) (tfVersion *version.Version, providerVersions map[string]*version.Version, err error) {
+func (tf *Tofu) Version(ctx context.Context, skipCache bool) (tfVersion *version.Version, providerVersions map[string]*version.Version, err error) {
 	tf.versionLock.Lock()
 	defer tf.versionLock.Unlock()
 
@@ -55,7 +55,7 @@ func (tf *Terraform) Version(ctx context.Context, skipCache bool) (tfVersion *ve
 }
 
 // version does not use the locking on the Terraform instance and should probably not be used directly, prefer Version.
-func (tf *Terraform) version(ctx context.Context) (*version.Version, map[string]*version.Version, error) {
+func (tf *Tofu) version(ctx context.Context) (*version.Version, map[string]*version.Version, error) {
 	versionCmd := tf.buildTerraformCmd(ctx, nil, "version", "-json")
 
 	var outBuf bytes.Buffer
@@ -101,7 +101,7 @@ func parseJsonVersionOutput(stdout []byte) (*version.Version, map[string]*versio
 	return tfVersion, providerVersions, nil
 }
 
-func (tf *Terraform) versionFromPlaintext(ctx context.Context) (*version.Version, map[string]*version.Version, error) {
+func (tf *Tofu) versionFromPlaintext(ctx context.Context) (*version.Version, map[string]*version.Version, error) {
 	versionCmd := tf.buildTerraformCmd(ctx, nil, "version")
 
 	var outBuf strings.Builder
@@ -166,7 +166,7 @@ func errorVersionString(v *version.Version) string {
 }
 
 // compatible asserts compatibility of the cached terraform version with the executable, and returns a well known error if not.
-func (tf *Terraform) compatible(ctx context.Context, minInclusive *version.Version, maxExclusive *version.Version) error {
+func (tf *Tofu) compatible(ctx context.Context, minInclusive *version.Version, maxExclusive *version.Version) error {
 	tfv, _, err := tf.Version(ctx, false)
 	if err != nil {
 		return err
