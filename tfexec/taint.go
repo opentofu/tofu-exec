@@ -46,16 +46,16 @@ func (opt *LockTimeoutOption) configureTaint(conf *taintConfig) {
 }
 
 // Taint represents the terraform taint subcommand.
-func (tf *Terraform) Taint(ctx context.Context, address string, opts ...TaintOption) error {
+func (tf *Tofu) Taint(ctx context.Context, address string, opts ...TaintOption) error {
 	err := tf.compatible(ctx, tf0_4_1, nil)
 	if err != nil {
 		return fmt.Errorf("taint was first introduced in Terraform 0.4.1: %w", err)
 	}
 	taintCmd := tf.taintCmd(ctx, address, opts...)
-	return tf.runTerraformCmd(ctx, taintCmd)
+	return tf.runTofuCmd(ctx, taintCmd)
 }
 
-func (tf *Terraform) taintCmd(ctx context.Context, address string, opts ...TaintOption) *exec.Cmd {
+func (tf *Tofu) taintCmd(ctx context.Context, address string, opts ...TaintOption) *exec.Cmd {
 	c := defaultTaintOptions
 
 	for _, o := range opts {
@@ -79,5 +79,5 @@ func (tf *Terraform) taintCmd(ctx context.Context, address string, opts ...Taint
 	}
 	args = append(args, address)
 
-	return tf.buildTerraformCmd(ctx, nil, args...)
+	return tf.buildTofuCmd(ctx, nil, args...)
 }

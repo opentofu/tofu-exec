@@ -37,7 +37,7 @@ func TestMain(m *testing.M) {
 func TestSetEnv(t *testing.T) {
 	td := t.TempDir()
 
-	tf, err := NewTerraform(td, tfVersion(t, testutil.Latest_v1))
+	tf, err := NewTofu(td, tfVersion(t, testutil.Latest_v1))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -71,7 +71,7 @@ func TestSetEnv(t *testing.T) {
 func TestSetLog(t *testing.T) {
 	td := t.TempDir()
 
-	tf, err := NewTerraform(td, tfVersion(t, testutil.Latest_v1))
+	tf, err := NewTofu(td, tfVersion(t, testutil.Latest_v1))
 
 	if err != nil {
 		t.Fatalf("unexpected NewTerraform error: %s", err)
@@ -93,7 +93,7 @@ func TestSetLog(t *testing.T) {
 
 		td012 := t.TempDir()
 
-		tf012, err := NewTerraform(td012, tfVersion(t, testutil.Latest012))
+		tf012, err := NewTofu(td012, tfVersion(t, testutil.Latest012))
 
 		if err != nil {
 			t.Fatalf("unexpected NewTerraform error: %s", err)
@@ -213,7 +213,7 @@ func TestSetLog(t *testing.T) {
 func TestSetLogCore(t *testing.T) {
 	td := t.TempDir()
 
-	tf, err := NewTerraform(td, tfVersion(t, testutil.Latest_v1))
+	tf, err := NewTofu(td, tfVersion(t, testutil.Latest_v1))
 
 	if err != nil {
 		t.Fatalf("unexpected NewTerraform error: %s", err)
@@ -235,7 +235,7 @@ func TestSetLogCore(t *testing.T) {
 
 		td012 := t.TempDir()
 
-		tf012, err := NewTerraform(td012, tfVersion(t, testutil.Latest012))
+		tf012, err := NewTofu(td012, tfVersion(t, testutil.Latest012))
 
 		if err != nil {
 			t.Fatalf("unexpected NewTerraform error: %s", err)
@@ -355,7 +355,7 @@ func TestSetLogCore(t *testing.T) {
 func TestSetLogPath(t *testing.T) {
 	td := t.TempDir()
 
-	tf, err := NewTerraform(td, tfVersion(t, testutil.Latest_v1))
+	tf, err := NewTofu(td, tfVersion(t, testutil.Latest_v1))
 
 	if err != nil {
 		t.Fatalf("unexpected NewTerraform error: %s", err)
@@ -526,7 +526,7 @@ func TestSetLogPath(t *testing.T) {
 func TestSetLogProvider(t *testing.T) {
 	td := t.TempDir()
 
-	tf, err := NewTerraform(td, tfVersion(t, testutil.Latest_v1))
+	tf, err := NewTofu(td, tfVersion(t, testutil.Latest_v1))
 
 	if err != nil {
 		t.Fatalf("unexpected NewTerraform error: %s", err)
@@ -548,7 +548,7 @@ func TestSetLogProvider(t *testing.T) {
 
 		td012 := t.TempDir()
 
-		tf012, err := NewTerraform(td012, tfVersion(t, testutil.Latest012))
+		tf012, err := NewTofu(td012, tfVersion(t, testutil.Latest012))
 
 		if err != nil {
 			t.Fatalf("unexpected NewTerraform error: %s", err)
@@ -672,7 +672,7 @@ func TestCheckpointDisablePropagation_v012(t *testing.T) {
 
 	td := t.TempDir()
 
-	tf, err := NewTerraform(td, tfVersion(t, testutil.Latest012))
+	tf, err := NewTofu(td, tfVersion(t, testutil.Latest012))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -749,7 +749,7 @@ func TestCheckpointDisablePropagation_v012(t *testing.T) {
 func TestCheckpointDisablePropagation_v1(t *testing.T) {
 	td := t.TempDir()
 
-	tf, err := NewTerraform(td, tfVersion(t, testutil.Latest_v1))
+	tf, err := NewTofu(td, tfVersion(t, testutil.Latest_v1))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -820,7 +820,7 @@ func TestCheckpointDisablePropagation_v1(t *testing.T) {
 func TestNoTerraformBinary(t *testing.T) {
 	td := t.TempDir()
 
-	_, err := NewTerraform(td, "")
+	_, err := NewTofu(td, "")
 	if err == nil {
 		t.Fatal("expected NewTerraform to error, but it did not")
 	}

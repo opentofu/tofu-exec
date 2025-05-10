@@ -21,7 +21,7 @@ var (
 )
 
 func TestValidate(t *testing.T) {
-	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		if tfv.LessThan(validateMinVersion) {
 			t.Skip("terraform validate -json was added in Terraform 0.12, so test is not valid")
 		}
@@ -41,7 +41,7 @@ func TestValidate(t *testing.T) {
 		}
 	})
 
-	runTest(t, "invalid", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "invalid", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		if tfv.LessThan(validateMinVersion) {
 			t.Skip("terraform validate -json was added in Terraform 0.12, so test is not valid")
 		}

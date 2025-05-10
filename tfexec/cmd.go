@@ -122,7 +122,7 @@ func envSlice(environ map[string]string) []string {
 	return env
 }
 
-func (tf *Terraform) buildEnv(mergeEnv map[string]string) []string {
+func (tf *Tofu) buildEnv(mergeEnv map[string]string) []string {
 	// set Terraform level env, if env is nil, fall back to os.Environ
 	var env map[string]string
 	if tf.env == nil {
@@ -184,7 +184,7 @@ func (tf *Terraform) buildEnv(mergeEnv map[string]string) []string {
 	return envSlice(env)
 }
 
-func (tf *Terraform) buildTerraformCmd(ctx context.Context, mergeEnv map[string]string, args ...string) *exec.Cmd {
+func (tf *Tofu) buildTofuCmd(ctx context.Context, mergeEnv map[string]string, args ...string) *exec.Cmd {
 	cmd := exec.CommandContext(ctx, tf.execPath, args...)
 
 	cmd.Env = tf.buildEnv(mergeEnv)
@@ -195,11 +195,11 @@ func (tf *Terraform) buildTerraformCmd(ctx context.Context, mergeEnv map[string]
 	return cmd
 }
 
-func (tf *Terraform) runTerraformCmdJSON(ctx context.Context, cmd *exec.Cmd, v interface{}) error {
+func (tf *Tofu) runTofuCmdJSON(ctx context.Context, cmd *exec.Cmd, v interface{}) error {
 	var outbuf = bytes.Buffer{}
 	cmd.Stdout = mergeWriters(cmd.Stdout, &outbuf)
 
-	err := tf.runTerraformCmd(ctx, cmd)
+	err := tf.runTofuCmd(ctx, cmd)
 	if err != nil {
 		return err
 	}

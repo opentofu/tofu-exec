@@ -13,7 +13,7 @@ import (
 )
 
 func TestStatePull(t *testing.T) {
-	tf, err := NewTerraform(t.TempDir(), tfVersion(t, testutil.Latest_v1))
+	tf, err := NewTofu(t.TempDir(), tfVersion(t, testutil.Latest_v1))
 	if err != nil {
 		t.Fatal(err)
 	}

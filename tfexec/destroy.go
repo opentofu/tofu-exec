@@ -93,12 +93,12 @@ func (opt *ReattachOption) configureDestroy(conf *destroyConfig) {
 }
 
 // Destroy represents the terraform destroy subcommand.
-func (tf *Terraform) Destroy(ctx context.Context, opts ...DestroyOption) error {
+func (tf *Tofu) Destroy(ctx context.Context, opts ...DestroyOption) error {
 	cmd, err := tf.destroyCmd(ctx, opts...)
 	if err != nil {
 		return err
 	}
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
 // DestroyJSON represents the terraform destroy subcommand with the `-json` flag.
@@ -106,7 +106,7 @@ func (tf *Terraform) Destroy(ctx context.Context, opts ...DestroyOption) error {
 // [machine-readable](https://developer.hashicorp.com/terraform/internals/machine-readable-ui)
 // JSON being written to the supplied `io.Writer`. DestroyJSON is likely to be
 // removed in a future major version in favour of Destroy returning JSON by default.
-func (tf *Terraform) DestroyJSON(ctx context.Context, w io.Writer, opts ...DestroyOption) error {
+func (tf *Tofu) DestroyJSON(ctx context.Context, w io.Writer, opts ...DestroyOption) error {
 	err := tf.compatible(ctx, tf0_15_3, nil)
 	if err != nil {
 		return fmt.Errorf("terraform destroy -json was added in 0.15.3: %w", err)
@@ -119,10 +119,10 @@ func (tf *Terraform) DestroyJSON(ctx context.Context, w io.Writer, opts ...Destr
 		return err
 	}
 
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
-func (tf *Terraform) destroyCmd(ctx context.Context, opts ...DestroyOption) (*exec.Cmd, error) {
+func (tf *Tofu) destroyCmd(ctx context.Context, opts ...DestroyOption) (*exec.Cmd, error) {
 	c := defaultDestroyOptions
 
 	for _, o := range opts {
@@ -134,7 +134,7 @@ func (tf *Terraform) destroyCmd(ctx context.Context, opts ...DestroyOption) (*ex
 	return tf.buildDestroyCmd(ctx, c, args)
 }
 
-func (tf *Terraform) destroyJSONCmd(ctx context.Context, opts ...DestroyOption) (*exec.Cmd, error) {
+func (tf *Tofu) destroyJSONCmd(ctx context.Context, opts ...DestroyOption) (*exec.Cmd, error) {
 	c := defaultDestroyOptions
 
 	for _, o := range opts {
@@ -147,7 +147,7 @@ func (tf *Terraform) destroyJSONCmd(ctx context.Context, opts ...DestroyOption) 
 	return tf.buildDestroyCmd(ctx, c, args)
 }
 
-func (tf *Terraform) buildDestroyArgs(c destroyConfig) []string {
+func (tf *Tofu) buildDestroyArgs(c destroyConfig) []string {
 	args := []string{"destroy", "-no-color", "-auto-approve", "-input=false"}
 
 	// string opts: only pass if set
@@ -187,7 +187,7 @@ func (tf *Terraform) buildDestroyArgs(c destroyConfig) []string {
 	return args
 }
 
-func (tf *Terraform) buildDestroyCmd(ctx context.Context, c destroyConfig, args []string) (*exec.Cmd, error) {
+func (tf *Tofu) buildDestroyCmd(ctx context.Context, c destroyConfig, args []string) (*exec.Cmd, error) {
 	// optional positional argument
 	if c.dir != "" {
 		args = append(args, c.dir)
@@ -202,5 +202,5 @@ func (tf *Terraform) buildDestroyCmd(ctx context.Context, c destroyConfig, args 
 		mergeEnv[reattachEnvVar] = reattachStr
 	}
 
-	return tf.buildTerraformCmd(ctx, mergeEnv, args...), nil
+	return tf.buildTofuCmd(ctx, mergeEnv, args...), nil
 }

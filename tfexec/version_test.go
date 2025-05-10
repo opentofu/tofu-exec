@@ -262,7 +262,7 @@ func TestCompatible(t *testing.T) {
 		{true, "", "0.14.0", tf013beta3},
 	} {
 		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
-			tf, err := NewTerraform(filepath.Dir(c.binPath), c.binPath)
+			tf, err := NewTofu(filepath.Dir(c.binPath), c.binPath)
 			if err != nil {
 				t.Fatal(err)
 			}

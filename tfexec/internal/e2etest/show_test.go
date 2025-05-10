@@ -28,7 +28,7 @@ var (
 )
 
 func TestShow(t *testing.T) {
-	runTest(t, "basic_with_state", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "basic_with_state", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 
 		if tfv.LessThan(providerAddressMinVersion) {
 			t.Skip("state file provider FQNs not compatible with this Terraform version")
@@ -87,7 +87,7 @@ func TestShow(t *testing.T) {
 }
 
 func TestShow_emptyDir(t *testing.T) {
-	runTest(t, "empty", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "empty", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		if tfv.LessThan(showMinVersion) {
 			t.Skip("terraform show was added in Terraform 0.12, so test is not valid")
 		}
@@ -121,7 +121,7 @@ func TestShow_noInitBasic(t *testing.T) {
 	// no providers to download, this is unintended behaviour, as
 	// init is not actually necessary. This is considered a known issue in
 	// pre-1.2.0 versions.
-	runTestWithVersions(t, []string{testutil.Latest012, testutil.Latest013, testutil.Latest014, testutil.Latest015, testutil.Latest_v1, testutil.Latest_v1_1}, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTestWithVersions(t, []string{testutil.Latest012, testutil.Latest013, testutil.Latest014, testutil.Latest015, testutil.Latest_v1, testutil.Latest_v1_1}, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		_, err := tf.Show(context.Background())
 		if err == nil {
 			t.Fatalf("expected error, but did not get one")
@@ -130,7 +130,7 @@ func TestShow_noInitBasic(t *testing.T) {
 
 	// From v1.2.0 onwards, running show before init in the basic case returns
 	// an empty state with no error.
-	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		// HACK KEM: Really I mean tfv.LessThan(version.Must(version.NewVersion("1.2.0"))),
 		// but I want this test to run for refs/heads/main prior to the release of v1.2.0.
 		if tfv.LessThan(version.Must(version.NewVersion("1.2.0"))) {
@@ -158,7 +158,7 @@ func TestShow_noInitModule(t *testing.T) {
 	// no providers to download, this is unintended behaviour, as
 	// init is not actually necessary. This is considered a known issue in
 	// pre-1.2.0 versions.
-	runTestWithVersions(t, []string{testutil.Latest012, testutil.Latest013, testutil.Latest014, testutil.Latest015, testutil.Latest_v1, testutil.Latest_v1_1}, "registry_module", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTestWithVersions(t, []string{testutil.Latest012, testutil.Latest013, testutil.Latest014, testutil.Latest015, testutil.Latest_v1, testutil.Latest_v1_1}, "registry_module", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		_, err := tf.Show(context.Background())
 		if err == nil {
 			t.Fatalf("expected error, but did not get one")
@@ -167,7 +167,7 @@ func TestShow_noInitModule(t *testing.T) {
 
 	// From v1.2.0 onwards, running show before init in the basic case returns
 	// an empty state with no error.
-	runTest(t, "registry_module", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "registry_module", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		// HACK KEM: Really I mean tfv.LessThan(version.Must(version.NewVersion("1.2.0"))),
 		// but I want this test to run for refs/heads/main prior to the release of v1.2.0.
 		if tfv.LessThanOrEqual(version.Must(version.NewVersion(testutil.Latest_v1_1))) {
@@ -189,7 +189,7 @@ func TestShow_noInitModule(t *testing.T) {
 }
 
 func TestShow_noInitInmemBackend(t *testing.T) {
-	runTest(t, "inmem_backend", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "inmem_backend", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		if tfv.LessThan(showMinVersion) {
 			t.Skip("terraform show was added in Terraform 0.12, so test is not valid")
 		}
@@ -202,7 +202,7 @@ func TestShow_noInitInmemBackend(t *testing.T) {
 }
 
 func TestShow_noInitLocalBackendNonDefaultState(t *testing.T) {
-	runTest(t, "local_backend_non_default_state", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "local_backend_non_default_state", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		if tfv.LessThan(showMinVersion) {
 			t.Skip("terraform show was added in Terraform 0.12, so test is not valid")
 		}
@@ -215,7 +215,7 @@ func TestShow_noInitLocalBackendNonDefaultState(t *testing.T) {
 }
 
 func TestShow_noInitCloudBackend(t *testing.T) {
-	runTest(t, "cloud_backend", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "cloud_backend", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		if tfv.LessThan(version.Must(version.NewVersion("1.1.0"))) {
 			t.Skip("cloud backend was added in Terraform 1.1, so test is not valid")
 		}
@@ -228,7 +228,7 @@ func TestShow_noInitCloudBackend(t *testing.T) {
 }
 
 func TestShow_noInitEtcdBackend(t *testing.T) {
-	runTest(t, "etcd_backend", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "etcd_backend", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		if tfv.LessThan(showMinVersion) {
 			t.Skip("terraform show was added in Terraform 0.12, so test is not valid")
 		}
@@ -245,7 +245,7 @@ func TestShow_noInitEtcdBackend(t *testing.T) {
 }
 
 func TestShow_noInitRemoteBackend(t *testing.T) {
-	runTest(t, "remote_backend", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "remote_backend", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		if tfv.LessThan(showMinVersion) {
 			t.Skip("terraform show was added in Terraform 0.12, so test is not valid")
 		}
@@ -258,7 +258,7 @@ func TestShow_noInitRemoteBackend(t *testing.T) {
 }
 
 func TestShow_statefileDoesNotExist(t *testing.T) {
-	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		if tfv.LessThan(showMinVersion) {
 			t.Skip("terraform show was added in Terraform 0.12, so test is not valid")
 		}
@@ -276,7 +276,7 @@ func TestShow_statefileDoesNotExist(t *testing.T) {
 }
 
 func TestShow_versionMismatch(t *testing.T) {
-	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		// only testing versions without show
 		if tfv.GreaterThanOrEqual(showMinVersion) {
 			t.Skip("terraform show was added in Terraform 0.12, so test is not valid")
@@ -303,7 +303,7 @@ func TestShow_versionMismatch(t *testing.T) {
 // so we maintain one fixture per supported version.
 // See github.com/hashicorp/terraform/25920
 func TestShowStateFile012(t *testing.T) {
-	runTestWithVersions(t, []string{testutil.Latest012}, "non_default_statefile_012", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTestWithVersions(t, []string{testutil.Latest012}, "non_default_statefile_012", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		expected := &tfjson.State{
 			FormatVersion: "0.1",
 			// TerraformVersion is ignored to facilitate latest version testing
@@ -341,7 +341,7 @@ func TestShowStateFile012(t *testing.T) {
 }
 
 func TestShowStateFile013(t *testing.T) {
-	runTestWithVersions(t, []string{testutil.Latest013, testutil.Latest014}, "non_default_statefile_013", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTestWithVersions(t, []string{testutil.Latest013, testutil.Latest014}, "non_default_statefile_013", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		expected := &tfjson.State{
 			FormatVersion: "0.1",
 			// TerraformVersion is ignored to facilitate latest version testing
@@ -379,7 +379,7 @@ func TestShowStateFile013(t *testing.T) {
 }
 
 func TestShowStateFile014(t *testing.T) {
-	runTestWithVersions(t, []string{testutil.Latest014}, "non_default_statefile_014", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTestWithVersions(t, []string{testutil.Latest014}, "non_default_statefile_014", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		expected := &tfjson.State{
 			FormatVersion: "0.1",
 			// TerraformVersion is ignored to facilitate latest version testing
@@ -419,7 +419,7 @@ func TestShowStateFile014(t *testing.T) {
 // Plan files cannot be transferred between different Terraform versions,
 // so we maintain one fixture per supported version
 func TestShowPlanFile012_linux(t *testing.T) {
-	runTestWithVersions(t, []string{testutil.Latest012}, "non_default_planfile_012", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTestWithVersions(t, []string{testutil.Latest012}, "non_default_planfile_012", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		if runtime.GOOS != "linux" {
 			t.Skip("plan file created in 0.12 on Linux is not compatible with other systems")
 		}
@@ -485,7 +485,7 @@ func TestShowPlanFile012_linux(t *testing.T) {
 }
 
 func TestShowPlanFile013(t *testing.T) {
-	runTestWithVersions(t, []string{testutil.Latest013}, "non_default_planfile_013", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTestWithVersions(t, []string{testutil.Latest013}, "non_default_planfile_013", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		providerName := "registry.opentofu.org/hashicorp/null"
 
 		expected := &tfjson.Plan{
@@ -547,7 +547,7 @@ func TestShowPlanFile013(t *testing.T) {
 }
 
 func TestShowPlanFile014(t *testing.T) {
-	runTestWithVersions(t, []string{testutil.Latest014}, "non_default_planfile_014", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTestWithVersions(t, []string{testutil.Latest014}, "non_default_planfile_014", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		providerName := "registry.opentofu.org/hashicorp/null"
 
 		expected := &tfjson.Plan{
@@ -612,7 +612,7 @@ func TestShowPlanFile014(t *testing.T) {
 }
 
 func TestShowPlanFileRaw012_linux(t *testing.T) {
-	runTestWithVersions(t, []string{testutil.Latest012}, "non_default_planfile_012", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTestWithVersions(t, []string{testutil.Latest012}, "non_default_planfile_012", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		if runtime.GOOS != "linux" {
 			t.Skip("plan file created in 0.12 on Linux is not compatible with other systems")
 		}
@@ -644,7 +644,7 @@ func TestShowPlanFileRaw012_linux(t *testing.T) {
 }
 
 func TestShowPlanFileRaw013(t *testing.T) {
-	runTestWithVersions(t, []string{testutil.Latest013}, "non_default_planfile_013", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTestWithVersions(t, []string{testutil.Latest013}, "non_default_planfile_013", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		f, err := os.Open("testdata/non_default_planfile_013/human_readable_output.txt")
 		if err != nil {
 			t.Fatal(err)
@@ -672,7 +672,7 @@ func TestShowPlanFileRaw013(t *testing.T) {
 }
 
 func TestShowPlanFileRaw014(t *testing.T) {
-	runTestWithVersions(t, []string{testutil.Latest014}, "non_default_planfile_014", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTestWithVersions(t, []string{testutil.Latest014}, "non_default_planfile_014", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		f, err := os.Open("testdata/non_default_planfile_013/human_readable_output.txt")
 		if err != nil {
 			t.Fatal(err)
@@ -699,7 +699,7 @@ func TestShowPlanFileRaw014(t *testing.T) {
 }
 
 func TestShowBigInt(t *testing.T) {
-	runTest(t, "bigint", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "bigint", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		if tfv.LessThan(showMinVersion) {
 			t.Skip("terraform show was added in Terraform 0.12, so test is not valid")
 		}

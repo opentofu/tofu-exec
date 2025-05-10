@@ -20,7 +20,7 @@ func TestGraphCmd_v013(t *testing.T) {
 
 	td := t.TempDir()
 
-	tf, err := NewTerraform(td, tfVersion(t, testutil.Latest013))
+	tf, err := NewTofu(td, tfVersion(t, testutil.Latest013))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -54,7 +54,7 @@ func TestGraphCmd_v013(t *testing.T) {
 func TestGraphCmd_v1(t *testing.T) {
 	td := t.TempDir()
 
-	tf, err := NewTerraform(td, tfVersion(t, testutil.Latest_v1))
+	tf, err := NewTofu(td, tfVersion(t, testutil.Latest_v1))
 	if err != nil {
 		t.Fatal(err)
 	}

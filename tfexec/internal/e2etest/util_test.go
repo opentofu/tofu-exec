@@ -33,7 +33,7 @@ var (
 	metadataFunctionsMinVersion = version.Must(version.NewVersion("1.4.0"))
 )
 
-func runTest(t *testing.T, fixtureName string, cb func(t *testing.T, tfVersion *version.Version, tf *tfexec.Terraform)) {
+func runTest(t *testing.T, fixtureName string, cb func(t *testing.T, tfVersion *version.Version, tf *tfexec.Tofu)) {
 	t.Helper()
 
 	versions := []string{
@@ -65,7 +65,7 @@ func runTest(t *testing.T, fixtureName string, cb func(t *testing.T, tfVersion *
 		t.Cleanup(func() {
 			os.RemoveAll(td)
 		})
-		ltf, err := tfexec.NewTerraform(td, localBinPath)
+		ltf, err := tfexec.NewTofu(td, localBinPath)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -83,7 +83,7 @@ func runTest(t *testing.T, fixtureName string, cb func(t *testing.T, tfVersion *
 	runTestWithVersions(t, versions, fixtureName, cb)
 }
 
-func runTestWithVersions(t *testing.T, versions []string, fixtureName string, cb func(t *testing.T, tfVersion *version.Version, tf *tfexec.Terraform)) {
+func runTestWithVersions(t *testing.T, versions []string, fixtureName string, cb func(t *testing.T, tfVersion *version.Version, tf *tfexec.Tofu)) {
 	t.Helper()
 
 	alreadyRunVersions := map[string]bool{}
@@ -121,7 +121,7 @@ func runTestWithVersions(t *testing.T, versions []string, fixtureName string, cb
 				execPath = tfcache.Version(t, tfv)
 			}
 
-			tf, err := tfexec.NewTerraform(td, execPath)
+			tf, err := tfexec.NewTofu(td, execPath)
 			if err != nil {
 				t.Fatal(err)
 			}

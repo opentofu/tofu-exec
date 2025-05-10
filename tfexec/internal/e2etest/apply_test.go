@@ -22,7 +22,7 @@ var (
 )
 
 func TestApply(t *testing.T) {
-	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		err := tf.Init(context.Background())
 		if err != nil {
 			t.Fatalf("error running Init in test directory: %s", err)
@@ -38,7 +38,7 @@ func TestApply(t *testing.T) {
 func TestApplyJSON_TF014AndEarlier(t *testing.T) {
 	versions := []string{testutil.Latest011, testutil.Latest012, testutil.Latest013, testutil.Latest014}
 
-	runTestWithVersions(t, versions, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTestWithVersions(t, versions, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		err := tf.Init(context.Background())
 		if err != nil {
 			t.Fatalf("error running Init in test directory: %s", err)
@@ -56,7 +56,7 @@ func TestApplyJSON_TF014AndEarlier(t *testing.T) {
 func TestApplyJSON_TF015AndLater(t *testing.T) {
 	versions := []string{testutil.Latest015, testutil.Latest_v1, testutil.Latest_v1_1}
 
-	runTestWithVersions(t, versions, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTestWithVersions(t, versions, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		err := tf.Init(context.Background())
 		if err != nil {
 			t.Fatalf("error running Init in test directory: %s", err)
@@ -70,7 +70,7 @@ func TestApplyJSON_TF015AndLater(t *testing.T) {
 }
 
 func TestApplyDestroy(t *testing.T) {
-	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		if tfv.LessThan(applyDestroyMinVersion) {
 			t.Skip("terraform apply -destroy was added in Terraform 0.15.2, so test is not valid")
 		}

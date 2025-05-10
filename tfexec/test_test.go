@@ -15,7 +15,7 @@ import (
 func TestTestCmd(t *testing.T) {
 	td := t.TempDir()
 
-	tf, err := NewTerraform(td, tfVersion(t, testutil.Latest_v1_6))
+	tf, err := NewTofu(td, tfVersion(t, testutil.Latest_v1_6))
 
 	if err != nil {
 		t.Fatal(err)

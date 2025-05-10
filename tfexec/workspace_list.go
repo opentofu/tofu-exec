@@ -11,14 +11,14 @@ import (
 )
 
 // WorkspaceList represents the workspace list subcommand to the Terraform CLI.
-func (tf *Terraform) WorkspaceList(ctx context.Context) ([]string, string, error) {
+func (tf *Tofu) WorkspaceList(ctx context.Context) ([]string, string, error) {
 	// TODO: [DIR] param option
-	wlCmd := tf.buildTerraformCmd(ctx, nil, "workspace", "list", "-no-color")
+	wlCmd := tf.buildTofuCmd(ctx, nil, "workspace", "list", "-no-color")
 
 	var outBuf strings.Builder
 	wlCmd.Stdout = &outBuf
 
-	err := tf.runTerraformCmd(ctx, wlCmd)
+	err := tf.runTofuCmd(ctx, wlCmd)
 	if err != nil {
 		return nil, "", err
 	}

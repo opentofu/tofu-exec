@@ -18,7 +18,7 @@ import (
 )
 
 func TestPlan(t *testing.T) {
-	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		err := tf.Init(context.Background())
 		if err != nil {
 			t.Fatalf("error running Init in test directory: %s", err)
@@ -36,7 +36,7 @@ func TestPlan(t *testing.T) {
 }
 
 func TestPlanWithState(t *testing.T) {
-	runTest(t, "basic_with_state", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "basic_with_state", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		if tfv.LessThan(providerAddressMinVersion) {
 			t.Skip("state file provider FQNs not compatible with this Terraform version")
 		}
@@ -58,7 +58,7 @@ func TestPlanWithState(t *testing.T) {
 func TestPlanJSON_TF014AndEarlier(t *testing.T) {
 	versions := []string{testutil.Latest011, testutil.Latest012, testutil.Latest013, testutil.Latest014}
 
-	runTestWithVersions(t, versions, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTestWithVersions(t, versions, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		err := tf.Init(context.Background())
 		if err != nil {
 			t.Fatalf("error running Init in test directory: %s", err)
@@ -79,7 +79,7 @@ func TestPlanJSON_TF014AndEarlier(t *testing.T) {
 func TestPlanJSON_TF015AndLater(t *testing.T) {
 	versions := []string{testutil.Latest015, testutil.Latest_v1, testutil.Latest_v1_1}
 
-	runTestWithVersions(t, versions, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTestWithVersions(t, versions, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		err := tf.Init(context.Background())
 		if err != nil {
 			t.Fatalf("error running Init in test directory: %s", err)

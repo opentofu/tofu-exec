@@ -30,7 +30,7 @@ var (
 func TestUnparsedError(t *testing.T) {
 	// This simulates an unparsed error from the Cmd.Run method (in this case file not found). This
 	// is to ensure we don't miss raising unexpected errors in addition to parsed / well known ones.
-	runTest(t, "", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 
 		// force delete the working dir to cause an os.PathError
 		err := os.RemoveAll(tf.WorkingDir())
@@ -50,7 +50,7 @@ func TestUnparsedError(t *testing.T) {
 }
 
 func TestMissingVar(t *testing.T) {
-	runTest(t, "var", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "var", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		err := tf.Init(context.Background())
 		if err != nil {
 			t.Fatalf("err during init: %s", err)
@@ -84,7 +84,7 @@ func TestMissingVar(t *testing.T) {
 }
 
 func TestTFVersionMismatch(t *testing.T) {
-	runTest(t, "tf99", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "tf99", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		// force cache version for error messaging
 		_, _, err := tf.Version(context.Background(), true)
 		if err != nil {
@@ -104,7 +104,7 @@ func TestTFVersionMismatch(t *testing.T) {
 }
 
 func TestLockedState(t *testing.T) {
-	runTest(t, "inmem_backend_locked", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "inmem_backend_locked", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		err := tf.Init(context.Background())
 		if err != nil {
 			t.Fatalf("err during init: %s", err)
@@ -122,7 +122,7 @@ func TestLockedState(t *testing.T) {
 }
 
 func TestContext_alreadyPastDeadline(t *testing.T) {
-	runTest(t, "", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(-1*time.Second))
 		defer cancel()
 
@@ -139,7 +139,7 @@ func TestContext_alreadyPastDeadline(t *testing.T) {
 
 func TestContext_sleepNoCancellation(t *testing.T) {
 	// this test is just to ensure that time_sleep works properly without cancellation
-	runTest(t, "sleep", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "sleep", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		// only testing versions that can cancel mid apply
 		if !tfv.GreaterThanOrEqual(protocol5MinVersion) {
 			t.Skip("the ability to interrupt an apply was added in protocol 5.0 in Terraform 0.12, so test is not valid")
@@ -164,7 +164,7 @@ func TestContext_sleepNoCancellation(t *testing.T) {
 }
 
 func TestContext_sleepTimeoutExpired(t *testing.T) {
-	runTest(t, "sleep", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "sleep", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		// only testing versions that can cancel mid apply
 		if !tfv.GreaterThanOrEqual(protocol5MinVersion) {
 			t.Skip("the ability to interrupt an apply was added in protocol 5.0 in Terraform 0.12, so test is not valid")
@@ -199,7 +199,7 @@ func TestContext_sleepTimeoutExpired(t *testing.T) {
 }
 
 func TestContext_alreadyCancelled(t *testing.T) {
-	runTest(t, "", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		ctx, cancel := context.WithCancel(context.Background())
 		cancel()
 

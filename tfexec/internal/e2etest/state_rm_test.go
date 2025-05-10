@@ -16,7 +16,7 @@ import (
 )
 
 func TestStateRm(t *testing.T) {
-	runTest(t, "basic_with_state", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "basic_with_state", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		if tfv.LessThan(providerAddressMinVersion) {
 			t.Skip("state file provider FQNs not compatible with this Terraform version")
 		}
