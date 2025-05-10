@@ -65,7 +65,7 @@ func runTest(t *testing.T, fixtureName string, cb func(t *testing.T, tfVersion *
 		t.Cleanup(func() {
 			os.RemoveAll(td)
 		})
-		ltf, err := tfexec.NewTerraform(td, localBinPath)
+		ltf, err := tfexec.NewTofu(td, localBinPath)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -121,7 +121,7 @@ func runTestWithVersions(t *testing.T, versions []string, fixtureName string, cb
 				execPath = tfcache.Version(t, tfv)
 			}
 
-			tf, err := tfexec.NewTerraform(td, execPath)
+			tf, err := tfexec.NewTofu(td, execPath)
 			if err != nil {
 				t.Fatal(err)
 			}

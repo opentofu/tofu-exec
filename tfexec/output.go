@@ -42,7 +42,7 @@ func (tf *Tofu) Output(ctx context.Context, opts ...OutputOption) (map[string]Ou
 	outputCmd := tf.outputCmd(ctx, opts...)
 
 	outputs := map[string]OutputMeta{}
-	err := tf.runTerraformCmdJSON(ctx, outputCmd, &outputs)
+	err := tf.runTofuCmdJSON(ctx, outputCmd, &outputs)
 	if err != nil {
 		return nil, err
 	}
@@ -64,5 +64,5 @@ func (tf *Tofu) outputCmd(ctx context.Context, opts ...OutputOption) *exec.Cmd {
 		args = append(args, "-state="+c.state)
 	}
 
-	return tf.buildTerraformCmd(ctx, nil, args...)
+	return tf.buildTofuCmd(ctx, nil, args...)
 }

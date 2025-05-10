@@ -42,7 +42,7 @@ func (tf *Tofu) Test(ctx context.Context, w io.Writer, opts ...TestOption) error
 
 	testCmd := tf.testCmd(ctx)
 
-	err = tf.runTerraformCmd(ctx, testCmd)
+	err = tf.runTofuCmd(ctx, testCmd)
 
 	if err != nil {
 		return err
@@ -64,5 +64,5 @@ func (tf *Tofu) testCmd(ctx context.Context, opts ...TestOption) *exec.Cmd {
 		args = append(args, "-tests-directory="+c.testsDirectory)
 	}
 
-	return tf.buildTerraformCmd(ctx, nil, args...)
+	return tf.buildTofuCmd(ctx, nil, args...)
 }

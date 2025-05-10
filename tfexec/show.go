@@ -55,7 +55,7 @@ func (tf *Tofu) Show(ctx context.Context, opts ...ShowOption) (*tfjson.State, er
 
 	var ret tfjson.State
 	ret.UseJSONNumber(true)
-	err = tf.runTerraformCmdJSON(ctx, showCmd, &ret)
+	err = tf.runTofuCmdJSON(ctx, showCmd, &ret)
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +98,7 @@ func (tf *Tofu) ShowStateFile(ctx context.Context, statePath string, opts ...Sho
 
 	var ret tfjson.State
 	ret.UseJSONNumber(true)
-	err = tf.runTerraformCmdJSON(ctx, showCmd, &ret)
+	err = tf.runTofuCmdJSON(ctx, showCmd, &ret)
 	if err != nil {
 		return nil, err
 	}
@@ -140,7 +140,7 @@ func (tf *Tofu) ShowPlanFile(ctx context.Context, planPath string, opts ...ShowO
 	showCmd := tf.showCmd(ctx, true, mergeEnv, planPath)
 
 	var ret tfjson.Plan
-	err = tf.runTerraformCmdJSON(ctx, showCmd, &ret)
+	err = tf.runTofuCmdJSON(ctx, showCmd, &ret)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +180,7 @@ func (tf *Tofu) ShowPlanFileRaw(ctx context.Context, planPath string, opts ...Sh
 
 	var outBuf strings.Builder
 	showCmd.Stdout = &outBuf
-	err := tf.runTerraformCmd(ctx, showCmd)
+	err := tf.runTofuCmd(ctx, showCmd)
 	if err != nil {
 		return "", err
 	}
@@ -197,5 +197,5 @@ func (tf *Tofu) showCmd(ctx context.Context, jsonOutput bool, mergeEnv map[strin
 	allArgs = append(allArgs, "-no-color")
 	allArgs = append(allArgs, args...)
 
-	return tf.buildTerraformCmd(ctx, mergeEnv, allArgs...)
+	return tf.buildTofuCmd(ctx, mergeEnv, allArgs...)
 }

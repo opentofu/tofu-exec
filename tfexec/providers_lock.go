@@ -49,7 +49,7 @@ func (tf *Tofu) ProvidersLock(ctx context.Context, opts ...ProvidersLockOption) 
 
 	lockCmd := tf.providersLockCmd(ctx, opts...)
 
-	err = tf.runTerraformCmd(ctx, lockCmd)
+	err = tf.runTofuCmd(ctx, lockCmd)
 	if err != nil {
 		return err
 	}
@@ -83,5 +83,5 @@ func (tf *Tofu) providersLockCmd(ctx context.Context, opts ...ProvidersLockOptio
 		args = append(args, p)
 	}
 
-	return tf.buildTerraformCmd(ctx, nil, args...)
+	return tf.buildTofuCmd(ctx, nil, args...)
 }

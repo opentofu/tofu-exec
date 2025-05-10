@@ -52,7 +52,7 @@ func (tf *Tofu) Taint(ctx context.Context, address string, opts ...TaintOption) 
 		return fmt.Errorf("taint was first introduced in Terraform 0.4.1: %w", err)
 	}
 	taintCmd := tf.taintCmd(ctx, address, opts...)
-	return tf.runTerraformCmd(ctx, taintCmd)
+	return tf.runTofuCmd(ctx, taintCmd)
 }
 
 func (tf *Tofu) taintCmd(ctx context.Context, address string, opts ...TaintOption) *exec.Cmd {
@@ -79,5 +79,5 @@ func (tf *Tofu) taintCmd(ctx context.Context, address string, opts ...TaintOptio
 	}
 	args = append(args, address)
 
-	return tf.buildTerraformCmd(ctx, nil, args...)
+	return tf.buildTofuCmd(ctx, nil, args...)
 }

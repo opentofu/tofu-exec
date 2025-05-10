@@ -17,7 +17,7 @@ func (tf *Tofu) ProvidersSchema(ctx context.Context) (*tfjson.ProviderSchemas, e
 	schemaCmd := tf.providersSchemaCmd(ctx)
 
 	var ret tfjson.ProviderSchemas
-	err := tf.runTerraformCmdJSON(ctx, schemaCmd, &ret)
+	err := tf.runTofuCmdJSON(ctx, schemaCmd, &ret)
 	if err != nil {
 		return nil, err
 	}
@@ -34,5 +34,5 @@ func (tf *Tofu) providersSchemaCmd(ctx context.Context, args ...string) *exec.Cm
 	allArgs := []string{"providers", "schema", "-json", "-no-color"}
 	allArgs = append(allArgs, args...)
 
-	return tf.buildTerraformCmd(ctx, nil, allArgs...)
+	return tf.buildTofuCmd(ctx, nil, allArgs...)
 }

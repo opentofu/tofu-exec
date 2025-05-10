@@ -22,7 +22,7 @@ func (tf *Tofu) WorkspaceShow(ctx context.Context) (string, error) {
 	var outBuffer strings.Builder
 	workspaceShowCmd.Stdout = &outBuffer
 
-	err = tf.runTerraformCmd(ctx, workspaceShowCmd)
+	err = tf.runTofuCmd(ctx, workspaceShowCmd)
 	if err != nil {
 		return "", err
 	}
@@ -36,5 +36,5 @@ func (tf *Tofu) workspaceShowCmd(ctx context.Context) (*exec.Cmd, error) {
 		return nil, fmt.Errorf("workspace show was first introduced in Terraform 0.10.0: %w", err)
 	}
 
-	return tf.buildTerraformCmd(ctx, nil, "workspace", "show", "-no-color"), nil
+	return tf.buildTofuCmd(ctx, nil, "workspace", "show", "-no-color"), nil
 }

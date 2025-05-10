@@ -52,7 +52,7 @@ func (tf *Tofu) Untaint(ctx context.Context, address string, opts ...UntaintOpti
 		return fmt.Errorf("untaint was first introduced in Terraform 0.6.13: %w", err)
 	}
 	untaintCmd := tf.untaintCmd(ctx, address, opts...)
-	return tf.runTerraformCmd(ctx, untaintCmd)
+	return tf.runTofuCmd(ctx, untaintCmd)
 }
 
 func (tf *Tofu) untaintCmd(ctx context.Context, address string, opts ...UntaintOption) *exec.Cmd {
@@ -79,5 +79,5 @@ func (tf *Tofu) untaintCmd(ctx context.Context, address string, opts ...UntaintO
 	}
 	args = append(args, address)
 
-	return tf.buildTerraformCmd(ctx, nil, args...)
+	return tf.buildTofuCmd(ctx, nil, args...)
 }

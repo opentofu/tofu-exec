@@ -65,7 +65,7 @@ func (tf *Tofu) StateRm(ctx context.Context, address string, opts ...StateRmCmdO
 	if err != nil {
 		return err
 	}
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
 func (tf *Tofu) stateRmCmd(ctx context.Context, address string, opts ...StateRmCmdOption) (*exec.Cmd, error) {
@@ -105,5 +105,5 @@ func (tf *Tofu) stateRmCmd(ctx context.Context, address string, opts ...StateRmC
 	// positional arguments
 	args = append(args, address)
 
-	return tf.buildTerraformCmd(ctx, nil, args...), nil
+	return tf.buildTofuCmd(ctx, nil, args...), nil
 }

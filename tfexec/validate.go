@@ -22,12 +22,12 @@ func (tf *Tofu) Validate(ctx context.Context) (*tfjson.ValidateOutput, error) {
 		return nil, fmt.Errorf("terraform validate -json was added in 0.12.0: %w", err)
 	}
 
-	cmd := tf.buildTerraformCmd(ctx, nil, "validate", "-no-color", "-json")
+	cmd := tf.buildTofuCmd(ctx, nil, "validate", "-no-color", "-json")
 
 	var outBuf = bytes.Buffer{}
 	cmd.Stdout = &outBuf
 
-	err = tf.runTerraformCmd(ctx, cmd)
+	err = tf.runTofuCmd(ctx, cmd)
 	// TODO: this command should not exit 1 if you pass -json as its hard to differentiate other errors
 	if err != nil && cmd.ProcessState.ExitCode() != 1 {
 		return nil, err

@@ -45,7 +45,7 @@ func (tf *Tofu) StatePull(ctx context.Context, opts ...StatePullOption) (string,
 
 	var ret bytes.Buffer
 	cmd.Stdout = &ret
-	err := tf.runTerraformCmd(ctx, cmd)
+	err := tf.runTofuCmd(ctx, cmd)
 	if err != nil {
 		return "", err
 	}
@@ -56,5 +56,5 @@ func (tf *Tofu) StatePull(ctx context.Context, opts ...StatePullOption) (string,
 func (tf *Tofu) statePullCmd(ctx context.Context, mergeEnv map[string]string) *exec.Cmd {
 	args := []string{"state", "pull"}
 
-	return tf.buildTerraformCmd(ctx, mergeEnv, args...)
+	return tf.buildTofuCmd(ctx, mergeEnv, args...)
 }

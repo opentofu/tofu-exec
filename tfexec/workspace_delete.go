@@ -46,7 +46,7 @@ func (tf *Tofu) WorkspaceDelete(ctx context.Context, workspace string, opts ...W
 	if err != nil {
 		return err
 	}
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
 func (tf *Tofu) workspaceDeleteCmd(ctx context.Context, workspace string, opts ...WorkspaceDeleteCmdOption) (*exec.Cmd, error) {
@@ -80,7 +80,7 @@ func (tf *Tofu) workspaceDeleteCmd(ctx context.Context, workspace string, opts .
 
 	args = append(args, workspace)
 
-	cmd := tf.buildTerraformCmd(ctx, nil, args...)
+	cmd := tf.buildTofuCmd(ctx, nil, args...)
 
 	return cmd, nil
 }

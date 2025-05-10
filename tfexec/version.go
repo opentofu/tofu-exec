@@ -56,12 +56,12 @@ func (tf *Tofu) Version(ctx context.Context, skipCache bool) (tfVersion *version
 
 // version does not use the locking on the Terraform instance and should probably not be used directly, prefer Version.
 func (tf *Tofu) version(ctx context.Context) (*version.Version, map[string]*version.Version, error) {
-	versionCmd := tf.buildTerraformCmd(ctx, nil, "version", "-json")
+	versionCmd := tf.buildTofuCmd(ctx, nil, "version", "-json")
 
 	var outBuf bytes.Buffer
 	versionCmd.Stdout = &outBuf
 
-	err := tf.runTerraformCmd(ctx, versionCmd)
+	err := tf.runTofuCmd(ctx, versionCmd)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -102,12 +102,12 @@ func parseJsonVersionOutput(stdout []byte) (*version.Version, map[string]*versio
 }
 
 func (tf *Tofu) versionFromPlaintext(ctx context.Context) (*version.Version, map[string]*version.Version, error) {
-	versionCmd := tf.buildTerraformCmd(ctx, nil, "version")
+	versionCmd := tf.buildTofuCmd(ctx, nil, "version")
 
 	var outBuf strings.Builder
 	versionCmd.Stdout = &outBuf
 
-	err := tf.runTerraformCmd(ctx, versionCmd)
+	err := tf.runTofuCmd(ctx, versionCmd)
 	if err != nil {
 		return nil, nil, err
 	}

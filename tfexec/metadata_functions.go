@@ -23,7 +23,7 @@ func (tf *Tofu) MetadataFunctions(ctx context.Context) (*tfjson.MetadataFunction
 	functionsCmd := tf.metadataFunctionsCmd(ctx)
 
 	var ret tfjson.MetadataFunctions
-	err = tf.runTerraformCmdJSON(ctx, functionsCmd, &ret)
+	err = tf.runTofuCmdJSON(ctx, functionsCmd, &ret)
 	if err != nil {
 		return nil, err
 	}
@@ -35,5 +35,5 @@ func (tf *Tofu) metadataFunctionsCmd(ctx context.Context, args ...string) *exec.
 	allArgs := []string{"metadata", "functions", "-json"}
 	allArgs = append(allArgs, args...)
 
-	return tf.buildTerraformCmd(ctx, nil, allArgs...)
+	return tf.buildTofuCmd(ctx, nil, allArgs...)
 }

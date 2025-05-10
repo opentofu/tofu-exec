@@ -74,10 +74,10 @@ type Tofu struct {
 	provVersions map[string]*version.Version
 }
 
-// NewTerraform returns a Terraform struct with default values for all fields.
-// If a blank execPath is supplied, NewTerraform will error.
+// NewTofu returns a Terraform struct with default values for all fields.
+// If a blank execPath is supplied, NewTofu will error.
 // Use hc-install or output from os.LookPath to get a desirable execPath.
-func NewTerraform(workingDir string, execPath string) (*Tofu, error) {
+func NewTofu(workingDir string, execPath string) (*Tofu, error) {
 	if workingDir == "" {
 		return nil, fmt.Errorf("Terraform cannot be initialised with empty workdir")
 	}

@@ -46,7 +46,7 @@ func (tf *Tofu) WorkspaceNew(ctx context.Context, workspace string, opts ...Work
 	if err != nil {
 		return err
 	}
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
 func (tf *Tofu) workspaceNewCmd(ctx context.Context, workspace string, opts ...WorkspaceNewCmdOption) (*exec.Cmd, error) {
@@ -82,7 +82,7 @@ func (tf *Tofu) workspaceNewCmd(ctx context.Context, workspace string, opts ...W
 
 	args = append(args, workspace)
 
-	cmd := tf.buildTerraformCmd(ctx, nil, args...)
+	cmd := tf.buildTofuCmd(ctx, nil, args...)
 
 	return cmd, nil
 }

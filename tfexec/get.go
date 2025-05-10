@@ -35,7 +35,7 @@ func (tf *Tofu) Get(ctx context.Context, opts ...GetCmdOption) error {
 	if err != nil {
 		return err
 	}
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
 func (tf *Tofu) getCmd(ctx context.Context, opts ...GetCmdOption) (*exec.Cmd, error) {
@@ -53,5 +53,5 @@ func (tf *Tofu) getCmd(ctx context.Context, opts ...GetCmdOption) (*exec.Cmd, er
 		args = append(args, c.dir)
 	}
 
-	return tf.buildTerraformCmd(ctx, nil, args...), nil
+	return tf.buildTofuCmd(ctx, nil, args...), nil
 }

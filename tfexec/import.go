@@ -83,7 +83,7 @@ func (tf *Tofu) Import(ctx context.Context, address, id string, opts ...ImportOp
 	if err != nil {
 		return err
 	}
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
 func (tf *Tofu) importCmd(ctx context.Context, address, id string, opts ...ImportOption) (*exec.Cmd, error) {
@@ -142,5 +142,5 @@ func (tf *Tofu) importCmd(ctx context.Context, address, id string, opts ...Impor
 		mergeEnv[reattachEnvVar] = reattachStr
 	}
 
-	return tf.buildTerraformCmd(ctx, mergeEnv, args...), nil
+	return tf.buildTofuCmd(ctx, mergeEnv, args...), nil
 }

@@ -98,7 +98,7 @@ func (tf *Tofu) Destroy(ctx context.Context, opts ...DestroyOption) error {
 	if err != nil {
 		return err
 	}
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
 // DestroyJSON represents the terraform destroy subcommand with the `-json` flag.
@@ -119,7 +119,7 @@ func (tf *Tofu) DestroyJSON(ctx context.Context, w io.Writer, opts ...DestroyOpt
 		return err
 	}
 
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
 func (tf *Tofu) destroyCmd(ctx context.Context, opts ...DestroyOption) (*exec.Cmd, error) {
@@ -202,5 +202,5 @@ func (tf *Tofu) buildDestroyCmd(ctx context.Context, c destroyConfig, args []str
 		mergeEnv[reattachEnvVar] = reattachStr
 	}
 
-	return tf.buildTerraformCmd(ctx, mergeEnv, args...), nil
+	return tf.buildTofuCmd(ctx, mergeEnv, args...), nil
 }

@@ -32,7 +32,7 @@ func (tf *Tofu) ForceUnlock(ctx context.Context, lockID string, opts ...ForceUnl
 		return err
 	}
 
-	if err := tf.runTerraformCmd(ctx, unlockCmd); err != nil {
+	if err := tf.runTofuCmd(ctx, unlockCmd); err != nil {
 		return err
 	}
 
@@ -59,5 +59,5 @@ func (tf *Tofu) forceUnlockCmd(ctx context.Context, lockID string, opts ...Force
 		args = append(args, c.dir)
 	}
 
-	return tf.buildTerraformCmd(ctx, nil, args...), nil
+	return tf.buildTofuCmd(ctx, nil, args...), nil
 }

@@ -43,7 +43,7 @@ func (tf *Tofu) Graph(ctx context.Context, opts ...GraphOption) (string, error) 
 	}
 	var outBuf strings.Builder
 	graphCmd.Stdout = &outBuf
-	err = tf.runTerraformCmd(ctx, graphCmd)
+	err = tf.runTofuCmd(ctx, graphCmd)
 	if err != nil {
 		return "", err
 	}
@@ -86,5 +86,5 @@ func (tf *Tofu) graphCmd(ctx context.Context, opts ...GraphOption) (*exec.Cmd, e
 		args = append(args, "-type="+c.graphType)
 	}
 
-	return tf.buildTerraformCmd(ctx, nil, args...), nil
+	return tf.buildTofuCmd(ctx, nil, args...), nil
 }

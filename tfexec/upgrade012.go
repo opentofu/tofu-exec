@@ -45,7 +45,7 @@ func (tf *Tofu) Upgrade012(ctx context.Context, opts ...Upgrade012Option) error 
 	if err != nil {
 		return err
 	}
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
 func (tf *Tofu) upgrade012Cmd(ctx context.Context, opts ...Upgrade012Option) (*exec.Cmd, error) {
@@ -81,5 +81,5 @@ func (tf *Tofu) upgrade012Cmd(ctx context.Context, opts ...Upgrade012Option) (*e
 		mergeEnv[reattachEnvVar] = reattachStr
 	}
 
-	return tf.buildTerraformCmd(ctx, mergeEnv, args...), nil
+	return tf.buildTofuCmd(ctx, mergeEnv, args...), nil
 }

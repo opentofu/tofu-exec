@@ -112,7 +112,7 @@ func (tf *Tofu) Plan(ctx context.Context, opts ...PlanOption) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	err = tf.runTerraformCmd(ctx, cmd)
+	err = tf.runTofuCmd(ctx, cmd)
 	if err != nil && cmd.ProcessState.ExitCode() == 2 {
 		return true, nil
 	}
@@ -147,7 +147,7 @@ func (tf *Tofu) PlanJSON(ctx context.Context, w io.Writer, opts ...PlanOption) (
 		return false, err
 	}
 
-	err = tf.runTerraformCmd(ctx, cmd)
+	err = tf.runTofuCmd(ctx, cmd)
 	if err != nil && cmd.ProcessState.ExitCode() == 2 {
 		return true, nil
 	}
@@ -264,5 +264,5 @@ func (tf *Tofu) buildPlanCmd(ctx context.Context, c planConfig, args []string) (
 		mergeEnv[reattachEnvVar] = reattachStr
 	}
 
-	return tf.buildTerraformCmd(ctx, mergeEnv, args...), nil
+	return tf.buildTofuCmd(ctx, mergeEnv, args...), nil
 }

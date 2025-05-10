@@ -44,7 +44,7 @@ func (tf *Tofu) StatePush(ctx context.Context, path string, opts ...StatePushCmd
 	if err != nil {
 		return err
 	}
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
 func (tf *Tofu) statePushCmd(ctx context.Context, path string, opts ...StatePushCmdOption) (*exec.Cmd, error) {
@@ -68,5 +68,5 @@ func (tf *Tofu) statePushCmd(ctx context.Context, path string, opts ...StatePush
 
 	args = append(args, path)
 
-	return tf.buildTerraformCmd(ctx, nil, args...), nil
+	return tf.buildTofuCmd(ctx, nil, args...), nil
 }

@@ -37,7 +37,7 @@ func (opt *DirOption) configureFormat(conf *formatConfig) {
 
 // FormatString formats a passed string, given a path to Terraform.
 func FormatString(ctx context.Context, execPath string, content string) (string, error) {
-	tf, err := NewTerraform(filepath.Dir(execPath), execPath)
+	tf, err := NewTofu(filepath.Dir(execPath), execPath)
 	if err != nil {
 		return "", err
 	}
@@ -67,7 +67,7 @@ func (tf *Tofu) Format(ctx context.Context, unformatted io.Reader, formatted io.
 	cmd.Stdin = unformatted
 	cmd.Stdout = mergeWriters(cmd.Stdout, formatted)
 
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
 // FormatWrite attempts to format and modify all config files in the working or selected (via DirOption) directory.
@@ -86,7 +86,7 @@ func (tf *Tofu) FormatWrite(ctx context.Context, opts ...FormatOption) error {
 		return err
 	}
 
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
 // FormatCheck returns true if the config files in the working or selected (via DirOption) directory are already formatted.
@@ -108,7 +108,7 @@ func (tf *Tofu) FormatCheck(ctx context.Context, opts ...FormatOption) (bool, []
 	var outBuf strings.Builder
 	cmd.Stdout = mergeWriters(cmd.Stdout, &outBuf)
 
-	err = tf.runTerraformCmd(ctx, cmd)
+	err = tf.runTofuCmd(ctx, cmd)
 	if err == nil {
 		return true, nil, nil
 	}
@@ -160,5 +160,5 @@ func (tf *Tofu) formatCmd(ctx context.Context, args []string, opts ...FormatOpti
 		args = append(args, c.dir)
 	}
 
-	return tf.buildTerraformCmd(ctx, nil, args...), nil
+	return tf.buildTofuCmd(ctx, nil, args...), nil
 }

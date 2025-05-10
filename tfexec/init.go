@@ -107,7 +107,7 @@ func (tf *Tofu) Init(ctx context.Context, opts ...InitOption) error {
 	if err != nil {
 		return err
 	}
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
 func (tf *Tofu) initCmd(ctx context.Context, opts ...InitOption) (*exec.Cmd, error) {
@@ -188,5 +188,5 @@ func (tf *Tofu) initCmd(ctx context.Context, opts ...InitOption) (*exec.Cmd, err
 		mergeEnv[reattachEnvVar] = reattachStr
 	}
 
-	return tf.buildTerraformCmd(ctx, mergeEnv, args...), nil
+	return tf.buildTofuCmd(ctx, mergeEnv, args...), nil
 }

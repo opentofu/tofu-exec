@@ -82,7 +82,7 @@ func (tf *Tofu) Refresh(ctx context.Context, opts ...RefreshCmdOption) error {
 	if err != nil {
 		return err
 	}
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
 // RefreshJSON represents the terraform refresh subcommand with the `-json` flag.
@@ -103,7 +103,7 @@ func (tf *Tofu) RefreshJSON(ctx context.Context, w io.Writer, opts ...RefreshCmd
 		return err
 	}
 
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
 func (tf *Tofu) refreshCmd(ctx context.Context, opts ...RefreshCmdOption) (*exec.Cmd, error) {
@@ -185,5 +185,5 @@ func (tf *Tofu) buildRefreshCmd(ctx context.Context, c refreshConfig, args []str
 		mergeEnv[reattachEnvVar] = reattachStr
 	}
 
-	return tf.buildTerraformCmd(ctx, mergeEnv, args...), nil
+	return tf.buildTofuCmd(ctx, mergeEnv, args...), nil
 }

@@ -113,7 +113,7 @@ func (tf *Tofu) Apply(ctx context.Context, opts ...ApplyOption) error {
 	if err != nil {
 		return err
 	}
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
 // ApplyJSON represents the terraform apply subcommand with the `-json` flag.
@@ -134,7 +134,7 @@ func (tf *Tofu) ApplyJSON(ctx context.Context, w io.Writer, opts ...ApplyOption)
 		return err
 	}
 
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
 func (tf *Tofu) applyCmd(ctx context.Context, opts ...ApplyOption) (*exec.Cmd, error) {
@@ -252,5 +252,5 @@ func (tf *Tofu) buildApplyCmd(ctx context.Context, c applyConfig, args []string)
 		mergeEnv[reattachEnvVar] = reattachStr
 	}
 
-	return tf.buildTerraformCmd(ctx, mergeEnv, args...), nil
+	return tf.buildTofuCmd(ctx, mergeEnv, args...), nil
 }
