@@ -1,3 +1,11 @@
+# Development
+
+FEATURES:
+BUG FIXES:
+ENHANCEMENTS:
+BREAKING CHANGES:
+INTERNAL:
+
 # 0.19.0 (August 31, 2023)
 
 ENHANCEMENTS:
@@ -208,12 +216,12 @@ FEATURES:
 
 BREAKING CHANGES:
  - Add `-detailed-exit-code` to `Terraform.Plan` calls, `Terraform.Plan` now also returns a bool indicating if any diff is present ([#55](https://github.com/hashicorp/terraform-exec/issues/55))
- 
+
 FEATURES:
  - Added `Terraform.SetAppendUserAgent` for User-Agent management from consuming applications ([#46](https://github.com/hashicorp/terraform-exec/issues/46))
  - Added `Terraform.WorkspaceList`, `Terraform.WorkspaceNew`, and `Terraform.WorkspaceSelect` along with the `ErrNoWorkspace` error to indicate a workspace does not exist ([#56](https://github.com/hashicorp/terraform-exec/issues/56))
  - Added support for using multiple `VarFile` options ([#61](https://github.com/hashicorp/terraform-exec/issues/61))
- 
+
 BUG FIXES:
  - Fix bug with checking for empty path before executing version command ([#62](https://github.com/hashicorp/terraform-exec/issues/62))
 
