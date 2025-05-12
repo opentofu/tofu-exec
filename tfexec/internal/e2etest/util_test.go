@@ -72,7 +72,7 @@ func runTest(t *testing.T, fixtureName string, cb func(t *testing.T, tfVersion *
 
 		lVersion, _, err := ltf.Version(context.Background(), false)
 		if err != nil {
-			t.Fatalf("unable to determine version of Terraform binary at %s: %s", localBinPath, err)
+			t.Fatalf("unable to determine version of Tofu binary at %s: %s", localBinPath, err)
 		}
 
 		versions = []string{lVersion.String()}

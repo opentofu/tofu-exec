@@ -101,7 +101,7 @@ func (opt *VerifyPluginsOption) configureInit(conf *initConfig) {
 	conf.verifyPlugins = opt.verifyPlugins
 }
 
-// Init represents the terraform init subcommand.
+// Init represents the tofu init subcommand.
 func (tf *Tofu) Init(ctx context.Context, opts ...InitOption) error {
 	cmd, err := tf.initCmd(ctx, opts...)
 	if err != nil {

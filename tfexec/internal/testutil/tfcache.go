@@ -7,7 +7,9 @@ package testutil
 
 import (
 	"context"
+	"fmt"
 	"os"
+	"path/filepath"
 	"runtime"
 	"sync"
 	"testing"
@@ -62,28 +64,29 @@ func (tf *TFCache) GitRef(t *testing.T, ref string) string {
 func (tf *TFCache) Version(t *testing.T, v string) string {
 	t.Helper()
 
-	key := "v:" + v
+	key := "tofu-v" + v // example: tofu-v1.9.1
 
 	return tf.find(t, key, func(ctx context.Context) (string, error) {
 		dl, err := tofudl.New()
 		if err != nil {
-			return "", err
+			return "", fmt.Errorf("error when instantiating tofudl %w", err)
 		}
 
 		ver := tofudl.Version(v)
 		opts := tofudl.DownloadOptVersion(ver)
 		binary, err := dl.Download(ctx, opts)
 		if err != nil {
-			return "", err
+			return "", fmt.Errorf("error when downloading %w", err)
 		}
 
 		// Write out the tofu binary to the disk:
-		file := "tofu" + v
+		file := filepath.Join(tf.dir, key)
 		if runtime.GOOS == "windows" {
 			file += ".exe"
 		}
+
 		if err := os.WriteFile(file, binary, 0755); err != nil {
-			return "", err
+			return "", fmt.Errorf("error when writing the file %s: %w", file, err)
 		}
 
 		return file, nil
