@@ -17,7 +17,6 @@ import (
 )
 
 const (
-	Latest013   = "0.13.7"
 	Latest014   = "0.14.11"
 	Latest015   = "0.15.5"
 	Latest_v1   = "1.0.11"
