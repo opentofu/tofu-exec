@@ -8,6 +8,7 @@ require (
 	github.com/hashicorp/go-version v1.6.0
 	github.com/hashicorp/hc-install v0.6.0
 	github.com/hashicorp/terraform-json v0.22.1
+	github.com/opentofu/tofudl v0.0.0-20250129123822-d4254f2a6147
 	github.com/zclconf/go-cty v1.14.4
 	github.com/zclconf/go-cty-debug v0.0.0-20191215020915-b22d67c1ba0b
 )
@@ -16,7 +17,9 @@ require (
 	dario.cat/mergo v1.0.0 // indirect
 	github.com/AlecAivazis/survey/v2 v2.3.7 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
-	github.com/ProtonMail/go-crypto v0.0.0-20230717121422-5aa5874ade95 // indirect
+	github.com/ProtonMail/go-crypto v1.0.0 // indirect
+	github.com/ProtonMail/go-mime v0.0.0-20230322103455-7d82a3887f2f // indirect
+	github.com/ProtonMail/gopenpgp/v2 v2.7.5 // indirect
 	github.com/acomagu/bufpipe v1.0.4 // indirect
 	github.com/apparentlymart/go-textseg/v15 v15.0.0 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20200907205600-7a23bdc65eef // indirect
@@ -24,7 +27,7 @@ require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.5.0 // indirect
 	github.com/cli/go-gh/v2 v2.11.2 // indirect
 	github.com/cli/safeexec v1.0.0 // indirect
-	github.com/cloudflare/circl v1.3.7 // indirect
+	github.com/cloudflare/circl v1.3.9 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
@@ -61,6 +64,7 @@ require (
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/oklog/ulid v1.3.1 // indirect
 	github.com/pjbgf/sha1cd v0.3.0 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/samber/lo v1.37.0 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
