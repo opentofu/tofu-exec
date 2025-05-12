@@ -7,20 +7,21 @@ package testutil
 
 import (
 	"context"
+	"os"
+	"runtime"
 	"sync"
 	"testing"
 
-	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hc-install/build"
 	"github.com/hashicorp/hc-install/product"
-	"github.com/hashicorp/hc-install/releases"
+	"github.com/opentofu/tofudl"
 )
 
 const (
 	Latest013   = "0.13.7"
 	Latest014   = "0.14.11"
 	Latest015   = "0.15.5"
-	Latest_v1   = "1.0.11"
+	Latest_v1   = "1.9.1"
 	Latest_v1_1 = "1.1.9"
 	Latest_v1_5 = "1.5.3"
 	Latest_v1_6 = "1.6.0-alpha20230719"
@@ -64,12 +65,27 @@ func (tf *TFCache) Version(t *testing.T, v string) string {
 	key := "v:" + v
 
 	return tf.find(t, key, func(ctx context.Context) (string, error) {
-		ev := &releases.ExactVersion{
-			Product: product.Terraform,
-			Version: version.Must(version.NewVersion(v)),
+		dl, err := tofudl.New()
+		if err != nil {
+			return "", err
 		}
-		ev.SetLogger(TestLogger())
 
-		return ev.Install(ctx)
+		ver := tofudl.Version(v)
+		opts := tofudl.DownloadOptVersion(ver)
+		binary, err := dl.Download(ctx, opts)
+		if err != nil {
+			return "", err
+		}
+
+		// Write out the tofu binary to the disk:
+		file := "tofu" + v
+		if runtime.GOOS == "windows" {
+			file += ".exe"
+		}
+		if err := os.WriteFile(file, binary, 0755); err != nil {
+			return "", err
+		}
+
+		return file, nil
 	})
 }

@@ -54,7 +54,7 @@ func (tf *Tofu) Version(ctx context.Context, skipCache bool) (tfVersion *version
 	return tf.execVersion, tf.provVersions, nil
 }
 
-// version does not use the locking on the Terraform instance and should probably not be used directly, prefer Version.
+// version does not use the locking on the Tofu instance and should probably not be used directly, prefer Version.
 func (tf *Tofu) version(ctx context.Context) (*version.Version, map[string]*version.Version, error) {
 	versionCmd := tf.buildTofuCmd(ctx, nil, "version", "-json")
 

@@ -190,7 +190,7 @@ func (tf *Tofu) buildTofuCmd(ctx context.Context, mergeEnv map[string]string, ar
 	cmd.Env = tf.buildEnv(mergeEnv)
 	cmd.Dir = tf.workingDir
 
-	tf.logger.Printf("[INFO] running Terraform command: %s", cmd.String())
+	tf.logger.Printf("[INFO] running Tofu command: %s", cmd.String())
 
 	return cmd
 }

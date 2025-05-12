@@ -49,7 +49,7 @@ func (tf *TFCache) find(t *testing.T, key string, execPathFunc func(context.Cont
 	execPath, err := execPathFunc(ctx)
 	if err != nil {
 		// panic instead of t.fatal as this is going to affect all downstream tests reusing the cache entry
-		panic(fmt.Sprintf("error installing terraform %q: %s", key, err))
+		panic(fmt.Sprintf("error installing tofu %q: %s", key, err))
 	}
 
 	tf.execs[key] = execPath
