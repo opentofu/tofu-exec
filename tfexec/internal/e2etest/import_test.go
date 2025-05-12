@@ -20,7 +20,7 @@ func TestImport(t *testing.T) {
 		resourceAddress = "random_string.random_string"
 	)
 
-	runTest(t, "import", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "import", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		ctx := context.Background()
 
 		err := tf.Init(ctx)

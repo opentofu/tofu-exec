@@ -37,7 +37,7 @@ func (opt *DirOption) configureFormat(conf *formatConfig) {
 
 // FormatString formats a passed string, given a path to Terraform.
 func FormatString(ctx context.Context, execPath string, content string) (string, error) {
-	tf, err := NewTerraform(filepath.Dir(execPath), execPath)
+	tf, err := NewTofu(filepath.Dir(execPath), execPath)
 	if err != nil {
 		return "", err
 	}
@@ -46,7 +46,7 @@ func FormatString(ctx context.Context, execPath string, content string) (string,
 }
 
 // FormatString formats a passed string.
-func (tf *Terraform) FormatString(ctx context.Context, content string) (string, error) {
+func (tf *Tofu) FormatString(ctx context.Context, content string) (string, error) {
 	in := strings.NewReader(content)
 	var outBuf strings.Builder
 	err := tf.Format(ctx, in, &outBuf)
@@ -58,7 +58,7 @@ func (tf *Terraform) FormatString(ctx context.Context, content string) (string, 
 
 // Format performs formatting on the unformatted io.Reader (as stdin to the CLI) and returns
 // the formatted result on the formatted io.Writer.
-func (tf *Terraform) Format(ctx context.Context, unformatted io.Reader, formatted io.Writer) error {
+func (tf *Tofu) Format(ctx context.Context, unformatted io.Reader, formatted io.Writer) error {
 	cmd, err := tf.formatCmd(ctx, nil, Dir("-"))
 	if err != nil {
 		return err
@@ -67,11 +67,11 @@ func (tf *Terraform) Format(ctx context.Context, unformatted io.Reader, formatte
 	cmd.Stdin = unformatted
 	cmd.Stdout = mergeWriters(cmd.Stdout, formatted)
 
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
 // FormatWrite attempts to format and modify all config files in the working or selected (via DirOption) directory.
-func (tf *Terraform) FormatWrite(ctx context.Context, opts ...FormatOption) error {
+func (tf *Tofu) FormatWrite(ctx context.Context, opts ...FormatOption) error {
 	for _, o := range opts {
 		switch o := o.(type) {
 		case *DirOption:
@@ -86,11 +86,11 @@ func (tf *Terraform) FormatWrite(ctx context.Context, opts ...FormatOption) erro
 		return err
 	}
 
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
 // FormatCheck returns true if the config files in the working or selected (via DirOption) directory are already formatted.
-func (tf *Terraform) FormatCheck(ctx context.Context, opts ...FormatOption) (bool, []string, error) {
+func (tf *Tofu) FormatCheck(ctx context.Context, opts ...FormatOption) (bool, []string, error) {
 	for _, o := range opts {
 		switch o := o.(type) {
 		case *DirOption:
@@ -108,7 +108,7 @@ func (tf *Terraform) FormatCheck(ctx context.Context, opts ...FormatOption) (boo
 	var outBuf strings.Builder
 	cmd.Stdout = mergeWriters(cmd.Stdout, &outBuf)
 
-	err = tf.runTerraformCmd(ctx, cmd)
+	err = tf.runTofuCmd(ctx, cmd)
 	if err == nil {
 		return true, nil, nil
 	}
@@ -130,7 +130,7 @@ func (tf *Terraform) FormatCheck(ctx context.Context, opts ...FormatOption) (boo
 	return false, nil, err
 }
 
-func (tf *Terraform) formatCmd(ctx context.Context, args []string, opts ...FormatOption) (*exec.Cmd, error) {
+func (tf *Tofu) formatCmd(ctx context.Context, args []string, opts ...FormatOption) (*exec.Cmd, error) {
 	err := tf.compatible(ctx, tf0_7_7, nil)
 	if err != nil {
 		return nil, fmt.Errorf("fmt was first introduced in Terraform 0.7.7: %w", err)
@@ -160,5 +160,5 @@ func (tf *Terraform) formatCmd(ctx context.Context, args []string, opts ...Forma
 		args = append(args, c.dir)
 	}
 
-	return tf.buildTerraformCmd(ctx, nil, args...), nil
+	return tf.buildTofuCmd(ctx, nil, args...), nil
 }

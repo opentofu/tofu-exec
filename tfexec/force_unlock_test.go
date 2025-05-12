@@ -15,7 +15,7 @@ import (
 func TestForceUnlockCmd(t *testing.T) {
 	td := t.TempDir()
 
-	tf, err := NewTerraform(td, tfVersion(t, testutil.Latest_v1_1))
+	tf, err := NewTofu(td, tfVersion(t, testutil.Latest_v1_1))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -43,7 +43,7 @@ func TestForceUnlockCmd(t *testing.T) {
 func TestForceUnlockCmd_pre015(t *testing.T) {
 	td := t.TempDir()
 
-	tf, err := NewTerraform(td, tfVersion(t, testutil.Latest014))
+	tf, err := NewTofu(td, tfVersion(t, testutil.Latest014))
 	if err != nil {
 		t.Fatal(err)
 	}

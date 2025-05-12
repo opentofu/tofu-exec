@@ -14,7 +14,7 @@ import (
 	"syscall"
 )
 
-func (tf *Terraform) runTerraformCmd(ctx context.Context, cmd *exec.Cmd) error {
+func (tf *Tofu) runTofuCmd(ctx context.Context, cmd *exec.Cmd) error {
 	var errBuf strings.Builder
 
 	cmd.SysProcAttr = &syscall.SysProcAttr{

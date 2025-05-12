@@ -60,15 +60,15 @@ func (opt *StateOutOption) configureStateMv(conf *stateMvConfig) {
 }
 
 // StateMv represents the terraform state mv subcommand.
-func (tf *Terraform) StateMv(ctx context.Context, source string, destination string, opts ...StateMvCmdOption) error {
+func (tf *Tofu) StateMv(ctx context.Context, source string, destination string, opts ...StateMvCmdOption) error {
 	cmd, err := tf.stateMvCmd(ctx, source, destination, opts...)
 	if err != nil {
 		return err
 	}
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
-func (tf *Terraform) stateMvCmd(ctx context.Context, source string, destination string, opts ...StateMvCmdOption) (*exec.Cmd, error) {
+func (tf *Tofu) stateMvCmd(ctx context.Context, source string, destination string, opts ...StateMvCmdOption) (*exec.Cmd, error) {
 	c := defaultStateMvOptions
 
 	for _, o := range opts {
@@ -106,5 +106,5 @@ func (tf *Terraform) stateMvCmd(ctx context.Context, source string, destination 
 	args = append(args, source)
 	args = append(args, destination)
 
-	return tf.buildTerraformCmd(ctx, nil, args...), nil
+	return tf.buildTofuCmd(ctx, nil, args...), nil
 }

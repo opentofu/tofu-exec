@@ -46,16 +46,16 @@ func (opt *LockTimeoutOption) configureUntaint(conf *untaintConfig) {
 }
 
 // Untaint represents the terraform untaint subcommand.
-func (tf *Terraform) Untaint(ctx context.Context, address string, opts ...UntaintOption) error {
+func (tf *Tofu) Untaint(ctx context.Context, address string, opts ...UntaintOption) error {
 	err := tf.compatible(ctx, tf0_6_13, nil)
 	if err != nil {
 		return fmt.Errorf("untaint was first introduced in Terraform 0.6.13: %w", err)
 	}
 	untaintCmd := tf.untaintCmd(ctx, address, opts...)
-	return tf.runTerraformCmd(ctx, untaintCmd)
+	return tf.runTofuCmd(ctx, untaintCmd)
 }
 
-func (tf *Terraform) untaintCmd(ctx context.Context, address string, opts ...UntaintOption) *exec.Cmd {
+func (tf *Tofu) untaintCmd(ctx context.Context, address string, opts ...UntaintOption) *exec.Cmd {
 	c := defaultUntaintOptions
 
 	for _, o := range opts {
@@ -79,5 +79,5 @@ func (tf *Terraform) untaintCmd(ctx context.Context, address string, opts ...Unt
 	}
 	args = append(args, address)
 
-	return tf.buildTerraformCmd(ctx, nil, args...)
+	return tf.buildTofuCmd(ctx, nil, args...)
 }

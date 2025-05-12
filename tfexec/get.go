@@ -30,15 +30,15 @@ func (opt *UpdateOption) configureGet(conf *getCmdConfig) {
 }
 
 // Get represents the terraform get subcommand.
-func (tf *Terraform) Get(ctx context.Context, opts ...GetCmdOption) error {
+func (tf *Tofu) Get(ctx context.Context, opts ...GetCmdOption) error {
 	cmd, err := tf.getCmd(ctx, opts...)
 	if err != nil {
 		return err
 	}
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
-func (tf *Terraform) getCmd(ctx context.Context, opts ...GetCmdOption) (*exec.Cmd, error) {
+func (tf *Tofu) getCmd(ctx context.Context, opts ...GetCmdOption) (*exec.Cmd, error) {
 	c := getCmdConfig{}
 
 	for _, o := range opts {
@@ -53,5 +53,5 @@ func (tf *Terraform) getCmd(ctx context.Context, opts ...GetCmdOption) (*exec.Cm
 		args = append(args, c.dir)
 	}
 
-	return tf.buildTerraformCmd(ctx, nil, args...), nil
+	return tf.buildTofuCmd(ctx, nil, args...), nil
 }

@@ -107,12 +107,12 @@ func (opt *DestroyFlagOption) configurePlan(conf *planConfig) {
 //
 // The returned error is nil if `terraform plan` has been executed and exits
 // with either 0 or 2.
-func (tf *Terraform) Plan(ctx context.Context, opts ...PlanOption) (bool, error) {
+func (tf *Tofu) Plan(ctx context.Context, opts ...PlanOption) (bool, error) {
 	cmd, err := tf.planCmd(ctx, opts...)
 	if err != nil {
 		return false, err
 	}
-	err = tf.runTerraformCmd(ctx, cmd)
+	err = tf.runTofuCmd(ctx, cmd)
 	if err != nil && cmd.ProcessState.ExitCode() == 2 {
 		return true, nil
 	}
@@ -134,7 +134,7 @@ func (tf *Terraform) Plan(ctx context.Context, opts ...PlanOption) (bool, error)
 //
 // PlanJSON is likely to be removed in a future major version in favour of
 // Plan returning JSON by default.
-func (tf *Terraform) PlanJSON(ctx context.Context, w io.Writer, opts ...PlanOption) (bool, error) {
+func (tf *Tofu) PlanJSON(ctx context.Context, w io.Writer, opts ...PlanOption) (bool, error) {
 	err := tf.compatible(ctx, tf0_15_3, nil)
 	if err != nil {
 		return false, fmt.Errorf("terraform plan -json was added in 0.15.3: %w", err)
@@ -147,7 +147,7 @@ func (tf *Terraform) PlanJSON(ctx context.Context, w io.Writer, opts ...PlanOpti
 		return false, err
 	}
 
-	err = tf.runTerraformCmd(ctx, cmd)
+	err = tf.runTofuCmd(ctx, cmd)
 	if err != nil && cmd.ProcessState.ExitCode() == 2 {
 		return true, nil
 	}
@@ -155,7 +155,7 @@ func (tf *Terraform) PlanJSON(ctx context.Context, w io.Writer, opts ...PlanOpti
 	return false, err
 }
 
-func (tf *Terraform) planCmd(ctx context.Context, opts ...PlanOption) (*exec.Cmd, error) {
+func (tf *Tofu) planCmd(ctx context.Context, opts ...PlanOption) (*exec.Cmd, error) {
 	c := defaultPlanOptions
 
 	for _, o := range opts {
@@ -170,7 +170,7 @@ func (tf *Terraform) planCmd(ctx context.Context, opts ...PlanOption) (*exec.Cmd
 	return tf.buildPlanCmd(ctx, c, args)
 }
 
-func (tf *Terraform) planJSONCmd(ctx context.Context, opts ...PlanOption) (*exec.Cmd, error) {
+func (tf *Tofu) planJSONCmd(ctx context.Context, opts ...PlanOption) (*exec.Cmd, error) {
 	c := defaultPlanOptions
 
 	for _, o := range opts {
@@ -187,7 +187,7 @@ func (tf *Terraform) planJSONCmd(ctx context.Context, opts ...PlanOption) (*exec
 	return tf.buildPlanCmd(ctx, c, args)
 }
 
-func (tf *Terraform) buildPlanArgs(ctx context.Context, c planConfig) ([]string, error) {
+func (tf *Tofu) buildPlanArgs(ctx context.Context, c planConfig) ([]string, error) {
 	args := []string{"plan", "-no-color", "-input=false", "-detailed-exitcode"}
 
 	// string opts: only pass if set
@@ -249,7 +249,7 @@ func (tf *Terraform) buildPlanArgs(ctx context.Context, c planConfig) ([]string,
 	return args, nil
 }
 
-func (tf *Terraform) buildPlanCmd(ctx context.Context, c planConfig, args []string) (*exec.Cmd, error) {
+func (tf *Tofu) buildPlanCmd(ctx context.Context, c planConfig, args []string) (*exec.Cmd, error) {
 	// optional positional argument
 	if c.dir != "" {
 		args = append(args, c.dir)
@@ -264,5 +264,5 @@ func (tf *Terraform) buildPlanCmd(ctx context.Context, c planConfig, args []stri
 		mergeEnv[reattachEnvVar] = reattachStr
 	}
 
-	return tf.buildTerraformCmd(ctx, mergeEnv, args...), nil
+	return tf.buildTofuCmd(ctx, mergeEnv, args...), nil
 }

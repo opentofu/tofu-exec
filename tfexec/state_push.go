@@ -39,15 +39,15 @@ func (opt *LockTimeoutOption) configureStatePush(conf *statePushConfig) {
 	conf.lockTimeout = opt.timeout
 }
 
-func (tf *Terraform) StatePush(ctx context.Context, path string, opts ...StatePushCmdOption) error {
+func (tf *Tofu) StatePush(ctx context.Context, path string, opts ...StatePushCmdOption) error {
 	cmd, err := tf.statePushCmd(ctx, path, opts...)
 	if err != nil {
 		return err
 	}
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
-func (tf *Terraform) statePushCmd(ctx context.Context, path string, opts ...StatePushCmdOption) (*exec.Cmd, error) {
+func (tf *Tofu) statePushCmd(ctx context.Context, path string, opts ...StatePushCmdOption) (*exec.Cmd, error) {
 	c := defaultStatePushOptions
 
 	for _, o := range opts {
@@ -68,5 +68,5 @@ func (tf *Terraform) statePushCmd(ctx context.Context, path string, opts ...Stat
 
 	args = append(args, path)
 
-	return tf.buildTerraformCmd(ctx, nil, args...), nil
+	return tf.buildTofuCmd(ctx, nil, args...), nil
 }

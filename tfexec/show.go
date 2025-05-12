@@ -30,7 +30,7 @@ func (opt *ReattachOption) configureShow(conf *showConfig) {
 
 // Show reads the default state path and outputs the state.
 // To read a state or plan file, ShowState or ShowPlan must be used instead.
-func (tf *Terraform) Show(ctx context.Context, opts ...ShowOption) (*tfjson.State, error) {
+func (tf *Tofu) Show(ctx context.Context, opts ...ShowOption) (*tfjson.State, error) {
 	err := tf.compatible(ctx, tf0_12_0, nil)
 	if err != nil {
 		return nil, fmt.Errorf("terraform show -json was added in 0.12.0: %w", err)
@@ -55,7 +55,7 @@ func (tf *Terraform) Show(ctx context.Context, opts ...ShowOption) (*tfjson.Stat
 
 	var ret tfjson.State
 	ret.UseJSONNumber(true)
-	err = tf.runTerraformCmdJSON(ctx, showCmd, &ret)
+	err = tf.runTofuCmdJSON(ctx, showCmd, &ret)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +69,7 @@ func (tf *Terraform) Show(ctx context.Context, opts ...ShowOption) (*tfjson.Stat
 }
 
 // ShowStateFile reads a given state file and outputs the state.
-func (tf *Terraform) ShowStateFile(ctx context.Context, statePath string, opts ...ShowOption) (*tfjson.State, error) {
+func (tf *Tofu) ShowStateFile(ctx context.Context, statePath string, opts ...ShowOption) (*tfjson.State, error) {
 	err := tf.compatible(ctx, tf0_12_0, nil)
 	if err != nil {
 		return nil, fmt.Errorf("terraform show -json was added in 0.12.0: %w", err)
@@ -98,7 +98,7 @@ func (tf *Terraform) ShowStateFile(ctx context.Context, statePath string, opts .
 
 	var ret tfjson.State
 	ret.UseJSONNumber(true)
-	err = tf.runTerraformCmdJSON(ctx, showCmd, &ret)
+	err = tf.runTofuCmdJSON(ctx, showCmd, &ret)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +112,7 @@ func (tf *Terraform) ShowStateFile(ctx context.Context, statePath string, opts .
 }
 
 // ShowPlanFile reads a given plan file and outputs the plan.
-func (tf *Terraform) ShowPlanFile(ctx context.Context, planPath string, opts ...ShowOption) (*tfjson.Plan, error) {
+func (tf *Tofu) ShowPlanFile(ctx context.Context, planPath string, opts ...ShowOption) (*tfjson.Plan, error) {
 	err := tf.compatible(ctx, tf0_12_0, nil)
 	if err != nil {
 		return nil, fmt.Errorf("terraform show -json was added in 0.12.0: %w", err)
@@ -140,7 +140,7 @@ func (tf *Terraform) ShowPlanFile(ctx context.Context, planPath string, opts ...
 	showCmd := tf.showCmd(ctx, true, mergeEnv, planPath)
 
 	var ret tfjson.Plan
-	err = tf.runTerraformCmdJSON(ctx, showCmd, &ret)
+	err = tf.runTofuCmdJSON(ctx, showCmd, &ret)
 	if err != nil {
 		return nil, err
 	}
@@ -156,7 +156,7 @@ func (tf *Terraform) ShowPlanFile(ctx context.Context, planPath string, opts ...
 
 // ShowPlanFileRaw reads a given plan file and outputs the plan in a
 // human-friendly, opaque format.
-func (tf *Terraform) ShowPlanFileRaw(ctx context.Context, planPath string, opts ...ShowOption) (string, error) {
+func (tf *Tofu) ShowPlanFileRaw(ctx context.Context, planPath string, opts ...ShowOption) (string, error) {
 	if planPath == "" {
 		return "", fmt.Errorf("planPath cannot be blank: use Show() if not passing planPath")
 	}
@@ -180,7 +180,7 @@ func (tf *Terraform) ShowPlanFileRaw(ctx context.Context, planPath string, opts 
 
 	var outBuf strings.Builder
 	showCmd.Stdout = &outBuf
-	err := tf.runTerraformCmd(ctx, showCmd)
+	err := tf.runTofuCmd(ctx, showCmd)
 	if err != nil {
 		return "", err
 	}
@@ -189,7 +189,7 @@ func (tf *Terraform) ShowPlanFileRaw(ctx context.Context, planPath string, opts 
 
 }
 
-func (tf *Terraform) showCmd(ctx context.Context, jsonOutput bool, mergeEnv map[string]string, args ...string) *exec.Cmd {
+func (tf *Tofu) showCmd(ctx context.Context, jsonOutput bool, mergeEnv map[string]string, args ...string) *exec.Cmd {
 	allArgs := []string{"show"}
 	if jsonOutput {
 		allArgs = append(allArgs, "-json")
@@ -197,5 +197,5 @@ func (tf *Terraform) showCmd(ctx context.Context, jsonOutput bool, mergeEnv map[
 	allArgs = append(allArgs, "-no-color")
 	allArgs = append(allArgs, args...)
 
-	return tf.buildTerraformCmd(ctx, mergeEnv, allArgs...)
+	return tf.buildTofuCmd(ctx, mergeEnv, allArgs...)
 }

@@ -23,7 +23,7 @@ func TestUpgrade013(t *testing.T) {
 	td := t.TempDir()
 
 	t.Run("defaults", func(t *testing.T) {
-		tf, err := NewTerraform(td, tfVersion(t, testutil.Latest013))
+		tf, err := NewTofu(td, tfVersion(t, testutil.Latest013))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -44,7 +44,7 @@ func TestUpgrade013(t *testing.T) {
 	})
 
 	t.Run("override all defaults", func(t *testing.T) {
-		tf, err := NewTerraform(td, tfVersion(t, testutil.Latest013))
+		tf, err := NewTofu(td, tfVersion(t, testutil.Latest013))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -73,7 +73,7 @@ func TestUpgrade013(t *testing.T) {
 	}
 	for _, tfv := range unsupportedVersions {
 		t.Run(fmt.Sprintf("unsupported on %s", tfv), func(t *testing.T) {
-			tf, err := NewTerraform(td, tfVersion(t, tfv))
+			tf, err := NewTofu(td, tfVersion(t, tfv))
 			if err != nil {
 				t.Fatal(err)
 			}

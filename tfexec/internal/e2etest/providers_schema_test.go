@@ -227,7 +227,7 @@ same can now be achieved using [locals](https://www.terraform.io/docs/language/v
 	} {
 		c := c
 		t.Run(fmt.Sprintf("%d %s", i, c.fixtureDir), func(t *testing.T) {
-			runTest(t, c.fixtureDir, func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+			runTest(t, c.fixtureDir, func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 				if tfv.Core().LessThan(v0_12_0) {
 					t.Skip("providers schema -json was added in 0.12")
 				}

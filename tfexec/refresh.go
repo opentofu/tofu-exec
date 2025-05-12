@@ -77,12 +77,12 @@ func (opt *VarFileOption) configureRefresh(conf *refreshConfig) {
 }
 
 // Refresh represents the terraform refresh subcommand.
-func (tf *Terraform) Refresh(ctx context.Context, opts ...RefreshCmdOption) error {
+func (tf *Tofu) Refresh(ctx context.Context, opts ...RefreshCmdOption) error {
 	cmd, err := tf.refreshCmd(ctx, opts...)
 	if err != nil {
 		return err
 	}
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
 // RefreshJSON represents the terraform refresh subcommand with the `-json` flag.
@@ -90,7 +90,7 @@ func (tf *Terraform) Refresh(ctx context.Context, opts ...RefreshCmdOption) erro
 // [machine-readable](https://developer.hashicorp.com/terraform/internals/machine-readable-ui)
 // JSON being written to the supplied `io.Writer`. RefreshJSON is likely to be
 // removed in a future major version in favour of Refresh returning JSON by default.
-func (tf *Terraform) RefreshJSON(ctx context.Context, w io.Writer, opts ...RefreshCmdOption) error {
+func (tf *Tofu) RefreshJSON(ctx context.Context, w io.Writer, opts ...RefreshCmdOption) error {
 	err := tf.compatible(ctx, tf0_15_3, nil)
 	if err != nil {
 		return fmt.Errorf("terraform refresh -json was added in 0.15.3: %w", err)
@@ -103,10 +103,10 @@ func (tf *Terraform) RefreshJSON(ctx context.Context, w io.Writer, opts ...Refre
 		return err
 	}
 
-	return tf.runTerraformCmd(ctx, cmd)
+	return tf.runTofuCmd(ctx, cmd)
 }
 
-func (tf *Terraform) refreshCmd(ctx context.Context, opts ...RefreshCmdOption) (*exec.Cmd, error) {
+func (tf *Tofu) refreshCmd(ctx context.Context, opts ...RefreshCmdOption) (*exec.Cmd, error) {
 	c := defaultRefreshOptions
 
 	for _, o := range opts {
@@ -119,7 +119,7 @@ func (tf *Terraform) refreshCmd(ctx context.Context, opts ...RefreshCmdOption) (
 
 }
 
-func (tf *Terraform) refreshJSONCmd(ctx context.Context, opts ...RefreshCmdOption) (*exec.Cmd, error) {
+func (tf *Tofu) refreshJSONCmd(ctx context.Context, opts ...RefreshCmdOption) (*exec.Cmd, error) {
 	c := defaultRefreshOptions
 
 	for _, o := range opts {
@@ -132,7 +132,7 @@ func (tf *Terraform) refreshJSONCmd(ctx context.Context, opts ...RefreshCmdOptio
 	return tf.buildRefreshCmd(ctx, c, args)
 }
 
-func (tf *Terraform) buildRefreshArgs(c refreshConfig) []string {
+func (tf *Tofu) buildRefreshArgs(c refreshConfig) []string {
 	args := []string{"refresh", "-no-color", "-input=false"}
 
 	// string opts: only pass if set
@@ -170,7 +170,7 @@ func (tf *Terraform) buildRefreshArgs(c refreshConfig) []string {
 	return args
 }
 
-func (tf *Terraform) buildRefreshCmd(ctx context.Context, c refreshConfig, args []string) (*exec.Cmd, error) {
+func (tf *Tofu) buildRefreshCmd(ctx context.Context, c refreshConfig, args []string) (*exec.Cmd, error) {
 	// optional positional argument
 	if c.dir != "" {
 		args = append(args, c.dir)
@@ -185,5 +185,5 @@ func (tf *Terraform) buildRefreshCmd(ctx context.Context, c refreshConfig, args 
 		mergeEnv[reattachEnvVar] = reattachStr
 	}
 
-	return tf.buildTerraformCmd(ctx, mergeEnv, args...), nil
+	return tf.buildTofuCmd(ctx, mergeEnv, args...), nil
 }

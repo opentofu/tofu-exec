@@ -18,7 +18,7 @@ import (
 const defaultWorkspace = "default"
 
 func TestWorkspace_default_only(t *testing.T) {
-	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		assertWorkspaceList(t, tf, defaultWorkspace)
 		assertWorkspaceShow(t, tf, defaultWorkspace)
 
@@ -46,7 +46,7 @@ func TestWorkspace_default_only(t *testing.T) {
 }
 
 func TestWorkspace_does_not_exist(t *testing.T) {
-	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		const doesNotExistWorkspace = "does-not-exist"
 		err := tf.WorkspaceSelect(context.Background(), doesNotExistWorkspace)
 		if err == nil {
@@ -56,7 +56,7 @@ func TestWorkspace_does_not_exist(t *testing.T) {
 }
 
 func TestWorkspace_already_exists(t *testing.T) {
-	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		const newWorkspace = "existing-workspace"
 		t.Run("create new workspace", func(t *testing.T) {
 			err := tf.WorkspaceNew(context.Background(), newWorkspace)
@@ -79,7 +79,7 @@ func TestWorkspace_already_exists(t *testing.T) {
 }
 
 func TestWorkspace_multiple(t *testing.T) {
-	runTest(t, "workspaces", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "workspaces", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		assertWorkspaceList(t, tf, "foo", "foo")
 		assertWorkspaceShow(t, tf, "foo")
 
@@ -108,7 +108,7 @@ func TestWorkspace_multiple(t *testing.T) {
 }
 
 func TestWorkspace_deletion(t *testing.T) {
-	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		assertWorkspaceList(t, tf, defaultWorkspace)
 		assertWorkspaceShow(t, tf, defaultWorkspace)
 
@@ -141,7 +141,7 @@ func TestWorkspace_deletion(t *testing.T) {
 	})
 }
 
-func assertWorkspaceList(t *testing.T, tf *tfexec.Terraform, expectedCurrent string, expectedWorkspaces ...string) {
+func assertWorkspaceList(t *testing.T, tf *tfexec.Tofu, expectedCurrent string, expectedWorkspaces ...string) {
 	actualWorkspaces, actualCurrent, err := tf.WorkspaceList(context.Background())
 	if err != nil {
 		t.Fatalf("got error querying workspace list: %s", err)
@@ -155,7 +155,7 @@ func assertWorkspaceList(t *testing.T, tf *tfexec.Terraform, expectedCurrent str
 	}
 }
 
-func assertWorkspaceShow(t *testing.T, tf *tfexec.Terraform, expectedWorkspace string) {
+func assertWorkspaceShow(t *testing.T, tf *tfexec.Tofu, expectedWorkspace string) {
 	actualWorkspace, err := tf.WorkspaceShow(context.Background())
 	if err != nil {
 		t.Fatalf("got error querying workspace show: %s", err)

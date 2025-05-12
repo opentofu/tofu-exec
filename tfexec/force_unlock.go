@@ -26,20 +26,20 @@ func (opt *DirOption) configureForceUnlock(conf *forceUnlockConfig) {
 }
 
 // ForceUnlock represents the `terraform force-unlock` command
-func (tf *Terraform) ForceUnlock(ctx context.Context, lockID string, opts ...ForceUnlockOption) error {
+func (tf *Tofu) ForceUnlock(ctx context.Context, lockID string, opts ...ForceUnlockOption) error {
 	unlockCmd, err := tf.forceUnlockCmd(ctx, lockID, opts...)
 	if err != nil {
 		return err
 	}
 
-	if err := tf.runTerraformCmd(ctx, unlockCmd); err != nil {
+	if err := tf.runTofuCmd(ctx, unlockCmd); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (tf *Terraform) forceUnlockCmd(ctx context.Context, lockID string, opts ...ForceUnlockOption) (*exec.Cmd, error) {
+func (tf *Tofu) forceUnlockCmd(ctx context.Context, lockID string, opts ...ForceUnlockOption) (*exec.Cmd, error) {
 	c := defaultForceUnlockOptions
 
 	for _, o := range opts {
@@ -59,5 +59,5 @@ func (tf *Terraform) forceUnlockCmd(ctx context.Context, lockID string, opts ...
 		args = append(args, c.dir)
 	}
 
-	return tf.buildTerraformCmd(ctx, nil, args...), nil
+	return tf.buildTofuCmd(ctx, nil, args...), nil
 }

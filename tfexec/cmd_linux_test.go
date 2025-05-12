@@ -14,20 +14,20 @@ import (
 	"time"
 )
 
-func Test_runTerraformCmd_linux(t *testing.T) {
-	// Checks runTerraformCmd for race condition when using
-	// go test -race -run Test_runTerraformCmd_linux ./tfexec -tags=linux
+func Test_runTofuCmd_linux(t *testing.T) {
+	// Checks runTofuCmd for race condition when using
+	// go test -race -run Test_runTofuCmd_linux ./tfexec -tags=linux
 	var buf bytes.Buffer
 
-	tf := &Terraform{
+	tf := &Tofu{
 		logger:   log.New(&buf, "", 0),
 		execPath: "echo",
 	}
 
 	ctx, cancel := context.WithCancel(context.Background())
 
-	cmd := tf.buildTerraformCmd(ctx, nil, "hello tf-exec!")
-	err := tf.runTerraformCmd(ctx, cmd)
+	cmd := tf.buildTofuCmd(ctx, nil, "hello tf-exec!")
+	err := tf.runTofuCmd(ctx, cmd)
 	if err != nil {
 		t.Fatal(err)
 	}

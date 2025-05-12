@@ -15,7 +15,7 @@ import (
 )
 
 func TestOutput_noOutputs(t *testing.T) {
-	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Terraform) {
+	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		if tfv.LessThan(version.Must(version.NewVersion("0.12.14"))) {
 			// https://github.com/hashicorp/terraform/blob/v0.12/CHANGELOG.md#01214-november-13-2019
 			t.Skip("no outputs being success (instead of error) was changed in 0.12.14")
