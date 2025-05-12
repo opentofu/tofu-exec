@@ -67,7 +67,6 @@ func TestUpgrade012(t *testing.T) {
 	})
 
 	unsupportedVersions := []string{
-		testutil.Latest011,
 		testutil.Latest013,
 	}
 	for _, tfv := range unsupportedVersions {

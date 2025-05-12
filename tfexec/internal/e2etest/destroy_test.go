@@ -37,7 +37,7 @@ func TestDestroy(t *testing.T) {
 }
 
 func TestDestroyJSON_TF014AndEarlier(t *testing.T) {
-	versions := []string{testutil.Latest011, testutil.Latest012, testutil.Latest013, testutil.Latest014}
+	versions := []string{testutil.Latest012, testutil.Latest013, testutil.Latest014}
 
 	runTestWithVersions(t, versions, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		err := tf.Init(context.Background())
