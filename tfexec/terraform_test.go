@@ -11,7 +11,6 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"runtime"
 	"testing"
 
 	"github.com/opentofu/tofu-exec/tfexec/internal/testutil"
@@ -86,27 +85,7 @@ func TestSetLog(t *testing.T) {
 		t.Fatalf("unexpected SetEnv error: %s", err)
 	}
 
-	t.Run("case 1: SetLog <= 0.15 error", func(t *testing.T) {
-		if runtime.GOOS == "darwin" && runtime.GOARCH == "arm64" {
-			t.Skip("Terraform for darwin/arm64 is not available until v1")
-		}
-
-		td012 := t.TempDir()
-
-		tf012, err := NewTofu(td012, tfVersion(t, testutil.Latest012))
-
-		if err != nil {
-			t.Fatalf("unexpected NewTerraform error: %s", err)
-		}
-
-		err = tf012.SetLog("TRACE")
-
-		if err == nil {
-			t.Fatal("expected SetLog error, got none")
-		}
-	})
-
-	t.Run("case 2: SetLog TRACE no SetLogPath", func(t *testing.T) {
+	t.Run("SetLog TRACE no SetLogPath", func(t *testing.T) {
 		err := tf.SetLog("TRACE")
 
 		if err != nil {
@@ -135,7 +114,7 @@ func TestSetLog(t *testing.T) {
 		}, initCmd)
 	})
 
-	t.Run("case 3: SetLog TRACE and SetLogPath", func(t *testing.T) {
+	t.Run("SetLog TRACE and SetLogPath", func(t *testing.T) {
 		tfLogPath := filepath.Join(td, "test.log")
 
 		err := tf.SetLog("TRACE")
@@ -172,7 +151,7 @@ func TestSetLog(t *testing.T) {
 		}, initCmd)
 	})
 
-	t.Run("case 4: SetLog DEBUG and SetLogPath", func(t *testing.T) {
+	t.Run("SetLog DEBUG and SetLogPath", func(t *testing.T) {
 		tfLogPath := filepath.Join(td, "test.log")
 
 		err := tf.SetLog("DEBUG")
@@ -228,27 +207,7 @@ func TestSetLogCore(t *testing.T) {
 		t.Fatalf("unexpected SetEnv error: %s", err)
 	}
 
-	t.Run("case 1: SetLogCore <= 0.15 error", func(t *testing.T) {
-		if runtime.GOOS == "darwin" && runtime.GOARCH == "arm64" {
-			t.Skip("Terraform for darwin/arm64 is not available until v1")
-		}
-
-		td012 := t.TempDir()
-
-		tf012, err := NewTofu(td012, tfVersion(t, testutil.Latest012))
-
-		if err != nil {
-			t.Fatalf("unexpected NewTerraform error: %s", err)
-		}
-
-		err = tf012.SetLogCore("TRACE")
-
-		if err == nil {
-			t.Fatal("expected SetLogCore error, got none")
-		}
-	})
-
-	t.Run("case 2: SetLogCore TRACE no SetLogPath", func(t *testing.T) {
+	t.Run("SetLogCore TRACE no SetLogPath", func(t *testing.T) {
 		err := tf.SetLogCore("TRACE")
 
 		if err != nil {
@@ -277,7 +236,7 @@ func TestSetLogCore(t *testing.T) {
 		}, initCmd)
 	})
 
-	t.Run("case 3: SetLogCore TRACE and SetLogPath", func(t *testing.T) {
+	t.Run("SetLogCore TRACE and SetLogPath", func(t *testing.T) {
 		tfLogPath := filepath.Join(td, "test.log")
 
 		err := tf.SetLogCore("TRACE")
@@ -314,7 +273,7 @@ func TestSetLogCore(t *testing.T) {
 		}, initCmd)
 	})
 
-	t.Run("case 4: SetLogCore DEBUG and SetLogPath", func(t *testing.T) {
+	t.Run("SetLogCore DEBUG and SetLogPath", func(t *testing.T) {
 		tfLogPath := filepath.Join(td, "test.log")
 
 		err := tf.SetLogCore("DEBUG")
@@ -541,27 +500,7 @@ func TestSetLogProvider(t *testing.T) {
 		t.Fatalf("unexpected SetEnv error: %s", err)
 	}
 
-	t.Run("case 1: SetLogProvider <= 0.15 error", func(t *testing.T) {
-		if runtime.GOOS == "darwin" && runtime.GOARCH == "arm64" {
-			t.Skip("Terraform for darwin/arm64 is not available until v1")
-		}
-
-		td012 := t.TempDir()
-
-		tf012, err := NewTofu(td012, tfVersion(t, testutil.Latest012))
-
-		if err != nil {
-			t.Fatalf("unexpected NewTerraform error: %s", err)
-		}
-
-		err = tf012.SetLogProvider("TRACE")
-
-		if err == nil {
-			t.Fatal("expected SetLogProvider error, got none")
-		}
-	})
-
-	t.Run("case 2: SetLogProvider TRACE no SetLogPath", func(t *testing.T) {
+	t.Run("SetLogProvider TRACE no SetLogPath", func(t *testing.T) {
 		err := tf.SetLogProvider("TRACE")
 
 		if err != nil {
@@ -590,7 +529,7 @@ func TestSetLogProvider(t *testing.T) {
 		}, initCmd)
 	})
 
-	t.Run("case 3: SetLogProvider TRACE and SetLogPath", func(t *testing.T) {
+	t.Run("SetLogProvider TRACE and SetLogPath", func(t *testing.T) {
 		tfLogPath := filepath.Join(td, "test.log")
 
 		err := tf.SetLogProvider("TRACE")
@@ -627,7 +566,7 @@ func TestSetLogProvider(t *testing.T) {
 		}, initCmd)
 	})
 
-	t.Run("case 4: SetLogProvider DEBUG and SetLogPath", func(t *testing.T) {
+	t.Run("SetLogProvider DEBUG and SetLogPath", func(t *testing.T) {
 		tfLogPath := filepath.Join(td, "test.log")
 
 		err := tf.SetLogProvider("DEBUG")
@@ -661,87 +600,6 @@ func TestSetLogProvider(t *testing.T) {
 			"TF_LOG_CORE":     "",
 			"TF_LOG_PATH":     tfLogPath,
 			"TF_LOG_PROVIDER": "DEBUG",
-		}, initCmd)
-	})
-}
-
-func TestCheckpointDisablePropagation_v012(t *testing.T) {
-	if runtime.GOOS == "darwin" && runtime.GOARCH == "arm64" {
-		t.Skip("Terraform for darwin/arm64 is not available until v1")
-	}
-
-	td := t.TempDir()
-
-	tf, err := NewTofu(td, tfVersion(t, testutil.Latest012))
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	err = os.Setenv("CHECKPOINT_DISABLE", "1")
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer os.Unsetenv("CHECKPOINT_DISABLE")
-
-	t.Run("case 1: env var is set in environment and not overridden", func(t *testing.T) {
-
-		err = tf.SetEnv(map[string]string{
-			"FOOBAR": "1",
-		})
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		initCmd, err := tf.initCmd(context.Background())
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		assertCmd(t, []string{
-			"init",
-			"-no-color",
-			"-input=false",
-			"-lock-timeout=0s",
-			"-backend=true",
-			"-get=true",
-			"-upgrade=false",
-			"-lock=true",
-			"-get-plugins=true",
-			"-verify-plugins=true",
-		}, map[string]string{
-			"CHECKPOINT_DISABLE": "1",
-			"FOOBAR":             "1",
-		}, initCmd)
-	})
-
-	t.Run("case 2: env var is set in environment and overridden with SetEnv", func(t *testing.T) {
-		err = tf.SetEnv(map[string]string{
-			"CHECKPOINT_DISABLE": "",
-			"FOOBAR":             "2",
-		})
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		initCmd, err := tf.initCmd(context.Background())
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		assertCmd(t, []string{
-			"init",
-			"-no-color",
-			"-input=false",
-			"-lock-timeout=0s",
-			"-backend=true",
-			"-get=true",
-			"-upgrade=false",
-			"-lock=true",
-			"-get-plugins=true",
-			"-verify-plugins=true",
-		}, map[string]string{
-			"CHECKPOINT_DISABLE": "",
-			"FOOBAR":             "2",
 		}, initCmd)
 	})
 }

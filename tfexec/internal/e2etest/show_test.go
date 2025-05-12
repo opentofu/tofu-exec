@@ -11,7 +11,6 @@ import (
 	"errors"
 	"io/ioutil"
 	"os"
-	"runtime"
 	"strings"
 	"testing"
 
@@ -299,47 +298,6 @@ func TestShow_versionMismatch(t *testing.T) {
 	})
 }
 
-// Non-default state files cannot be migrated from 0.12 to 0.13,
-// so we maintain one fixture per supported version.
-// See github.com/hashicorp/terraform/25920
-func TestShowStateFile012(t *testing.T) {
-	runTestWithVersions(t, []string{testutil.Latest012}, "non_default_statefile_012", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		expected := &tfjson.State{
-			FormatVersion: "0.1",
-			// TerraformVersion is ignored to facilitate latest version testing
-			Values: &tfjson.StateValues{
-				RootModule: &tfjson.StateModule{
-					Resources: []*tfjson.StateResource{{
-						Address: "null_resource.foo",
-						AttributeValues: map[string]interface{}{
-							"id":       "2363759301357831073",
-							"triggers": nil,
-						},
-						Mode:         tfjson.ManagedResourceMode,
-						Type:         "null_resource",
-						Name:         "foo",
-						ProviderName: "null",
-					}},
-				},
-			},
-		}
-
-		err := tf.Init(context.Background())
-		if err != nil {
-			t.Fatalf("error running Init in test directory: %s", err)
-		}
-
-		actual, err := tf.ShowStateFile(context.Background(), "statefilefoo")
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		if diff := diffState(expected, actual); diff != "" {
-			t.Fatalf("mismatch (-want +got):\n%s", diff)
-		}
-	})
-}
-
 func TestShowStateFile013(t *testing.T) {
 	runTestWithVersions(t, []string{testutil.Latest013, testutil.Latest014}, "non_default_statefile_013", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		expected := &tfjson.State{
@@ -411,74 +369,6 @@ func TestShowStateFile014(t *testing.T) {
 		}
 
 		if diff := diffState(expected, actual); diff != "" {
-			t.Fatalf("mismatch (-want +got):\n%s", diff)
-		}
-	})
-}
-
-// Plan files cannot be transferred between different Terraform versions,
-// so we maintain one fixture per supported version
-func TestShowPlanFile012_linux(t *testing.T) {
-	runTestWithVersions(t, []string{testutil.Latest012}, "non_default_planfile_012", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		if runtime.GOOS != "linux" {
-			t.Skip("plan file created in 0.12 on Linux is not compatible with other systems")
-		}
-
-		providerName := "null"
-
-		expected := &tfjson.Plan{
-			FormatVersion: "0.1",
-			// TerraformVersion is ignored to facilitate latest version testing
-			PlannedValues: &tfjson.StateValues{
-				RootModule: &tfjson.StateModule{
-					Resources: []*tfjson.StateResource{{
-						Address: "null_resource.foo",
-						AttributeValues: map[string]interface{}{
-							"triggers": nil,
-						},
-						Mode:         tfjson.ManagedResourceMode,
-						Type:         "null_resource",
-						Name:         "foo",
-						ProviderName: providerName,
-					}},
-				},
-			},
-			ResourceChanges: []*tfjson.ResourceChange{{
-				Address:      "null_resource.foo",
-				Mode:         tfjson.ManagedResourceMode,
-				Type:         "null_resource",
-				Name:         "foo",
-				ProviderName: providerName,
-				Change: &tfjson.Change{
-					Actions:      tfjson.Actions{tfjson.ActionCreate},
-					After:        map[string]interface{}{"triggers": nil},
-					AfterUnknown: map[string]interface{}{"id": (true)},
-				},
-			}},
-			Config: &tfjson.Config{
-				RootModule: &tfjson.ConfigModule{
-					Resources: []*tfjson.ConfigResource{{
-						Address:           "null_resource.foo",
-						Mode:              tfjson.ManagedResourceMode,
-						Type:              "null_resource",
-						Name:              "foo",
-						ProviderConfigKey: "null",
-					}},
-				},
-			},
-		}
-
-		err := tf.Init(context.Background())
-		if err != nil {
-			t.Fatalf("error running Init in test directory: %s", err)
-		}
-
-		actual, err := tf.ShowPlanFile(context.Background(), "planfilefoo")
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		if diff := diffPlan(expected, actual); diff != "" {
 			t.Fatalf("mismatch (-want +got):\n%s", diff)
 		}
 	})
@@ -607,38 +497,6 @@ func TestShowPlanFile014(t *testing.T) {
 
 		if diff := diffPlan(expected, actual); diff != "" {
 			t.Fatalf("mismatch (-want +got):\n%s", diff)
-		}
-	})
-}
-
-func TestShowPlanFileRaw012_linux(t *testing.T) {
-	runTestWithVersions(t, []string{testutil.Latest012}, "non_default_planfile_012", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		if runtime.GOOS != "linux" {
-			t.Skip("plan file created in 0.12 on Linux is not compatible with other systems")
-		}
-
-		f, err := os.Open("testdata/non_default_planfile_012/human_readable_output.txt")
-		if err != nil {
-			t.Fatal(err)
-		}
-		defer f.Close()
-		expected, err := ioutil.ReadAll(f)
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		err = tf.Init(context.Background())
-		if err != nil {
-			t.Fatalf("error running Init in test directory: %s", err)
-		}
-
-		actual, err := tf.ShowPlanFileRaw(context.Background(), "planfilefoo")
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		if diff := cmp.Diff(normalizePlanOutput(actual), normalizePlanOutput(string(expected))); diff != "" {
-			t.Fatalf("unexpected difference: %s", diff)
 		}
 	})
 }

@@ -66,7 +66,6 @@ func TestUpgrade013(t *testing.T) {
 	})
 
 	unsupportedVersions := []string{
-		testutil.Latest012,
 		testutil.Latest014,
 		testutil.Latest015,
 	}
