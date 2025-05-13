@@ -13,9 +13,9 @@ on:
   push:
     branches:
       - main
-      - 'v[0-9]+.[0-9]+'
+      - "v[0-9]+.[0-9]+"
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+*'
+      - "v[0-9]+.[0-9]+.[0-9]+*"
 
 # This workflow runs for not-yet-reviewed external contributions and so it
 # intentionally has no write access and only limited read access to the
