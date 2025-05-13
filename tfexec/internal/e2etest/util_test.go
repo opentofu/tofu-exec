@@ -111,8 +111,6 @@ func runTestWithVersions(t *testing.T, versions []string, fixtureName string, cb
 			var execPath string
 			if localBinPath := os.Getenv("TFEXEC_E2ETEST_TERRAFORM_PATH"); localBinPath != "" {
 				execPath = localBinPath
-			} else if strings.HasPrefix(tfv, "refs/") {
-				execPath = tfcache.GitRef(t, tfv)
 			} else {
 				execPath = tfcache.Version(t, tfv)
 			}

@@ -9,7 +9,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"sync"
@@ -76,18 +75,18 @@ type Tofu struct {
 
 // NewTofu returns a Terraform struct with default values for all fields.
 // If a blank execPath is supplied, NewTofu will error.
-// Use hc-install or output from os.LookPath to get a desirable execPath.
+// Use tofudl or output from os.LookPath to get a desirable execPath.
 func NewTofu(workingDir string, execPath string) (*Tofu, error) {
 	if workingDir == "" {
-		return nil, fmt.Errorf("Terraform cannot be initialised with empty workdir")
+		return nil, fmt.Errorf("failed to initialize tofu-exec (NewTofu): cannot be initialised with empty working directory")
 	}
 
 	if _, err := os.Stat(workingDir); err != nil {
-		return nil, fmt.Errorf("error initialising Terraform with workdir %s: %s", workingDir, err)
+		return nil, fmt.Errorf("failed to initialize tofu-exec (NewTofu): error with working directory %s: %s", workingDir, err)
 	}
 
 	if execPath == "" {
-		err := fmt.Errorf("NewTerraform: please supply the path to a Terraform executable using execPath, e.g. using the github.com/hashicorp/hc-install module.")
+		err := fmt.Errorf("failed to initialize tofu-exec (NewTofu): please supply the path to a Tofu executable using execPath, e.g. using the github.com/opentofu/tofudl library")
 		return nil, &ErrNoSuitableBinary{
 			err: err,
 		}
@@ -96,7 +95,7 @@ func NewTofu(workingDir string, execPath string) (*Tofu, error) {
 		execPath:   execPath,
 		workingDir: workingDir,
 		env:        nil, // explicit nil means copy os.Environ
-		logger:     log.New(ioutil.Discard, "", 0),
+		logger:     log.New(io.Discard, "", 0),
 	}
 
 	return &tf, nil
