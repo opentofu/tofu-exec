@@ -14,8 +14,6 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/hashicorp/hc-install/build"
-	"github.com/hashicorp/hc-install/product"
 	"github.com/opentofu/tofudl"
 )
 
@@ -44,22 +42,6 @@ func NewTFCache(dir string) *TFCache {
 		dir:   dir,
 		execs: map[string]string{},
 	}
-}
-
-func (tf *TFCache) GitRef(t *testing.T, ref string) string {
-	t.Helper()
-
-	key := "gitref:" + ref
-
-	return tf.find(t, key, func(ctx context.Context) (string, error) {
-		gr := &build.GitRevision{
-			Product: product.Terraform,
-			Ref:     ref,
-		}
-		gr.SetLogger(TestLogger())
-
-		return gr.Build(ctx)
-	})
 }
 
 func (tf *TFCache) Version(t *testing.T, v string) string {
