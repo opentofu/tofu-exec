@@ -37,10 +37,9 @@ func runTest(t *testing.T, fixtureName string, cb func(t *testing.T, tfVersion *
 	t.Helper()
 
 	versions := []string{
-		testutil.Latest013,
-		testutil.Latest014,
-		testutil.Latest015,
 		testutil.Latest_v1,
+		testutil.Latest_v1_7,
+		testutil.Latest_v1_8,
 	}
 	if override := os.Getenv("TFEXEC_E2ETEST_VERSIONS"); override != "" {
 		versions = strings.Split(override, ",")
@@ -259,7 +258,7 @@ func textFilesEqual(t *testing.T, expected, actual string) {
 }
 
 func checkSum(t *testing.T, filename string) uint32 {
-	b, err := ioutil.ReadFile(filename)
+	b, err := os.ReadFile(filename)
 	if err != nil {
 		t.Fatal(err)
 	}
