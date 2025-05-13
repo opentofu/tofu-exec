@@ -55,7 +55,7 @@ func TestRefreshJSON_TF014AndEarlier(t *testing.T) {
 }
 
 func TestRefreshJSON_TF015AndLater(t *testing.T) {
-	versions := []string{testutil.Latest015, testutil.Latest_v1, testutil.Latest_v1_1}
+	versions := []string{testutil.Latest015, testutil.Latest_v1, testutil.Latest_v1_8}
 
 	runTestWithVersions(t, versions, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		err := tf.Init(context.Background())

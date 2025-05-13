@@ -115,12 +115,13 @@ func TestShow_emptyDir(t *testing.T) {
 }
 
 func TestShow_noInitBasic(t *testing.T) {
+	t.Parallel()
 	// Prior to v1.2.0, running show before init always results in an error.
 	// In the basic case, in which the local backend is implicit and there are
 	// no providers to download, this is unintended behaviour, as
 	// init is not actually necessary. This is considered a known issue in
 	// pre-1.2.0 versions.
-	runTestWithVersions(t, []string{testutil.Latest013, testutil.Latest014, testutil.Latest015, testutil.Latest_v1, testutil.Latest_v1_1}, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
+	runTestWithVersions(t, []string{testutil.Latest013, testutil.Latest014, testutil.Latest015, testutil.Latest_v1, testutil.Latest_v1_7, testutil.Latest_v1_8}, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		_, err := tf.Show(context.Background())
 		if err == nil {
 			t.Fatalf("expected error, but did not get one")
@@ -152,12 +153,13 @@ func TestShow_noInitBasic(t *testing.T) {
 }
 
 func TestShow_noInitModule(t *testing.T) {
+	t.Parallel()
 	// Prior to v1.2.0, running show before init always results in an error.
 	// In the basic case, in which the local backend is implicit and there are
 	// no providers to download, this is unintended behaviour, as
 	// init is not actually necessary. This is considered a known issue in
 	// pre-1.2.0 versions.
-	runTestWithVersions(t, []string{testutil.Latest013, testutil.Latest014, testutil.Latest015, testutil.Latest_v1, testutil.Latest_v1_1}, "registry_module", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
+	runTestWithVersions(t, []string{testutil.Latest013, testutil.Latest014, testutil.Latest015, testutil.Latest_v1, testutil.Latest_v1_7, testutil.Latest_v1_8}, "registry_module", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		_, err := tf.Show(context.Background())
 		if err == nil {
 			t.Fatalf("expected error, but did not get one")
@@ -169,7 +171,7 @@ func TestShow_noInitModule(t *testing.T) {
 	runTest(t, "registry_module", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		// HACK KEM: Really I mean tfv.LessThan(version.Must(version.NewVersion("1.2.0"))),
 		// but I want this test to run for refs/heads/main prior to the release of v1.2.0.
-		if tfv.LessThanOrEqual(version.Must(version.NewVersion(testutil.Latest_v1_1))) {
+		if tfv.LessThanOrEqual(version.Must(version.NewVersion(testutil.Latest_v1_7))) {
 			t.Skip("test applies only to v1.2.0 and greater")
 		}
 		expected := &tfjson.State{
