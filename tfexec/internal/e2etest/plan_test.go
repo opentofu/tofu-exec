@@ -8,7 +8,6 @@ package e2etest
 import (
 	"context"
 	"io"
-	"regexp"
 	"testing"
 
 	"github.com/hashicorp/go-version"
@@ -48,27 +47,6 @@ func TestPlanWithState(t *testing.T) {
 		hasChanges, err := tf.Plan(context.Background())
 		if err != nil {
 			t.Fatalf("error running Plan: %s", err)
-		}
-		if hasChanges {
-			t.Fatalf("expected: false, got: %t", hasChanges)
-		}
-	})
-}
-
-func TestPlanJSON_TF014AndEarlier(t *testing.T) {
-	versions := []string{testutil.Latest013, testutil.Latest014}
-
-	runTestWithVersions(t, versions, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		err := tf.Init(context.Background())
-		if err != nil {
-			t.Fatalf("error running Init in test directory: %s", err)
-		}
-
-		re := regexp.MustCompile("terraform plan -json was added in 0.15.3")
-
-		hasChanges, err := tf.PlanJSON(context.Background(), io.Discard)
-		if err != nil && !re.MatchString(err.Error()) {
-			t.Fatalf("error running Apply: %s", err)
 		}
 		if hasChanges {
 			t.Fatalf("expected: false, got: %t", hasChanges)
