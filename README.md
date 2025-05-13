@@ -29,32 +29,52 @@ Top-level `tofu` commands each have their own function, which will return either
 ### Example
 
 ```go
-// TODO: update this example once we have a final version of the API with `tofudl` library setup
 package main
 
 import (
 	"context"
 	"fmt"
 	"log"
+	"os"
+	"path/filepath"
+	"runtime"
 
-	"github.com/hashicorp/go-version"
-	"github.com/hashicorp/hc-install/product"
-	"github.com/hashicorp/hc-install/releases"
+	"github.com/opentofu/tofudl"
 	"github.com/opentofu/tofu-exec/tfexec"
 )
 
+// Temporary install and execution for tofu using tofudl and tofu-exec
 func main() {
-	installer := &releases.ExactVersion{
-		Product: product.Terraform,
-		Version: version.Must(version.NewVersion("1.0.6")),
-	}
-
-	execPath, err := installer.Install(context.Background())
+	// Creating temporary directory to put our binary in
+	tempDir, err := os.MkdirTemp("", "tofuinstall")
 	if err != nil {
-		log.Fatalf("error installing Terraform: %s", err)
+		log.Fatal(err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	dl, err := tofudl.New()
+	if err != nil {
+		log.Fatalf("error when instantiating tofudl %s", err)
 	}
 
-	workingDir := "/path/to/working/dir"
+	// Downloading and writing tofu binary v1.9.1
+	ver := tofudl.Version("1.9.1")
+	opts := tofudl.DownloadOptVersion(ver)
+	binary, err := dl.Download(context.TODO(), opts)
+	if err != nil {
+		log.Fatalf("error when downloading %s", err)
+	}
+
+	execPath := filepath.Join(tempDir, "tofu")
+	// Windows executable case
+	if runtime.GOOS == "windows" {
+		execPath += ".exe"
+	}
+	if err := os.WriteFile(execPath, binary, 0755); err != nil {
+		log.Fatalf("error when writing the file %s: %s", execPath, err)
+	}
+
+	// workingDir := "/path/to/working/dir"
 	tf, err := tfexec.NewTofu(workingDir, execPath)
 	if err != nil {
 		log.Fatalf("error running NewTerraform: %s", err)
@@ -70,7 +90,7 @@ func main() {
 		log.Fatalf("error running Show: %s", err)
 	}
 
-	fmt.Println(state.FormatVersion) // "0.1"
+	fmt.Println(state.FormatVersion) // "1.0"
 }
 ```
 
