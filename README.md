@@ -2,38 +2,34 @@
 
 This repository is currently not usable and requires a large set of changes to make it so.
 We are going to update this repository solely to use it in [`tofu-ls`](https://github.com/opentofu/tofu-ls).
-This document will be updated as part of those changes. We do not recommend using this library outside of [`tofu-ls`](https://github.com/opentofu/tofu-ls). [Link to the Issue](https://github.com/opentofu/opentofu/issues/2455#issuecomment-2858320418)
+This document will be updated as part of those changes and once deemed ready this notice will be removed. We still do not recommend using this library outside of [`tofu-ls`](https://github.com/opentofu/tofu-ls). [Link to the Issue](https://github.com/opentofu/opentofu/issues/2455#issuecomment-2858320418)
 
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/opentofu/tofu-exec)](https://pkg.go.dev/github.com/opentofu/tofu-exec)
 
 # tofu-exec
 
-A Go module for constructing and running [Terraform](https://terraform.io) CLI commands. Structured return values use the data types defined in [terraform-json](https://github.com/hashicorp/terraform-json).
+A Go module for constructing and running [OpenTofu](https://opentofu.org/) CLI commands. Structured return values use the data types defined in [terraform-json](https://github.com/hashicorp/terraform-json).
 
-The [Terraform Plugin SDK](https://github.com/hashicorp/terraform-plugin-sdk) is the canonical Go interface for Terraform plugins using the gRPC protocol. This library is intended for use in Go programs that make use of Terraform's other interface, the CLI. Importing this library is preferable to importing `github.com/hashicorp/terraform/command`, because the latter is not intended for use outside Terraform Core.
-
-While tofu-exec is already widely used, please note that this module is **not yet at v1.0.0**, and that therefore breaking changes may occur in minor releases.
-
-We strictly follow [semantic versioning](https://semver.org).
+Currently, this library is built and maintained for a few specific uses in other OpenTofu projects (such as [`tofu-ls`](https://github.com/opentofu/tofu-ls), and is not intended for general purpose use.
 
 ## Go compatibility
 
-This library is built in Go, and uses the [support policy](https://golang.org/doc/devel/release.html#policy) of Go as its support policy. The two latest major releases of Go are supported by tofu-exec.
+This library is built in Go, and uses the [support policy](https://golang.org/doc/devel/release.html#policy) of Go as its support policy. At least, the two latest major releases of Go are supported by tofu-exec.
 
 Currently, that means Go **1.18** or later must be used.
 
 ## Usage
 
-The `Terraform` struct must be initialised with `NewTerraform(workingDir, execPath)`.
+The `Tofu` struct must be initialised with `NewTofu(workingDir, execPath)`.
 
-Top-level Terraform commands each have their own function, which will return either `error` or `(T, error)`, where `T` is a `terraform-json` type.
+Top-level `tofu` commands each have their own function, which will return either `error` or `(T, error)`, where `T` is a `terraform-json` type.
 
 
 ### Example
 
-
 ```go
+// TODO: update this example once we have a final version of the API with `tofudl` library setup
 package main
 
 import (
@@ -59,7 +55,7 @@ func main() {
 	}
 
 	workingDir := "/path/to/working/dir"
-	tf, err := tfexec.NewTerraform(workingDir, execPath)
+	tf, err := tfexec.NewTofu(workingDir, execPath)
 	if err != nil {
 		log.Fatalf("error running NewTerraform: %s", err)
 	}
@@ -78,11 +74,11 @@ func main() {
 }
 ```
 
-## Testing Terraform binaries
+## Testing Tofu binaries
 
-The tofu-exec test suite contains end-to-end tests which run realistic workflows against a real Terraform binary using `tfexec.Terraform{}`.
+The tofu-exec test suite contains end-to-end tests which run realistic workflows against a real Tofu binary using `tfexec.Tofu{}`.
 
-To run these tests with a local Terraform binary, set the environment variable `TFEXEC_E2ETEST_TERRAFORM_PATH` to its path and run:
+To run these tests with a local Tofu binary, set the environment variable `TFEXEC_E2ETEST_TERRAFORM_PATH` to its path and run:
 ```sh
 go test -timeout=20m ./tfexec/internal/e2etest
 ```
