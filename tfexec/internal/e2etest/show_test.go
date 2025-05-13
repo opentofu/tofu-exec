@@ -116,18 +116,6 @@ func TestShow_emptyDir(t *testing.T) {
 
 func TestShow_noInitBasic(t *testing.T) {
 	t.Parallel()
-	// Prior to v1.2.0, running show before init always results in an error.
-	// In the basic case, in which the local backend is implicit and there are
-	// no providers to download, this is unintended behaviour, as
-	// init is not actually necessary. This is considered a known issue in
-	// pre-1.2.0 versions.
-	runTestWithVersions(t, []string{testutil.Latest013, testutil.Latest014, testutil.Latest015, testutil.Latest_v1, testutil.Latest_v1_7, testutil.Latest_v1_8}, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		_, err := tf.Show(context.Background())
-		if err == nil {
-			t.Fatalf("expected error, but did not get one")
-		}
-	})
-
 	// From v1.2.0 onwards, running show before init in the basic case returns
 	// an empty state with no error.
 	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
@@ -154,17 +142,6 @@ func TestShow_noInitBasic(t *testing.T) {
 
 func TestShow_noInitModule(t *testing.T) {
 	t.Parallel()
-	// Prior to v1.2.0, running show before init always results in an error.
-	// In the basic case, in which the local backend is implicit and there are
-	// no providers to download, this is unintended behaviour, as
-	// init is not actually necessary. This is considered a known issue in
-	// pre-1.2.0 versions.
-	runTestWithVersions(t, []string{testutil.Latest013, testutil.Latest014, testutil.Latest015, testutil.Latest_v1, testutil.Latest_v1_7, testutil.Latest_v1_8}, "registry_module", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		_, err := tf.Show(context.Background())
-		if err == nil {
-			t.Fatalf("expected error, but did not get one")
-		}
-	})
 
 	// From v1.2.0 onwards, running show before init in the basic case returns
 	// an empty state with no error.
