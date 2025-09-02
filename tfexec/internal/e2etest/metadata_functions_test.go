@@ -16,10 +16,6 @@ import (
 
 func TestMetadataFunctions(t *testing.T) {
 	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		if tfv.LessThan(metadataFunctionsMinVersion) {
-			t.Skip("metadata functions command is not available in this Terraform version")
-		}
-
 		_, err := tf.MetadataFunctions(context.Background())
 		if err != nil {
 			t.Fatalf("error running MetadataFunctions: %s", err)

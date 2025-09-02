@@ -7,7 +7,6 @@ package tfexec
 
 import (
 	"context"
-	"fmt"
 	"io"
 	"os/exec"
 	"strconv"
@@ -90,11 +89,6 @@ func (tf *Tofu) Refresh(ctx context.Context, opts ...RefreshCmdOption) error {
 // JSON being written to the supplied `io.Writer`. RefreshJSON is likely to be
 // removed in a future major version in favour of Refresh returning JSON by default.
 func (tf *Tofu) RefreshJSON(ctx context.Context, w io.Writer, opts ...RefreshCmdOption) error {
-	err := tf.compatible(ctx, tf0_15_3, nil)
-	if err != nil {
-		return fmt.Errorf("terraform refresh -json was added in 0.15.3: %w", err)
-	}
-
 	tf.SetStdout(w)
 
 	cmd, err := tf.refreshJSONCmd(ctx, opts...)

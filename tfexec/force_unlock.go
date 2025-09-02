@@ -7,7 +7,6 @@ package tfexec
 
 import (
 	"context"
-	"fmt"
 	"os/exec"
 )
 
@@ -52,10 +51,6 @@ func (tf *Tofu) forceUnlockCmd(ctx context.Context, lockID string, opts ...Force
 
 	// optional positional arguments
 	if c.dir != "" {
-		err := tf.compatible(ctx, nil, tf0_15_0)
-		if err != nil {
-			return nil, fmt.Errorf("[DIR] option was removed in Terraform v0.15.0")
-		}
 		args = append(args, c.dir)
 	}
 

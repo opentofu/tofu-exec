@@ -57,7 +57,7 @@ Unit tests live alongside command implementations in `tfexec/`. A unit test asse
 
 End-to-end tests test both `tofudl` and `tfexec`, using the former to install OpenTofu binaries according to various version constraints, and exercising the latter in as many combinations as possible, after real-world use cases.
 
-By default, each test is run against the latest patch versions of all OpenTofu minor version releases, starting at 0.11. Copy an existing test and use the `runTest()` helper for this purpose.
+By default, each test is run against the latest patch versions of all OpenTofu minor version releases. Copy an existing test and use the `runTest()` helper for this purpose.
 
 ## Versioning
 

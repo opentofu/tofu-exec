@@ -31,11 +31,6 @@ func (opt *ReattachOption) configureShow(conf *showConfig) {
 // Show reads the default state path and outputs the state.
 // To read a state or plan file, ShowState or ShowPlan must be used instead.
 func (tf *Tofu) Show(ctx context.Context, opts ...ShowOption) (*tfjson.State, error) {
-	err := tf.compatible(ctx, tf0_12_0, nil)
-	if err != nil {
-		return nil, fmt.Errorf("terraform show -json was added in 0.12.0: %w", err)
-	}
-
 	c := defaultShowOptions
 
 	for _, o := range opts {
@@ -55,7 +50,7 @@ func (tf *Tofu) Show(ctx context.Context, opts ...ShowOption) (*tfjson.State, er
 
 	var ret tfjson.State
 	ret.UseJSONNumber(true)
-	err = tf.runTofuCmdJSON(ctx, showCmd, &ret)
+	err := tf.runTofuCmdJSON(ctx, showCmd, &ret)
 	if err != nil {
 		return nil, err
 	}
@@ -70,11 +65,6 @@ func (tf *Tofu) Show(ctx context.Context, opts ...ShowOption) (*tfjson.State, er
 
 // ShowStateFile reads a given state file and outputs the state.
 func (tf *Tofu) ShowStateFile(ctx context.Context, statePath string, opts ...ShowOption) (*tfjson.State, error) {
-	err := tf.compatible(ctx, tf0_12_0, nil)
-	if err != nil {
-		return nil, fmt.Errorf("terraform show -json was added in 0.12.0: %w", err)
-	}
-
 	if statePath == "" {
 		return nil, fmt.Errorf("statePath cannot be blank: use Show() if not passing statePath")
 	}
@@ -98,7 +88,7 @@ func (tf *Tofu) ShowStateFile(ctx context.Context, statePath string, opts ...Sho
 
 	var ret tfjson.State
 	ret.UseJSONNumber(true)
-	err = tf.runTofuCmdJSON(ctx, showCmd, &ret)
+	err := tf.runTofuCmdJSON(ctx, showCmd, &ret)
 	if err != nil {
 		return nil, err
 	}
@@ -113,11 +103,6 @@ func (tf *Tofu) ShowStateFile(ctx context.Context, statePath string, opts ...Sho
 
 // ShowPlanFile reads a given plan file and outputs the plan.
 func (tf *Tofu) ShowPlanFile(ctx context.Context, planPath string, opts ...ShowOption) (*tfjson.Plan, error) {
-	err := tf.compatible(ctx, tf0_12_0, nil)
-	if err != nil {
-		return nil, fmt.Errorf("terraform show -json was added in 0.12.0: %w", err)
-	}
-
 	if planPath == "" {
 		return nil, fmt.Errorf("planPath cannot be blank: use Show() if not passing planPath")
 	}
@@ -140,7 +125,7 @@ func (tf *Tofu) ShowPlanFile(ctx context.Context, planPath string, opts ...ShowO
 	showCmd := tf.showCmd(ctx, true, mergeEnv, planPath)
 
 	var ret tfjson.Plan
-	err = tf.runTofuCmdJSON(ctx, showCmd, &ret)
+	err := tf.runTofuCmdJSON(ctx, showCmd, &ret)
 	if err != nil {
 		return nil, err
 	}

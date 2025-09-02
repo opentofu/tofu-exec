@@ -131,22 +131,9 @@ func (tf *Tofu) FormatCheck(ctx context.Context, opts ...FormatOption) (bool, []
 }
 
 func (tf *Tofu) formatCmd(ctx context.Context, args []string, opts ...FormatOption) (*exec.Cmd, error) {
-	err := tf.compatible(ctx, tf0_7_7, nil)
-	if err != nil {
-		return nil, fmt.Errorf("fmt was first introduced in Terraform 0.7.7: %w", err)
-	}
-
 	c := defaultFormatConfig
 
 	for _, o := range opts {
-		switch o.(type) {
-		case *RecursiveOption:
-			err := tf.compatible(ctx, tf0_12_0, nil)
-			if err != nil {
-				return nil, fmt.Errorf("-recursive was added to fmt in Terraform 0.12: %w", err)
-			}
-		}
-
 		o.configureFormat(&c)
 	}
 

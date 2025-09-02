@@ -7,7 +7,6 @@ package tfexec
 
 import (
 	"context"
-	"fmt"
 	"os/exec"
 )
 
@@ -42,14 +41,9 @@ func (opt *ProviderOption) configureProvidersLock(conf *providersLockConfig) {
 
 // ProvidersLock represents the `tofu providers lock` command
 func (tf *Tofu) ProvidersLock(ctx context.Context, opts ...ProvidersLockOption) error {
-	err := tf.compatible(ctx, tf0_14_0, nil)
-	if err != nil {
-		return fmt.Errorf("terraform providers lock was added in 0.14.0: %w", err)
-	}
-
 	lockCmd := tf.providersLockCmd(ctx, opts...)
 
-	err = tf.runTofuCmd(ctx, lockCmd)
+	err := tf.runTofuCmd(ctx, lockCmd)
 	if err != nil {
 		return err
 	}

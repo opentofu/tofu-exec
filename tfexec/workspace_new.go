@@ -7,7 +7,6 @@ package tfexec
 
 import (
 	"context"
-	"fmt"
 	"os/exec"
 	"strconv"
 )
@@ -55,14 +54,6 @@ func (tf *Tofu) workspaceNewCmd(ctx context.Context, workspace string, opts ...W
 	c := defaultWorkspaceNewOptions
 
 	for _, o := range opts {
-		switch o.(type) {
-		case *LockOption, *LockTimeoutOption:
-			err := tf.compatible(ctx, tf0_12_0, nil)
-			if err != nil {
-				return nil, fmt.Errorf("-lock and -lock-timeout were added to workspace new in Terraform 0.12: %w", err)
-			}
-		}
-
 		o.configureWorkspaceNew(&c)
 	}
 
