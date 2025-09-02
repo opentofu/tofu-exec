@@ -13,7 +13,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"strings"
@@ -86,15 +85,6 @@ func ProhibitedEnv(env map[string]string) []string {
 		p = append(p, k)
 	})
 	return p
-}
-
-// CleanEnv removes any prohibited environment variables from an environment map.
-func CleanEnv(dirty map[string]string) map[string]string {
-	clean := dirty
-	manualEnvVars(clean, func(k string) {
-		delete(clean, k)
-	})
-	return clean
 }
 
 func envMap(environ []string) map[string]string {
@@ -230,14 +220,14 @@ func mergeUserAgent(uas ...string) string {
 }
 
 func mergeWriters(writers ...io.Writer) io.Writer {
-	compact := []io.Writer{}
+	var compact []io.Writer
 	for _, w := range writers {
 		if w != nil {
 			compact = append(compact, w)
 		}
 	}
 	if len(compact) == 0 {
-		return ioutil.Discard
+		return io.Discard
 	}
 	if len(compact) == 1 {
 		return compact[0]
@@ -254,7 +244,7 @@ func writeOutput(ctx context.Context, r io.ReadCloser, w io.Writer) error {
 	go func() {
 		select {
 		case <-ctx.Done():
-			r.Close()
+			_ = r.Close()
 		case <-closeCtx.Done():
 			return
 		}

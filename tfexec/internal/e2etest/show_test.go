@@ -8,7 +8,6 @@ package e2etest
 import (
 	"context"
 	"encoding/json"
-	"strings"
 	"testing"
 
 	"github.com/hashicorp/go-version"
@@ -218,15 +217,4 @@ func TestShowBigInt(t *testing.T) {
 			t.Fatalf("mismatch (-want +got):\n%s", diff)
 		}
 	})
-}
-
-// Since our plan strings are not large, prefer simple cross-platform
-// normalization handling over pulling in a dependency.
-func normalizePlanOutput(str string) string {
-	// Ignore any extra newlines at the beginning or end of output
-	str = strings.TrimSpace(str)
-	// Normalize CRLF to LF for cross-platform testing
-	str = strings.Replace(str, "\r\n", "\n", -1)
-
-	return str
 }

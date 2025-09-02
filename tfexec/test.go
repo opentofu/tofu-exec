@@ -29,7 +29,7 @@ func (opt *TestsDirectoryOption) configureTest(conf *testConfig) {
 //
 // The given io.Writer, if specified, will receive machine-readable
 // JSON from Terraform including test results.
-func (tf *Tofu) Test(ctx context.Context, w io.Writer, opts ...TestOption) error {
+func (tf *Tofu) Test(ctx context.Context, w io.Writer, _ ...TestOption) error {
 	tf.SetStdout(w)
 
 	testCmd := tf.testCmd(ctx)
