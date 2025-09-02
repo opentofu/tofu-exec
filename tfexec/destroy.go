@@ -106,11 +106,6 @@ func (tf *Tofu) Destroy(ctx context.Context, opts ...DestroyOption) error {
 // JSON being written to the supplied `io.Writer`. DestroyJSON is likely to be
 // removed in a future major version in favour of Destroy returning JSON by default.
 func (tf *Tofu) DestroyJSON(ctx context.Context, w io.Writer, opts ...DestroyOption) error {
-	err := tf.compatible(ctx, tf0_15_3, nil)
-	if err != nil {
-		return fmt.Errorf("terraform destroy -json was added in 0.15.3: %w", err)
-	}
-
 	tf.SetStdout(w)
 
 	cmd, err := tf.destroyJSONCmd(ctx, opts...)

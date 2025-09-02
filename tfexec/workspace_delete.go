@@ -7,7 +7,6 @@ package tfexec
 
 import (
 	"context"
-	"fmt"
 	"os/exec"
 	"strconv"
 )
@@ -53,14 +52,6 @@ func (tf *Tofu) workspaceDeleteCmd(ctx context.Context, workspace string, opts .
 	c := defaultWorkspaceDeleteOptions
 
 	for _, o := range opts {
-		switch o.(type) {
-		case *LockOption, *LockTimeoutOption:
-			err := tf.compatible(ctx, tf0_12_0, nil)
-			if err != nil {
-				return nil, fmt.Errorf("-lock and -lock-timeout were added to workspace delete in Terraform 0.12: %w", err)
-			}
-		}
-
 		o.configureWorkspaceDelete(&c)
 	}
 
@@ -70,11 +61,9 @@ func (tf *Tofu) workspaceDeleteCmd(ctx context.Context, workspace string, opts .
 		args = append(args, "-force")
 	}
 	if c.lockTimeout != "" && c.lockTimeout != defaultWorkspaceDeleteOptions.lockTimeout {
-		// only pass if not default, so we don't need to worry about the 0.11 version check
 		args = append(args, "-lock-timeout="+c.lockTimeout)
 	}
 	if !c.lock {
-		// only pass if false, so we don't need to worry about the 0.11 version check
 		args = append(args, "-lock="+strconv.FormatBool(c.lock))
 	}
 

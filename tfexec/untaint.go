@@ -7,7 +7,6 @@ package tfexec
 
 import (
 	"context"
-	"fmt"
 	"os/exec"
 	"strconv"
 )
@@ -47,10 +46,6 @@ func (opt *LockTimeoutOption) configureUntaint(conf *untaintConfig) {
 
 // Untaint represents the tofu untaint subcommand.
 func (tf *Tofu) Untaint(ctx context.Context, address string, opts ...UntaintOption) error {
-	err := tf.compatible(ctx, tf0_6_13, nil)
-	if err != nil {
-		return fmt.Errorf("untaint was first introduced in Terraform 0.6.13: %w", err)
-	}
 	untaintCmd := tf.untaintCmd(ctx, address, opts...)
 	return tf.runTofuCmd(ctx, untaintCmd)
 }

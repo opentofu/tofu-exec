@@ -8,7 +8,6 @@ package e2etest
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"strings"
 	"testing"
 
@@ -16,34 +15,13 @@ import (
 	tfjson "github.com/hashicorp/terraform-json"
 
 	"github.com/opentofu/tofu-exec/tfexec"
-	"github.com/opentofu/tofu-exec/tfexec/internal/testutil"
-)
-
-var (
-	v1_0_1 = version.Must(version.NewVersion("1.0.1"))
 )
 
 func TestShow(t *testing.T) {
 	runTest(t, "basic_with_state", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-
-		if tfv.LessThan(providerAddressMinVersion) {
-			t.Skip("state file provider FQNs not compatible with this Terraform version")
-		}
-
 		providerName := "registry.opentofu.org/hashicorp/null"
-		if tfv.LessThan(providerAddressMinVersion) {
-			providerName = "null"
-		}
-
-		formatVersion := "0.1"
-		var sensitiveValues json.RawMessage
-		if tfv.Core().GreaterThanOrEqual(v1_0_1) {
-			formatVersion = "0.2"
-			sensitiveValues = json.RawMessage([]byte("{}"))
-		}
-		if tfv.Core().GreaterThanOrEqual(v1_1) {
-			formatVersion = "1.0"
-		}
+		var sensitiveValues json.RawMessage = []byte("{}")
+		formatVersion := "1.0"
 
 		expected := &tfjson.State{
 			FormatVersion: formatVersion,
@@ -84,17 +62,7 @@ func TestShow(t *testing.T) {
 
 func TestShow_emptyDir(t *testing.T) {
 	runTest(t, "empty", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		if tfv.LessThan(showMinVersion) {
-			t.Skip("terraform show was added in Terraform 0.12, so test is not valid")
-		}
-
-		formatVersion := "0.1"
-		if tfv.Core().GreaterThanOrEqual(v1_0_1) {
-			formatVersion = "0.2"
-		}
-		if tfv.Core().GreaterThanOrEqual(v1_1) {
-			formatVersion = "1.0"
-		}
+		formatVersion := "1.0"
 
 		expected := &tfjson.State{
 			FormatVersion: formatVersion,
@@ -116,12 +84,6 @@ func TestShow_noInitBasic(t *testing.T) {
 	// From v1.2.0 onwards, running show before init in the basic case returns
 	// an empty state with no error.
 	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		// HACK KEM: Really I mean tfv.LessThan(version.Must(version.NewVersion("1.2.0"))),
-		// but I want this test to run for refs/heads/main prior to the release of v1.2.0.
-		if tfv.LessThan(version.Must(version.NewVersion("1.2.0"))) {
-
-			t.Skip("test applies only to v1.2.0 and greater")
-		}
 		expected := &tfjson.State{
 			FormatVersion: "1.0",
 		}
@@ -140,14 +102,7 @@ func TestShow_noInitBasic(t *testing.T) {
 func TestShow_noInitModule(t *testing.T) {
 	t.Parallel()
 
-	// From v1.2.0 onwards, running show before init in the basic case returns
-	// an empty state with no error.
 	runTest(t, "registry_module", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		// HACK KEM: Really I mean tfv.LessThan(version.Must(version.NewVersion("1.2.0"))),
-		// but I want this test to run for refs/heads/main prior to the release of v1.2.0.
-		if tfv.LessThanOrEqual(version.Must(version.NewVersion(testutil.Latest_v1_7))) {
-			t.Skip("test applies only to v1.2.0 and greater")
-		}
 		expected := &tfjson.State{
 			FormatVersion: "1.0",
 		}
@@ -165,10 +120,6 @@ func TestShow_noInitModule(t *testing.T) {
 
 func TestShow_noInitInmemBackend(t *testing.T) {
 	runTest(t, "inmem_backend", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		if tfv.LessThan(showMinVersion) {
-			t.Skip("terraform show was added in Terraform 0.12, so test is not valid")
-		}
-
 		_, err := tf.Show(context.Background())
 		if err == nil {
 			t.Fatalf("expected error, but did not get one")
@@ -178,10 +129,6 @@ func TestShow_noInitInmemBackend(t *testing.T) {
 
 func TestShow_noInitLocalBackendNonDefaultState(t *testing.T) {
 	runTest(t, "local_backend_non_default_state", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		if tfv.LessThan(showMinVersion) {
-			t.Skip("terraform show was added in Terraform 0.12, so test is not valid")
-		}
-
 		_, err := tf.Show(context.Background())
 		if err == nil {
 			t.Fatalf("expected error, but did not get one")
@@ -191,27 +138,6 @@ func TestShow_noInitLocalBackendNonDefaultState(t *testing.T) {
 
 func TestShow_noInitCloudBackend(t *testing.T) {
 	runTest(t, "cloud_backend", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		if tfv.LessThan(version.Must(version.NewVersion("1.1.0"))) {
-			t.Skip("cloud backend was added in Terraform 1.1, so test is not valid")
-		}
-
-		_, err := tf.Show(context.Background())
-		if err == nil {
-			t.Fatalf("expected error, but did not get one")
-		}
-	})
-}
-
-func TestShow_noInitEtcdBackend(t *testing.T) {
-	runTest(t, "etcd_backend", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		if tfv.LessThan(showMinVersion) {
-			t.Skip("terraform show was added in Terraform 0.12, so test is not valid")
-		}
-
-		if tfv.GreaterThanOrEqual(version.Must(version.NewVersion("1.3.0"))) || tfv.Prerelease() != "" {
-			t.Skip("etcd backend was removed in Terraform 1.3, so test is not valid")
-		}
-
 		_, err := tf.Show(context.Background())
 		if err == nil {
 			t.Fatalf("expected error, but did not get one")
@@ -221,10 +147,6 @@ func TestShow_noInitEtcdBackend(t *testing.T) {
 
 func TestShow_noInitRemoteBackend(t *testing.T) {
 	runTest(t, "remote_backend", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		if tfv.LessThan(showMinVersion) {
-			t.Skip("terraform show was added in Terraform 0.12, so test is not valid")
-		}
-
 		_, err := tf.Show(context.Background())
 		if err == nil {
 			t.Fatalf("expected error, but did not get one")
@@ -234,10 +156,6 @@ func TestShow_noInitRemoteBackend(t *testing.T) {
 
 func TestShow_statefileDoesNotExist(t *testing.T) {
 	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		if tfv.LessThan(showMinVersion) {
-			t.Skip("terraform show was added in Terraform 0.12, so test is not valid")
-		}
-
 		err := tf.Init(context.Background())
 		if err != nil {
 			t.Fatalf("error running Init in test directory: %s", err)
@@ -250,51 +168,11 @@ func TestShow_statefileDoesNotExist(t *testing.T) {
 	})
 }
 
-func TestShow_versionMismatch(t *testing.T) {
-	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		// only testing versions without show
-		if tfv.GreaterThanOrEqual(showMinVersion) {
-			t.Skip("terraform show was added in Terraform 0.12, so test is not valid")
-		}
-
-		var mismatch *tfexec.ErrVersionMismatch
-		_, err := tf.Show(context.Background())
-		if !errors.As(err, &mismatch) {
-			t.Fatalf("expected version mismatch error, got %T %s", err, err)
-		}
-		if mismatch.Actual != "0.11.15" {
-			t.Fatalf("expected version 0.11.15, got %q", mismatch.Actual)
-		}
-		if mismatch.MinInclusive != "0.12.0" {
-			t.Fatalf("expected min 0.12.0, got %q", mismatch.MinInclusive)
-		}
-		if mismatch.MaxExclusive != "-" {
-			t.Fatalf("expected max -, got %q", mismatch.MaxExclusive)
-		}
-	})
-}
-
 func TestShowBigInt(t *testing.T) {
 	runTest(t, "bigint", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		if tfv.LessThan(showMinVersion) {
-			t.Skip("terraform show was added in Terraform 0.12, so test is not valid")
-		}
-
 		providerName := "registry.opentofu.org/hashicorp/random"
-		if tfv.LessThan(providerAddressMinVersion) {
-			providerName = "random"
-		}
-
-		formatVersion := "0.1"
-		var sensitiveValues json.RawMessage
-
-		if tfv.Core().GreaterThanOrEqual(v1_0_1) {
-			formatVersion = "0.2"
-			sensitiveValues = json.RawMessage([]byte("{}"))
-		}
-		if tfv.Core().GreaterThanOrEqual(v1_1) {
-			formatVersion = "1.0"
-		}
+		var sensitiveValues json.RawMessage = []byte("{}")
+		formatVersion := "1.0"
 
 		expected := &tfjson.State{
 			FormatVersion: formatVersion,

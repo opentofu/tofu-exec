@@ -7,7 +7,6 @@ package tfexec
 
 import (
 	"context"
-	"fmt"
 	"os/exec"
 	"strings"
 )
@@ -62,27 +61,14 @@ func (tf *Tofu) graphCmd(ctx context.Context, opts ...GraphOption) (*exec.Cmd, e
 	args := []string{"graph"}
 
 	if c.plan != "" {
-		// plan was a positional arguement prior to Terraform 0.15.0. Ensure proper use by checking version.
-		if err := tf.compatible(ctx, tf0_15_0, nil); err == nil {
-			args = append(args, "-plan="+c.plan)
-		} else {
-			args = append(args, c.plan)
-		}
+		args = append(args, "-plan="+c.plan)
 	}
 
 	if c.drawCycles {
-		err := tf.compatible(ctx, tf0_5_0, nil)
-		if err != nil {
-			return nil, fmt.Errorf("-draw-cycles was first introduced in Terraform 0.5.0: %w", err)
-		}
 		args = append(args, "-draw-cycles")
 	}
 
 	if c.graphType != "" {
-		err := tf.compatible(ctx, tf0_8_0, nil)
-		if err != nil {
-			return nil, fmt.Errorf("-graph-type was first introduced in Terraform 0.8.0: %w", err)
-		}
 		args = append(args, "-type="+c.graphType)
 	}
 

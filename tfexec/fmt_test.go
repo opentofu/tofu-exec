@@ -7,17 +7,12 @@ package tfexec
 
 import (
 	"context"
-	"runtime"
 	"testing"
 
 	"github.com/opentofu/tofu-exec/tfexec/internal/testutil"
 )
 
 func TestFormatCmd(t *testing.T) {
-	if runtime.GOOS == "darwin" && runtime.GOARCH == "arm64" {
-		t.Skip("Terraform for darwin/arm64 is not available until v1")
-	}
-
 	td := t.TempDir()
 
 	tf, err := NewTofu(td, tfVersion(t, testutil.Latest_v1))

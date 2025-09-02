@@ -149,7 +149,7 @@ func (tf *Tofu) buildEnv(mergeEnv map[string]string) []string {
 	ua := mergeUserAgent(
 		os.Getenv(appendUserAgentEnvVar),
 		tf.appendUserAgent,
-		fmt.Sprintf("HashiCorp-terraform-exec/%s", version.ModuleVersion()),
+		fmt.Sprintf("tofu-exec/%s", version.ModuleVersion()),
 	)
 	env[appendUserAgentEnvVar] = ua
 

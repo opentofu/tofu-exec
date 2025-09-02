@@ -16,10 +16,6 @@ import (
 	"github.com/opentofu/tofu-exec/tfexec/internal/testutil"
 )
 
-var (
-	applyDestroyMinVersion = version.Must(version.NewVersion("0.15.2"))
-)
-
 func TestApply(t *testing.T) {
 	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		err := tf.Init(context.Background())
@@ -34,7 +30,7 @@ func TestApply(t *testing.T) {
 	})
 }
 
-func TestApplyJSON_TF015AndLater(t *testing.T) {
+func TestApplyJSON(t *testing.T) {
 	versions := []string{testutil.Latest_v1}
 
 	runTestWithVersions(t, versions, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
@@ -52,9 +48,6 @@ func TestApplyJSON_TF015AndLater(t *testing.T) {
 
 func TestApplyDestroy(t *testing.T) {
 	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		if tfv.LessThan(applyDestroyMinVersion) {
-			t.Skip("terraform apply -destroy was added in Terraform 0.15.2, so test is not valid")
-		}
 		err := tf.Init(context.Background())
 		if err != nil {
 			t.Fatalf("error running Init in test directory: %s", err)

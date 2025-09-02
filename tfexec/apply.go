@@ -121,11 +121,6 @@ func (tf *Tofu) Apply(ctx context.Context, opts ...ApplyOption) error {
 // JSON being written to the supplied `io.Writer`. ApplyJSON is likely to be
 // removed in a future major version in favour of Apply returning JSON by default.
 func (tf *Tofu) ApplyJSON(ctx context.Context, w io.Writer, opts ...ApplyOption) error {
-	err := tf.compatible(ctx, tf0_15_3, nil)
-	if err != nil {
-		return fmt.Errorf("tofu apply -json was added in 0.15.3: %w", err)
-	}
-
 	tf.SetStdout(w)
 
 	cmd, err := tf.applyJSONCmd(ctx, opts...)
@@ -194,10 +189,6 @@ func (tf *Tofu) buildApplyArgs(ctx context.Context, c applyConfig) ([]string, er
 	args = append(args, "-refresh="+strconv.FormatBool(c.refresh))
 
 	if c.refreshOnly {
-		err := tf.compatible(ctx, tf0_15_4, nil)
-		if err != nil {
-			return nil, fmt.Errorf("refresh-only option was introduced in Terraform 0.15.4: %w", err)
-		}
 		if !c.refresh {
 			return nil, fmt.Errorf("you cannot use refresh=false in refresh-only planning mode")
 		}
@@ -206,19 +197,11 @@ func (tf *Tofu) buildApplyArgs(ctx context.Context, c applyConfig) ([]string, er
 
 	// string slice opts: split into separate args
 	if c.replaceAddrs != nil {
-		err := tf.compatible(ctx, tf0_15_2, nil)
-		if err != nil {
-			return nil, fmt.Errorf("replace option was introduced in Terraform 0.15.2: %w", err)
-		}
 		for _, addr := range c.replaceAddrs {
 			args = append(args, "-replace="+addr)
 		}
 	}
 	if c.destroy {
-		err := tf.compatible(ctx, tf0_15_2, nil)
-		if err != nil {
-			return nil, fmt.Errorf("-destroy option was introduced in Terraform 0.15.2: %w", err)
-		}
 		args = append(args, "-destroy")
 	}
 

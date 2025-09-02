@@ -34,11 +34,6 @@ func TestImport(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		if tfv.LessThan(version.Must(version.NewVersion("0.12.0"))) {
-			t.Logf("skipping state assertion for 0.11")
-			return
-		}
-
 		state, err := tf.Show(ctx)
 		if err != nil {
 			t.Fatal(err)
