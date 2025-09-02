@@ -218,3 +218,64 @@ func TestShowBigInt(t *testing.T) {
 		}
 	})
 }
+
+// E2E test for ShowModule using deep_module testdata
+func TestShowModule_ShowModule(t *testing.T) {
+	runTest(t, "show_module", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
+		// Only run for OpenTofu version >= 1.11
+		minVer := version.Must(version.NewVersion("1.11.0-dev"))
+		if tfv.LessThan(minVer) {
+			t.Skip("ShowModule requires OpenTofu version >= 1.11.0")
+		}
+
+		// ShowModule for submodule1
+		mod, err := tf.ShowModule(context.Background(), "submodule1")
+		if err != nil {
+			t.Fatalf("ShowModule failed: %v", err)
+		}
+		if mod == nil {
+			t.Fatalf("ShowModule returned nil module")
+		}
+		if len(mod.Variables) != 2 {
+			t.Fatalf("expected 2 input variables, got %d", len(mod.Variables))
+		}
+		if len(mod.Outputs) != 1 {
+			t.Fatalf("expected 1 output, got %d", len(mod.Outputs))
+		}
+
+		// Submodule2
+		mod, err = tf.ShowModule(context.Background(), "submodule2")
+		if err != nil {
+			t.Fatalf("ShowModule failed: %v", err)
+		}
+		if mod == nil {
+			t.Fatalf("ShowModule returned nil module")
+		}
+		if len(mod.Variables) != 1 {
+			t.Fatalf("expected 1 input variables, got %d", len(mod.Variables))
+		}
+
+		if len(mod.ModuleCalls) != 1 {
+			t.Fatalf("expected 1 nested submodule, got %d", len(mod.ModuleCalls))
+		}
+
+		// Submodule21 with 2 outputs and 2 inputs
+		mod, err = tf.ShowModule(context.Background(), "submodule2/submodule21")
+		if err != nil {
+			t.Fatalf("ShowModule failed: %v", err)
+		}
+		if mod == nil {
+			t.Fatalf("ShowModule returned nil module")
+		}
+		if len(mod.Variables) != 2 {
+			t.Fatalf("expected 2 input variables, got %d", len(mod.Variables))
+		}
+		if len(mod.Outputs) != 2 {
+			t.Fatalf("expected 1 nested submodule, got %d", len(mod.ModuleCalls))
+		}
+		if len(mod.ModuleCalls) != 0 {
+			t.Fatalf("expected 0 nested submodule, got %d", len(mod.ModuleCalls))
+		}
+
+	})
+}
