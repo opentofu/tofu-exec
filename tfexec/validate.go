@@ -14,7 +14,7 @@ import (
 	tfjson "github.com/hashicorp/terraform-json"
 )
 
-// Validate represents the validate subcommand to the Terraform CLI. The -json
+// Validate represents the validate subcommand to the OpenTofu CLI. The -json
 // flag support was added in 0.12.0, so this will not work on earlier versions.
 func (tf *Tofu) Validate(ctx context.Context) (*tfjson.ValidateOutput, error) {
 	err := tf.compatible(ctx, tf0_12_0, nil)

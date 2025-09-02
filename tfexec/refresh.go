@@ -76,7 +76,7 @@ func (opt *VarFileOption) configureRefresh(conf *refreshConfig) {
 	conf.varFiles = append(conf.varFiles, opt.path)
 }
 
-// Refresh represents the terraform refresh subcommand.
+// Refresh represents the tofu refresh subcommand.
 func (tf *Tofu) Refresh(ctx context.Context, opts ...RefreshCmdOption) error {
 	cmd, err := tf.refreshCmd(ctx, opts...)
 	if err != nil {
@@ -85,9 +85,8 @@ func (tf *Tofu) Refresh(ctx context.Context, opts ...RefreshCmdOption) error {
 	return tf.runTofuCmd(ctx, cmd)
 }
 
-// RefreshJSON represents the terraform refresh subcommand with the `-json` flag.
-// Using the `-json` flag will result in
-// [machine-readable](https://developer.hashicorp.com/terraform/internals/machine-readable-ui)
+// RefreshJSON represents the tofu refresh subcommand with the `-json` flag.
+// Using the `-json` flag will result in machine-readable
 // JSON being written to the supplied `io.Writer`. RefreshJSON is likely to be
 // removed in a future major version in favour of Refresh returning JSON by default.
 func (tf *Tofu) RefreshJSON(ctx context.Context, w io.Writer, opts ...RefreshCmdOption) error {

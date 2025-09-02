@@ -83,13 +83,13 @@ func Config(path string) *ConfigOption {
 	return &ConfigOption{path}
 }
 
-// CopyStateOption represents the -state flag for terraform workspace new. This flag is used
+// CopyStateOption represents the -state flag for tofu workspace new. This flag is used
 // to copy an existing state file in to the new workspace.
 type CopyStateOption struct {
 	path string
 }
 
-// CopyState represents the -state flag for terraform workspace new. This flag is used
+// CopyState represents the -state flag for tofu workspace new. This flag is used
 // to copy an existing state file in to the new workspace.
 func CopyState(path string) *CopyStateOption {
 	return &CopyStateOption{path}
@@ -273,7 +273,7 @@ func Provider(providers string) *ProviderOption {
 
 type ReattachInfo map[string]ReattachConfig
 
-// ReattachConfig holds the information Terraform needs to be able to attach
+// ReattachConfig holds the information OpenTofu needs to be able to attach
 // itself to a provider process, so it can drive the process.
 type ReattachConfig struct {
 	Protocol        string

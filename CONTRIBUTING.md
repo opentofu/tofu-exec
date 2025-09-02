@@ -63,19 +63,6 @@ By default, each test is run against the latest patch versions of all OpenTofu m
 
 The `github.com/opentofu/tofu-exec` Go module in its entirety is versioned according to [Go module versioning](https://golang.org/ref/mod#versions) with Git tags. The latest version is automatically written to `internal/version/version.go` during the release process.
 
-## Releases
-
-Releases are made on a reasonably regular basis by the OpenTofu team, using our custom CI workflows. There is currently no set release schedule.
-
-The following notes are only relevant to maintainers.
-
-1. Make sure [CHANGELOG.md](https://github.com/opentofu/tofu-exec/blob/main/CHANGELOG.md) has all **changes** and the first line has the **version** you're intending to release (with ` (Unreleased)` suffix).
-1. Trigger the [`release` workflow](https://github.com/opentofu/tofu-exec/actions/workflows/release.yml) from GitHub UI. This will run the [release script](https://github.com/opentofu/tofu-exec/blob/main/scripts/release/release.sh). As part of that script:
-  - `Unreleased`, `[GH-XXX]` will be replaced.
-  - The [version](https://github.com/opentofu/tofu-exec/blob/main/internal/version/version.go#L3) will be bumped to match the one parsed from `CHANGELOG.md`.
-  - Tag will be pushed
-1. [Create new release](https://github.com/opentofu/tofu-exec/releases/new) via GitHub UI to point to the new tag and copy the appropriate part of the CHANGELOG.md there.
-
 ## Cosmetic changes, code formatting, and typos
 
 In general we do not accept PRs containing only the following changes:

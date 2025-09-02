@@ -59,7 +59,7 @@ func (opt *StateOutOption) configureStateRm(conf *stateRmConfig) {
 	conf.stateOut = opt.path
 }
 
-// StateRm represents the terraform state rm subcommand.
+// StateRm represents the tofu state rm subcommand.
 func (tf *Tofu) StateRm(ctx context.Context, address string, opts ...StateRmCmdOption) error {
 	cmd, err := tf.stateRmCmd(ctx, address, opts...)
 	if err != nil {

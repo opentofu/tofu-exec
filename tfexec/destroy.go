@@ -92,7 +92,7 @@ func (opt *ReattachOption) configureDestroy(conf *destroyConfig) {
 	conf.reattachInfo = opt.info
 }
 
-// Destroy represents the terraform destroy subcommand.
+// Destroy represents the tofu destroy subcommand.
 func (tf *Tofu) Destroy(ctx context.Context, opts ...DestroyOption) error {
 	cmd, err := tf.destroyCmd(ctx, opts...)
 	if err != nil {
@@ -101,9 +101,8 @@ func (tf *Tofu) Destroy(ctx context.Context, opts ...DestroyOption) error {
 	return tf.runTofuCmd(ctx, cmd)
 }
 
-// DestroyJSON represents the terraform destroy subcommand with the `-json` flag.
-// Using the `-json` flag will result in
-// [machine-readable](https://developer.hashicorp.com/terraform/internals/machine-readable-ui)
+// DestroyJSON represents the tofu destroy subcommand with the `-json` flag.
+// Using the `-json` flag will result in machine-readable
 // JSON being written to the supplied `io.Writer`. DestroyJSON is likely to be
 // removed in a future major version in favour of Destroy returning JSON by default.
 func (tf *Tofu) DestroyJSON(ctx context.Context, w io.Writer, opts ...DestroyOption) error {

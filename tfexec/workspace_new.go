@@ -40,7 +40,7 @@ func (opt *CopyStateOption) configureWorkspaceNew(conf *workspaceNewConfig) {
 	conf.copyState = opt.path
 }
 
-// WorkspaceNew represents the workspace new subcommand to the Terraform CLI.
+// WorkspaceNew represents the workspace new subcommand to the OpenTofu CLI.
 func (tf *Tofu) WorkspaceNew(ctx context.Context, workspace string, opts ...WorkspaceNewCmdOption) error {
 	cmd, err := tf.workspaceNewCmd(ctx, workspace, opts...)
 	if err != nil {

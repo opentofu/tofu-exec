@@ -12,7 +12,7 @@ import (
 	tfjson "github.com/hashicorp/terraform-json"
 )
 
-// ProvidersSchema represents the terraform providers schema -json subcommand.
+// ProvidersSchema represents the tofu providers schema -json subcommand.
 func (tf *Tofu) ProvidersSchema(ctx context.Context) (*tfjson.ProviderSchemas, error) {
 	schemaCmd := tf.providersSchemaCmd(ctx)
 

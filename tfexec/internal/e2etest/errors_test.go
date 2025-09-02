@@ -193,7 +193,7 @@ func TestContext_sleepTimeoutExpired(t *testing.T) {
 				t.Fatalf("expected context.DeadlineExceeded, got %T %s", err, err)
 			}
 		case <-time.After(time.Second * 10):
-			t.Fatal("terraform apply should have canceled and returned in ~5s")
+			t.Fatal("tofu apply should have canceled and returned in ~5s")
 		}
 	})
 }

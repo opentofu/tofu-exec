@@ -23,7 +23,7 @@ Currently, that means Go **1.18** or later must be used.
 
 The `Tofu` struct must be initialised with `NewTofu(workingDir, execPath)`.
 
-Top-level `tofu` commands each have their own function, which will return either `error` or `(T, error)`, where `T` is a `terraform-json` type.
+Top-level `tofu` commands each have their own function, which will return either `error` or `(T, error)`, where `T` is a `terraform-json` type or a type defined in this repository.
 
 
 ### Example
@@ -77,7 +77,7 @@ func main() {
 	// workingDir := "/path/to/working/dir"
 	tf, err := tfexec.NewTofu(workingDir, execPath)
 	if err != nil {
-		log.Fatalf("error running NewTerraform: %s", err)
+		log.Fatalf("error running NewTofu: %s", err)
 	}
 
 	err = tf.Init(context.Background(), tfexec.Upgrade(true))
@@ -98,7 +98,7 @@ func main() {
 
 The tofu-exec test suite contains end-to-end tests which run realistic workflows against a real Tofu binary using `tfexec.Tofu{}`.
 
-To run these tests with a local Tofu binary, set the environment variable `TFEXEC_E2ETEST_TERRAFORM_PATH` to its path and run:
+To run these tests with a local Tofu binary, set the environment variable `TFEXEC_E2ETEST_TOFU_PATH` to its path and run:
 ```sh
 go test -timeout=20m ./tfexec/internal/e2etest
 ```

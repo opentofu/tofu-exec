@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-// WorkspaceList represents the workspace list subcommand to the Terraform CLI.
+// WorkspaceList represents the workspace list subcommand to the OpenTofu CLI.
 func (tf *Tofu) WorkspaceList(ctx context.Context) ([]string, string, error) {
 	// TODO: [DIR] param option
 	wlCmd := tf.buildTofuCmd(ctx, nil, "workspace", "list", "-no-color")

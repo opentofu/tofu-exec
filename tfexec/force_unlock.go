@@ -25,7 +25,7 @@ func (opt *DirOption) configureForceUnlock(conf *forceUnlockConfig) {
 	conf.dir = opt.path
 }
 
-// ForceUnlock represents the `terraform force-unlock` command
+// ForceUnlock represents the `tofu force-unlock` command
 func (tf *Tofu) ForceUnlock(ctx context.Context, lockID string, opts ...ForceUnlockOption) error {
 	unlockCmd, err := tf.forceUnlockCmd(ctx, lockID, opts...)
 	if err != nil {
