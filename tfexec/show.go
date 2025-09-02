@@ -178,7 +178,8 @@ func (tf *Tofu) ShowPlanFileRaw(ctx context.Context, planPath string, opts ...Sh
 // ShowModule returns module config based on moduleDir located in local filesystem.
 // This command was added in tofu version 1.11
 func (tf *Tofu) ShowModule(ctx context.Context, moduleDir string) (*Module, error) {
-	err := tf.compatible(ctx, version.Must(version.NewVersion("1.11.0-dev")), nil)
+	// tf.compatible check with stripped pre-release parts, so any 1.11 release will work including betas and rcs
+	err := tf.compatible(ctx, version.Must(version.NewVersion("1.11.0")), nil)
 	if err != nil {
 		return nil, fmt.Errorf("`tofu show -json -module=DIR` was added in tofu 1.11.0: %w", err)
 	}

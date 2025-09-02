@@ -223,7 +223,7 @@ func TestShowBigInt(t *testing.T) {
 func TestShowModule_ShowModule(t *testing.T) {
 	runTest(t, "show_module", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		// Only run for OpenTofu version >= 1.11
-		minVer := version.Must(version.NewVersion("1.11.0-dev"))
+		minVer := version.Must(version.NewVersion("1.11.0-beta1"))
 		if tfv.LessThan(minVer) {
 			t.Skip("ShowModule requires OpenTofu version >= 1.11.0")
 		}
