@@ -132,10 +132,9 @@ jobs:
           - ${{ needs.resolve-versions.outputs.oldstable }}
           - ${{ needs.resolve-versions.outputs.stable }}
         tofu_version:
-          - "1.7.8"
-          - "1.8.9"
-          - "1.9.1"
-          - "refs/heads/main"
+          - "1.8.11"
+          - "1.9.3"
+          - "1.10.5"
     steps:
       -
         name: Checkout
@@ -148,5 +147,5 @@ jobs:
       -
         name: Run E2E tests
         env:
-          TFEXEC_E2ETEST_VERSIONS: ${{ matrix.terraform_version }}
+          TFEXEC_E2ETEST_VERSIONS: ${{ matrix.tofu_version }}
         run: go test -race -timeout=30m -v ./tfexec/internal/e2etest
