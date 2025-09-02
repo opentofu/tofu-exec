@@ -77,7 +77,13 @@ func runTestWithVersions(t *testing.T, versions []string, fixtureName string, cb
 			}
 			alreadyRunVersions[tfv] = true
 
-			td := t.TempDir()
+			td, err := os.MkdirTemp("", "tf")
+			if err != nil {
+				t.Fatalf("error creating temporary test directory: %s", err)
+			}
+			t.Cleanup(func() {
+				_ = os.RemoveAll(td)
+			})
 
 			var execPath string
 			if localBinPath := os.Getenv("TFEXEC_E2ETEST_TOFU_PATH"); localBinPath != "" {
