@@ -26,8 +26,6 @@ const (
 	Latest_v1    = Latest_v1_10
 )
 
-const appendUserAgent = "tfexec-testutil"
-
 type TFCache struct {
 	sync.Mutex
 

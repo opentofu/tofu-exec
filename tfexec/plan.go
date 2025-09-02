@@ -156,7 +156,7 @@ func (tf *Tofu) planCmd(ctx context.Context, opts ...PlanOption) (*exec.Cmd, err
 		o.configurePlan(&c)
 	}
 
-	args, err := tf.buildPlanArgs(ctx, c)
+	args, err := tf.buildPlanArgs(c)
 	if err != nil {
 		return nil, err
 	}
@@ -171,7 +171,7 @@ func (tf *Tofu) planJSONCmd(ctx context.Context, opts ...PlanOption) (*exec.Cmd,
 		o.configurePlan(&c)
 	}
 
-	args, err := tf.buildPlanArgs(ctx, c)
+	args, err := tf.buildPlanArgs(c)
 	if err != nil {
 		return nil, err
 	}
@@ -181,7 +181,7 @@ func (tf *Tofu) planJSONCmd(ctx context.Context, opts ...PlanOption) (*exec.Cmd,
 	return tf.buildPlanCmd(ctx, c, args)
 }
 
-func (tf *Tofu) buildPlanArgs(ctx context.Context, c planConfig) ([]string, error) {
+func (tf *Tofu) buildPlanArgs(c planConfig) ([]string, error) {
 	args := []string{"plan", "-no-color", "-input=false", "-detailed-exitcode"}
 
 	// string opts: only pass if set

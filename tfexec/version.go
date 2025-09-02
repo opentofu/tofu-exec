@@ -9,6 +9,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"regexp"
 	"strconv"
@@ -16,15 +17,6 @@ import (
 
 	"github.com/hashicorp/go-version"
 	tfjson "github.com/hashicorp/terraform-json"
-)
-
-var (
-	//Latest version of each minor release
-	tf1_6  = version.Must(version.NewVersion("1.6.3"))
-	tf1_7  = version.Must(version.NewVersion("1.7.10"))
-	tf1_8  = version.Must(version.NewVersion("1.8.11"))
-	tf1_9  = version.Must(version.NewVersion("1.9.3"))
-	tf1_10 = version.Must(version.NewVersion("1.10.5"))
 )
 
 // Version returns structured output from the tofu version command including both the OpenTofu CLI version
@@ -58,7 +50,8 @@ func (tf *Tofu) version(ctx context.Context) (*version.Version, map[string]*vers
 
 	tfVersion, providerVersions, err := parseJsonVersionOutput(outBuf.Bytes())
 	if err != nil {
-		if _, ok := err.(*json.SyntaxError); ok {
+		var syntaxError *json.SyntaxError
+		if errors.As(err, &syntaxError) {
 			return tf.versionFromPlaintext(ctx)
 		}
 	}
@@ -78,7 +71,7 @@ func parseJsonVersionOutput(stdout []byte) (*version.Version, map[string]*versio
 		return nil, nil, fmt.Errorf("unable to parse version %q: %w", out.Version, err)
 	}
 
-	providerVersions := make(map[string]*version.Version, 0)
+	providerVersions := make(map[string]*version.Version)
 	for provider, versionStr := range out.ProviderSelections {
 		v, err := version.NewVersion(versionStr)
 		if err != nil {

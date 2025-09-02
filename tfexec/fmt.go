@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"io"
 	"os/exec"
-	"path/filepath"
 	"strings"
 )
 
@@ -33,16 +32,6 @@ func (opt *RecursiveOption) configureFormat(conf *formatConfig) {
 
 func (opt *DirOption) configureFormat(conf *formatConfig) {
 	conf.dir = opt.path
-}
-
-// FormatString formats a passed string, given a path to OpenTofu.
-func FormatString(ctx context.Context, execPath string, content string) (string, error) {
-	tf, err := NewTofu(filepath.Dir(execPath), execPath)
-	if err != nil {
-		return "", err
-	}
-
-	return tf.FormatString(ctx, content)
 }
 
 // FormatString formats a passed string.

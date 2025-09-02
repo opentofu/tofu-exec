@@ -8,7 +8,6 @@ package e2etest
 import (
 	"context"
 	"io"
-	"io/ioutil"
 	"path/filepath"
 	"reflect"
 	"strings"
@@ -147,7 +146,8 @@ resource "foo" "bar" {
 		go func() {
 			err := tf.Format(context.Background(), inR, outW)
 			if err != nil {
-				outW.CloseWithError(err)
+
+				_ = outW.CloseWithError(err)
 			}
 			_ = outW.Close()
 		}()
@@ -165,7 +165,7 @@ resource "foo" "bar" {
 			t.Fatal(err)
 		}
 
-		actual, err := ioutil.ReadAll(outR)
+		actual, err := io.ReadAll(outR)
 		if err != nil {
 			t.Fatal(err)
 		}

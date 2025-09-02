@@ -138,7 +138,7 @@ func (tf *Tofu) applyCmd(ctx context.Context, opts ...ApplyOption) (*exec.Cmd, e
 		o.configureApply(&c)
 	}
 
-	args, err := tf.buildApplyArgs(ctx, c)
+	args, err := tf.buildApplyArgs(c)
 	if err != nil {
 		return nil, err
 	}
@@ -153,7 +153,7 @@ func (tf *Tofu) applyJSONCmd(ctx context.Context, opts ...ApplyOption) (*exec.Cm
 		o.configureApply(&c)
 	}
 
-	args, err := tf.buildApplyArgs(ctx, c)
+	args, err := tf.buildApplyArgs(c)
 	if err != nil {
 		return nil, err
 	}
@@ -163,7 +163,7 @@ func (tf *Tofu) applyJSONCmd(ctx context.Context, opts ...ApplyOption) (*exec.Cm
 	return tf.buildApplyCmd(ctx, c, args)
 }
 
-func (tf *Tofu) buildApplyArgs(ctx context.Context, c applyConfig) ([]string, error) {
+func (tf *Tofu) buildApplyArgs(c applyConfig) ([]string, error) {
 	args := []string{"apply", "-no-color", "-auto-approve", "-input=false"}
 
 	// string opts: only pass if set
