@@ -18,14 +18,12 @@ import (
 )
 
 const (
-	Latest013   = "0.13.7"
-	Latest014   = "0.14.11"
-	Latest015   = "0.15.5"
-	Latest_v1   = "1.9.1"
-	Latest_v1_6 = "1.6.1"
-	Latest_v1_7 = "1.7.8"
-	Latest_v1_8 = "1.8.9"
-	Latest_v1_9 = "1.9.1"
+	Latest_v1_6  = "1.6.3"
+	Latest_v1_7  = "1.7.10"
+	Latest_v1_8  = "1.8.11"
+	Latest_v1_9  = "1.9.3"
+	Latest_v1_10 = "1.10.5"
+	Latest_v1    = Latest_v1_10
 )
 
 const appendUserAgent = "tfexec-testutil"

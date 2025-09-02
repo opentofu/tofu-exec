@@ -31,22 +31,22 @@ func TestParsePlaintextVersionOutput(t *testing.T) {
 		// 0.13 tests
 		{
 			mustVersion(t, "0.13.0-dev"), nil, `
-Terraform v0.13.0-dev`,
+OpenTofu v0.13.0-dev`,
 		},
 		{
 			mustVersion(t, "0.13.0-dev"), map[string]*version.Version{
 				"registry.opentofu.org/hashicorp/null": mustVersion(t, "2.1.2"),
 				"registry.opentofu.org/paultyng/null":  mustVersion(t, "0.1.0"),
 			}, `
-Terraform v0.13.0-dev
+OpenTofu v0.13.0-dev
 + provider registry.opentofu.org/hashicorp/null v2.1.2
 + provider registry.opentofu.org/paultyng/null v0.1.0`,
 		},
 		{
 			mustVersion(t, "0.13.0-dev"), nil, `
-Terraform v0.13.0-dev
+OpenTofu v0.13.0-dev
 
-Your version of Terraform is out of date! The latest version
+Your version of OpenTofu is out of date! The latest version
 is 0.13.1. You can update by downloading from https://www.terraform.io/downloads.html`,
 		},
 		{
@@ -54,33 +54,33 @@ is 0.13.1. You can update by downloading from https://www.terraform.io/downloads
 				"registry.opentofu.org/hashicorp/null": mustVersion(t, "2.1.2"),
 				"registry.opentofu.org/paultyng/null":  mustVersion(t, "0.1.0"),
 			}, `
-Terraform v0.13.0-dev
+OpenTofu v0.13.0-dev
 + provider registry.opentofu.org/hashicorp/null v2.1.2
 + provider registry.opentofu.org/paultyng/null v0.1.0
 
-Your version of Terraform is out of date! The latest version
+Your version of OpenTofu is out of date! The latest version
 is 0.13.1. You can update by downloading from https://www.terraform.io/downloads.html`,
 		},
 
 		// 0.12 tests
 		{
 			mustVersion(t, "0.12.26"), nil, `
-Terraform v0.12.26
+OpenTofu v0.12.26
 `,
 		},
 		{
 			mustVersion(t, "0.12.26"), map[string]*version.Version{
 				"null": mustVersion(t, "2.1.2"),
 			}, `
-Terraform v0.12.26
+OpenTofu v0.12.26
 + provider.null v2.1.2
 `,
 		},
 		{
 			mustVersion(t, "0.12.18"), nil, `
-Terraform v0.12.18
+OpenTofu v0.12.18
 
-Your version of Terraform is out of date! The latest version
+Your version of OpenTofu is out of date! The latest version
 is 0.12.26. You can update by downloading from https://www.terraform.io/downloads.html
 `,
 		},
@@ -88,10 +88,10 @@ is 0.12.26. You can update by downloading from https://www.terraform.io/download
 			mustVersion(t, "0.12.18"), map[string]*version.Version{
 				"null": mustVersion(t, "2.1.2"),
 			}, `
-Terraform v0.12.18
+OpenTofu v0.12.18
 + provider.null v2.1.2
 
-Your version of Terraform is out of date! The latest version
+Your version of OpenTofu is out of date! The latest version
 is 0.12.26. You can update by downloading from https://www.terraform.io/downloads.html
 `,
 		},
@@ -174,6 +174,8 @@ func TestVersionInRange(t *testing.T) {
 		{true, "0.13.0", "0.13.0-beta3", ""},
 		{true, "0.13.0", "0.13.0-beta3", "0.14.0"},
 		{true, "", "0.13.0-beta3", "0.14.0"},
+		{expected: true, min: "1.11.0-dev", tfv: "1.11.0", max: ""},
+		{expected: false, min: "1.11.0-dev", tfv: "1.10.0", max: ""},
 	} {
 		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
 			tfv, err := version.NewVersion(c.tfv)

@@ -6,7 +6,6 @@
 package tfexec
 
 import (
-	"context"
 	"fmt"
 	"io"
 	"log"
@@ -139,17 +138,7 @@ func (tf *Tofu) SetStderr(w io.Writer) {
 
 // SetLog sets the TF_LOG environment variable for OpenTofu CLI execution.
 // This must be combined with a call to SetLogPath to take effect.
-//
-// This is only compatible with OpenTofu CLI 0.15.0 or later as setting the
-// log level was unreliable in earlier versions. It will default to TRACE when
-// SetLogPath is called on versions 0.14.11 and earlier, or if SetLogCore and
-// SetLogProvider have not been called before SetLogPath on versions 0.15.0 and
-// later.
 func (tf *Tofu) SetLog(log string) error {
-	err := tf.compatible(context.Background(), tf0_15_0, nil)
-	if err != nil {
-		return err
-	}
 	tf.log = log
 	return nil
 }
@@ -157,10 +146,6 @@ func (tf *Tofu) SetLog(log string) error {
 // SetLogCore sets the TF_LOG_CORE environment variable for OpenTofu CLI
 // execution. This must be combined with a call to SetLogPath to take effect.
 func (tf *Tofu) SetLogCore(logCore string) error {
-	err := tf.compatible(context.Background(), tf0_15_0, nil)
-	if err != nil {
-		return err
-	}
 	tf.logCore = logCore
 	return nil
 }
@@ -180,10 +165,6 @@ func (tf *Tofu) SetLogPath(path string) error {
 // CLI execution. This must be combined with a call to SetLogPath to take
 // effect.
 func (tf *Tofu) SetLogProvider(logProvider string) error {
-	err := tf.compatible(context.Background(), tf0_15_0, nil)
-	if err != nil {
-		return err
-	}
 	tf.logProvider = logProvider
 	return nil
 }
@@ -199,17 +180,6 @@ func (tf *Tofu) SetAppendUserAgent(ua string) error {
 // OpenTofu CLI execution.
 func (tf *Tofu) SetDisablePluginTLS(disabled bool) error {
 	tf.disablePluginTLS = disabled
-	return nil
-}
-
-// SetSkipProviderVerify sets the TF_SKIP_PROVIDER_VERIFY environment variable
-// for OpenTofu CLI execution. This is no longer used in 0.13.0 and greater.
-func (tf *Tofu) SetSkipProviderVerify(skip bool) error {
-	err := tf.compatible(context.Background(), nil, tf0_13_0)
-	if err != nil {
-		return err
-	}
-	tf.skipProviderVerify = skip
 	return nil
 }
 

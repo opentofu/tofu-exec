@@ -7,7 +7,6 @@ package tfexec
 
 import (
 	"context"
-	"fmt"
 	"io"
 	"os/exec"
 )
@@ -31,17 +30,11 @@ func (opt *TestsDirectoryOption) configureTest(conf *testConfig) {
 // The given io.Writer, if specified, will receive machine-readable
 // JSON from Terraform including test results.
 func (tf *Tofu) Test(ctx context.Context, w io.Writer, opts ...TestOption) error {
-	err := tf.compatible(ctx, tf1_6_0, nil)
-
-	if err != nil {
-		return fmt.Errorf("tofu test was added in 1.6.0: %w", err)
-	}
-
 	tf.SetStdout(w)
 
 	testCmd := tf.testCmd(ctx)
 
-	err = tf.runTofuCmd(ctx, testCmd)
+	err := tf.runTofuCmd(ctx, testCmd)
 
 	if err != nil {
 		return err

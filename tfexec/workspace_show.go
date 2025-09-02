@@ -7,7 +7,6 @@ package tfexec
 
 import (
 	"context"
-	"fmt"
 	"os/exec"
 	"strings"
 )
@@ -31,10 +30,5 @@ func (tf *Tofu) WorkspaceShow(ctx context.Context) (string, error) {
 }
 
 func (tf *Tofu) workspaceShowCmd(ctx context.Context) (*exec.Cmd, error) {
-	err := tf.compatible(ctx, tf0_10_0, nil)
-	if err != nil {
-		return nil, fmt.Errorf("workspace show was first introduced in Terraform 0.10.0: %w", err)
-	}
-
 	return tf.buildTofuCmd(ctx, nil, "workspace", "show", "-no-color"), nil
 }

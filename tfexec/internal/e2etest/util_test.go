@@ -13,7 +13,6 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"testing"
 
@@ -25,21 +24,14 @@ import (
 
 const testFixtureDir = "testdata"
 
-var (
-	showMinVersion = version.Must(version.NewVersion("0.12.0"))
-
-	providerAddressMinVersion = version.Must(version.NewVersion("0.13.0"))
-
-	metadataFunctionsMinVersion = version.Must(version.NewVersion("1.4.0"))
-)
-
 func runTest(t *testing.T, fixtureName string, cb func(t *testing.T, tfVersion *version.Version, tf *tfexec.Tofu)) {
 	t.Helper()
 
 	versions := []string{
 		testutil.Latest_v1,
-		testutil.Latest_v1_7,
+		testutil.Latest_v1_9,
 		testutil.Latest_v1_8,
+		testutil.Latest_v1_7,
 	}
 	if override := os.Getenv("TFEXEC_E2ETEST_VERSIONS"); override != "" {
 		versions = strings.Split(override, ",")
@@ -52,12 +44,9 @@ func runTest(t *testing.T, fixtureName string, cb func(t *testing.T, tfVersion *
 		// By convention, every new Tofu struct is given a clean
 		// temp dir, even if we are only invoking tf.Version(). This
 		// prevents any possible confusion that could result from
-		// reusing an os.TempDir() (for example) that already contained
+		// reusing an t.TempDir() (for example) that already contained
 		// OpenTofu files.
 		td := t.TempDir()
-		t.Cleanup(func() {
-			os.RemoveAll(td)
-		})
 		ltf, err := tfexec.NewTofu(td, localBinPath)
 		if err != nil {
 			t.Fatal(err)
@@ -82,28 +71,12 @@ func runTestWithVersions(t *testing.T, versions []string, fixtureName string, cb
 	alreadyRunVersions := map[string]bool{}
 	for _, tfv := range versions {
 		t.Run(fmt.Sprintf("%s-%s", fixtureName, tfv), func(t *testing.T) {
-			if !strings.HasPrefix(tfv, "refs/") && runtime.GOOS == "darwin" && runtime.GOARCH == "arm64" {
-				v, err := version.NewVersion(tfv)
-				if err != nil {
-					t.Fatal(err)
-				}
-				if v.LessThan(version.Must(version.NewVersion("1.0.2"))) {
-					t.Skipf("Terraform not available for darwin/arm64 < 1.0.2 (%s)", v)
-				}
-			}
-
 			if alreadyRunVersions[tfv] {
 				t.Skipf("already run version %q", tfv)
 			}
 			alreadyRunVersions[tfv] = true
 
-			td, err := ioutil.TempDir("", "tf")
-			if err != nil {
-				t.Fatalf("error creating temporary test directory: %s", err)
-			}
-			t.Cleanup(func() {
-				os.RemoveAll(td)
-			})
+			td := t.TempDir()
 
 			var execPath string
 			if localBinPath := os.Getenv("TFEXEC_E2ETEST_TOFU_PATH"); localBinPath != "" {

@@ -134,11 +134,6 @@ func (tf *Tofu) Plan(ctx context.Context, opts ...PlanOption) (bool, error) {
 // PlanJSON is likely to be removed in a future major version in favour of
 // Plan returning JSON by default.
 func (tf *Tofu) PlanJSON(ctx context.Context, w io.Writer, opts ...PlanOption) (bool, error) {
-	err := tf.compatible(ctx, tf0_15_3, nil)
-	if err != nil {
-		return false, fmt.Errorf("terraform plan -json was added in 0.15.3: %w", err)
-	}
-
 	tf.SetStdout(w)
 
 	cmd, err := tf.planJSONCmd(ctx, opts...)
@@ -209,10 +204,6 @@ func (tf *Tofu) buildPlanArgs(ctx context.Context, c planConfig) ([]string, erro
 	args = append(args, "-refresh="+strconv.FormatBool(c.refresh))
 
 	if c.refreshOnly {
-		err := tf.compatible(ctx, tf0_15_4, nil)
-		if err != nil {
-			return nil, fmt.Errorf("refresh-only option was introduced in Terraform 0.15.4: %w", err)
-		}
 		if !c.refresh {
 			return nil, fmt.Errorf("you cannot use refresh=false in refresh-only planning mode")
 		}
@@ -221,10 +212,6 @@ func (tf *Tofu) buildPlanArgs(ctx context.Context, c planConfig) ([]string, erro
 
 	// unary flags: pass if true
 	if c.replaceAddrs != nil {
-		err := tf.compatible(ctx, tf0_15_2, nil)
-		if err != nil {
-			return nil, fmt.Errorf("replace option was introduced in Terraform 0.15.2: %w", err)
-		}
 		for _, addr := range c.replaceAddrs {
 			args = append(args, "-replace="+addr)
 		}

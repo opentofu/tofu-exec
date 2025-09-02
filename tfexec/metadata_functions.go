@@ -7,7 +7,6 @@ package tfexec
 
 import (
 	"context"
-	"fmt"
 	"os/exec"
 
 	tfjson "github.com/hashicorp/terraform-json"
@@ -15,15 +14,10 @@ import (
 
 // MetadataFunctions represents the tofu metadata functions -json subcommand.
 func (tf *Tofu) MetadataFunctions(ctx context.Context) (*tfjson.MetadataFunctions, error) {
-	err := tf.compatible(ctx, tf1_4_0, nil)
-	if err != nil {
-		return nil, fmt.Errorf("terraform metadata functions was added in 1.4.0: %w", err)
-	}
-
 	functionsCmd := tf.metadataFunctionsCmd(ctx)
 
 	var ret tfjson.MetadataFunctions
-	err = tf.runTofuCmdJSON(ctx, functionsCmd, &ret)
+	err := tf.runTofuCmdJSON(ctx, functionsCmd, &ret)
 	if err != nil {
 		return nil, err
 	}

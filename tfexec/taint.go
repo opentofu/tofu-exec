@@ -7,7 +7,6 @@ package tfexec
 
 import (
 	"context"
-	"fmt"
 	"os/exec"
 	"strconv"
 )
@@ -47,10 +46,6 @@ func (opt *LockTimeoutOption) configureTaint(conf *taintConfig) {
 
 // Taint represents the tofu taint subcommand.
 func (tf *Tofu) Taint(ctx context.Context, address string, opts ...TaintOption) error {
-	err := tf.compatible(ctx, tf0_4_1, nil)
-	if err != nil {
-		return fmt.Errorf("taint was first introduced in Terraform 0.4.1: %w", err)
-	}
 	taintCmd := tf.taintCmd(ctx, address, opts...)
 	return tf.runTofuCmd(ctx, taintCmd)
 }
