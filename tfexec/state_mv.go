@@ -59,7 +59,7 @@ func (opt *StateOutOption) configureStateMv(conf *stateMvConfig) {
 	conf.stateOut = opt.path
 }
 
-// StateMv represents the terraform state mv subcommand.
+// StateMv represents the tofu state mv subcommand.
 func (tf *Tofu) StateMv(ctx context.Context, source string, destination string, opts ...StateMvCmdOption) error {
 	cmd, err := tf.stateMvCmd(ctx, source, destination, opts...)
 	if err != nil {

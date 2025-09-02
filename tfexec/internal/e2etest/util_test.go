@@ -45,15 +45,15 @@ func runTest(t *testing.T, fixtureName string, cb func(t *testing.T, tfVersion *
 		versions = strings.Split(override, ",")
 	}
 
-	// If the env var TFEXEC_E2ETEST_TERRAFORM_PATH is set to the path of a
-	// valid Terraform executable, only tests appropriate to that
+	// If the env var TFEXEC_E2ETEST_TOFU_PATH is set to the path of a
+	// valid OpenTofu executable, only tests appropriate to that
 	// executable's version will be run.
-	if localBinPath := os.Getenv("TFEXEC_E2ETEST_TERRAFORM_PATH"); localBinPath != "" {
-		// By convention, every new Terraform struct is given a clean
+	if localBinPath := os.Getenv("TFEXEC_E2ETEST_TOFU_PATH"); localBinPath != "" {
+		// By convention, every new Tofu struct is given a clean
 		// temp dir, even if we are only invoking tf.Version(). This
 		// prevents any possible confusion that could result from
 		// reusing an os.TempDir() (for example) that already contained
-		// Terraform files.
+		// OpenTofu files.
 		td, err := ioutil.TempDir("", "tf")
 		if err != nil {
 			t.Fatalf("error creating temporary test directory: %s", err)
@@ -109,7 +109,7 @@ func runTestWithVersions(t *testing.T, versions []string, fixtureName string, cb
 			})
 
 			var execPath string
-			if localBinPath := os.Getenv("TFEXEC_E2ETEST_TERRAFORM_PATH"); localBinPath != "" {
+			if localBinPath := os.Getenv("TFEXEC_E2ETEST_TOFU_PATH"); localBinPath != "" {
 				execPath = localBinPath
 			} else {
 				execPath = tfcache.Version(t, tfv)
@@ -129,7 +129,7 @@ func runTestWithVersions(t *testing.T, versions []string, fixtureName string, cb
 
 			// Check that the runningVersion matches the expected
 			// test version. This ensures non-matching tests are
-			// skipped when using a local Terraform executable.
+			// skipped when using a local tofu executable.
 			if !strings.HasPrefix(tfv, "refs/") {
 				testVersion, err := version.NewVersion(tfv)
 				if err != nil {

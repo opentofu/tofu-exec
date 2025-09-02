@@ -26,16 +26,15 @@ func (opt *TestsDirectoryOption) configureTest(conf *testConfig) {
 	conf.testsDirectory = opt.testsDirectory
 }
 
-// Test represents the terraform test -json subcommand.
+// Test represents the tofu test -json subcommand.
 //
-// The given io.Writer, if specified, will receive
-// [machine-readable](https://developer.hashicorp.com/terraform/internals/machine-readable-ui)
+// The given io.Writer, if specified, will receive machine-readable
 // JSON from Terraform including test results.
 func (tf *Tofu) Test(ctx context.Context, w io.Writer, opts ...TestOption) error {
 	err := tf.compatible(ctx, tf1_6_0, nil)
 
 	if err != nil {
-		return fmt.Errorf("terraform test was added in 1.6.0: %w", err)
+		return fmt.Errorf("tofu test was added in 1.6.0: %w", err)
 	}
 
 	tf.SetStdout(w)

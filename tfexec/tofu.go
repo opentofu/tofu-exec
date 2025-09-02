@@ -73,7 +73,7 @@ type Tofu struct {
 	provVersions map[string]*version.Version
 }
 
-// NewTofu returns a Terraform struct with default values for all fields.
+// NewTofu returns a Tofu struct with default values for all fields.
 // If a blank execPath is supplied, NewTofu will error.
 // Use tofudl or output from os.LookPath to get a desirable execPath.
 func NewTofu(workingDir string, execPath string) (*Tofu, error) {
@@ -102,7 +102,7 @@ func NewTofu(workingDir string, execPath string) (*Tofu, error) {
 }
 
 // SetEnv allows you to override environment variables, this should not be used for any well known
-// Terraform environment variables that are already covered in options. Pass nil to copy the values
+// OpenTofu environment variables that are already covered in options. Pass nil to copy the values
 // from os.Environ. Attempting to set environment variables that should be managed manually will
 // result in ErrManualEnvVar being returned.
 func (tf *Tofu) SetEnv(env map[string]string) error {
@@ -137,10 +137,10 @@ func (tf *Tofu) SetStderr(w io.Writer) {
 	tf.stderr = w
 }
 
-// SetLog sets the TF_LOG environment variable for Terraform CLI execution.
+// SetLog sets the TF_LOG environment variable for OpenTofu CLI execution.
 // This must be combined with a call to SetLogPath to take effect.
 //
-// This is only compatible with Terraform CLI 0.15.0 or later as setting the
+// This is only compatible with OpenTofu CLI 0.15.0 or later as setting the
 // log level was unreliable in earlier versions. It will default to TRACE when
 // SetLogPath is called on versions 0.14.11 and earlier, or if SetLogCore and
 // SetLogProvider have not been called before SetLogPath on versions 0.15.0 and
@@ -154,10 +154,8 @@ func (tf *Tofu) SetLog(log string) error {
 	return nil
 }
 
-// SetLogCore sets the TF_LOG_CORE environment variable for Terraform CLI
+// SetLogCore sets the TF_LOG_CORE environment variable for OpenTofu CLI
 // execution. This must be combined with a call to SetLogPath to take effect.
-//
-// This is only compatible with Terraform CLI 0.15.0 or later.
 func (tf *Tofu) SetLogCore(logCore string) error {
 	err := tf.compatible(context.Background(), tf0_15_0, nil)
 	if err != nil {
@@ -167,7 +165,7 @@ func (tf *Tofu) SetLogCore(logCore string) error {
 	return nil
 }
 
-// SetLogPath sets the TF_LOG_PATH environment variable for Terraform CLI
+// SetLogPath sets the TF_LOG_PATH environment variable for OpenTofu CLI
 // execution.
 func (tf *Tofu) SetLogPath(path string) error {
 	tf.logPath = path
@@ -178,11 +176,9 @@ func (tf *Tofu) SetLogPath(path string) error {
 	return nil
 }
 
-// SetLogProvider sets the TF_LOG_PROVIDER environment variable for Terraform
+// SetLogProvider sets the TF_LOG_PROVIDER environment variable for OpenTofu
 // CLI execution. This must be combined with a call to SetLogPath to take
 // effect.
-//
-// This is only compatible with Terraform CLI 0.15.0 or later.
 func (tf *Tofu) SetLogProvider(logProvider string) error {
 	err := tf.compatible(context.Background(), tf0_15_0, nil)
 	if err != nil {
@@ -193,21 +189,21 @@ func (tf *Tofu) SetLogProvider(logProvider string) error {
 }
 
 // SetAppendUserAgent sets the TF_APPEND_USER_AGENT environment variable for
-// Terraform CLI execution.
+// OpenTofu CLI execution.
 func (tf *Tofu) SetAppendUserAgent(ua string) error {
 	tf.appendUserAgent = ua
 	return nil
 }
 
 // SetDisablePluginTLS sets the TF_DISABLE_PLUGIN_TLS environment variable for
-// Terraform CLI execution.
+// OpenTofu CLI execution.
 func (tf *Tofu) SetDisablePluginTLS(disabled bool) error {
 	tf.disablePluginTLS = disabled
 	return nil
 }
 
 // SetSkipProviderVerify sets the TF_SKIP_PROVIDER_VERIFY environment variable
-// for Terraform CLI execution. This is no longer used in 0.13.0 and greater.
+// for OpenTofu CLI execution. This is no longer used in 0.13.0 and greater.
 func (tf *Tofu) SetSkipProviderVerify(skip bool) error {
 	err := tf.compatible(context.Background(), nil, tf0_13_0)
 	if err != nil {
@@ -217,12 +213,12 @@ func (tf *Tofu) SetSkipProviderVerify(skip bool) error {
 	return nil
 }
 
-// WorkingDir returns the working directory for Terraform.
+// WorkingDir returns the working directory for OpenTofu.
 func (tf *Tofu) WorkingDir() string {
 	return tf.workingDir
 }
 
-// ExecPath returns the path to the Terraform executable.
+// ExecPath returns the path to the tofu executable.
 func (tf *Tofu) ExecPath() string {
 	return tf.execPath
 }

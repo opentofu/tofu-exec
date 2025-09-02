@@ -42,7 +42,7 @@ func TestMergeUserAgent(t *testing.T) {
 func defaultEnv() []string {
 	return []string{
 		"CHECKPOINT_DISABLE=",
-		"TF_APPEND_USER_AGENT=HashiCorp-terraform-exec/" + version.ModuleVersion(),
+		"TF_APPEND_USER_AGENT=tofu-exec/" + version.ModuleVersion(),
 		"TF_IN_AUTOMATION=1",
 		"TF_LOG=",
 		"TF_LOG_CORE=",

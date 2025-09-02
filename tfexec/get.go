@@ -29,7 +29,7 @@ func (opt *UpdateOption) configureGet(conf *getCmdConfig) {
 	conf.update = opt.update
 }
 
-// Get represents the terraform get subcommand.
+// Get represents the tofu get subcommand.
 func (tf *Tofu) Get(ctx context.Context, opts ...GetCmdOption) error {
 	cmd, err := tf.getCmd(ctx, opts...)
 	if err != nil {

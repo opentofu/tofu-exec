@@ -17,14 +17,14 @@ type ErrNoSuitableBinary struct {
 }
 
 func (e *ErrNoSuitableBinary) Error() string {
-	return fmt.Sprintf("no suitable terraform binary could be found: %s", e.err.Error())
+	return fmt.Sprintf("no suitable tofu binary could be found: %s", e.err.Error())
 }
 
 func (e *ErrNoSuitableBinary) Unwrap() error {
 	return e.err
 }
 
-// ErrVersionMismatch is returned when the detected Terraform version is not compatible with the
+// ErrVersionMismatch is returned when the detected OpenTofu version is not compatible with the
 // command or flags being used in this invocation.
 type ErrVersionMismatch struct {
 	MinInclusive string

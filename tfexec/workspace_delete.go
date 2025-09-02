@@ -40,7 +40,7 @@ func (opt *ForceOption) configureWorkspaceDelete(conf *workspaceDeleteConfig) {
 	conf.force = opt.force
 }
 
-// WorkspaceDelete represents the workspace delete subcommand to the Terraform CLI.
+// WorkspaceDelete represents the workspace delete subcommand to the OpenTofu CLI.
 func (tf *Tofu) WorkspaceDelete(ctx context.Context, workspace string, opts ...WorkspaceDeleteCmdOption) error {
 	cmd, err := tf.workspaceDeleteCmd(ctx, workspace, opts...)
 	if err != nil {

@@ -13,7 +13,7 @@ import (
 	tfjson "github.com/hashicorp/terraform-json"
 )
 
-// MetadataFunctions represents the terraform metadata functions -json subcommand.
+// MetadataFunctions represents the tofu metadata functions -json subcommand.
 func (tf *Tofu) MetadataFunctions(ctx context.Context) (*tfjson.MetadataFunctions, error) {
 	err := tf.compatible(ctx, tf1_4_0, nil)
 	if err != nil {

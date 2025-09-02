@@ -40,7 +40,7 @@ func (opt *ProviderOption) configureProvidersLock(conf *providersLockConfig) {
 	conf.providers = append(conf.providers, opt.provider)
 }
 
-// ProvidersLock represents the `terraform providers lock` command
+// ProvidersLock represents the `tofu providers lock` command
 func (tf *Tofu) ProvidersLock(ctx context.Context, opts ...ProvidersLockOption) error {
 	err := tf.compatible(ctx, tf0_14_0, nil)
 	if err != nil {

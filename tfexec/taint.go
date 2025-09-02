@@ -45,7 +45,7 @@ func (opt *LockTimeoutOption) configureTaint(conf *taintConfig) {
 	conf.lockTimeout = opt.timeout
 }
 
-// Taint represents the terraform taint subcommand.
+// Taint represents the tofu taint subcommand.
 func (tf *Tofu) Taint(ctx context.Context, address string, opts ...TaintOption) error {
 	err := tf.compatible(ctx, tf0_4_1, nil)
 	if err != nil {

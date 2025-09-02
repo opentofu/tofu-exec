@@ -99,13 +99,13 @@ func (opt *DestroyFlagOption) configurePlan(conf *planConfig) {
 	conf.destroy = opt.destroy
 }
 
-// Plan executes `terraform plan` with the specified options and waits for it
+// Plan executes `tofu plan` with the specified options and waits for it
 // to complete.
 //
 // The returned boolean is false when the plan diff is empty (no changes) and
 // true when the plan diff is non-empty (changes present).
 //
-// The returned error is nil if `terraform plan` has been executed and exits
+// The returned error is nil if `tofu plan` has been executed and exits
 // with either 0 or 2.
 func (tf *Tofu) Plan(ctx context.Context, opts ...PlanOption) (bool, error) {
 	cmd, err := tf.planCmd(ctx, opts...)
@@ -119,17 +119,16 @@ func (tf *Tofu) Plan(ctx context.Context, opts ...PlanOption) (bool, error) {
 	return false, err
 }
 
-// PlanJSON executes `terraform plan` with the specified options as well as the
+// PlanJSON executes `tofu plan` with the specified options as well as the
 // `-json` flag and waits for it to complete.
 //
-// Using the `-json` flag will result in
-// [machine-readable](https://developer.hashicorp.com/terraform/internals/machine-readable-ui)
+// Using the `-json` flag will result in machine-readable
 // JSON being written to the supplied `io.Writer`.
 //
 // The returned boolean is false when the plan diff is empty (no changes) and
 // true when the plan diff is non-empty (changes present).
 //
-// The returned error is nil if `terraform plan` has been executed and exits
+// The returned error is nil if `tofu plan` has been executed and exits
 // with either 0 or 2.
 //
 // PlanJSON is likely to be removed in a future major version in favour of
