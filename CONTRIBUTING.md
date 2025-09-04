@@ -63,6 +63,17 @@ By default, each test is run against the latest patch versions of all OpenTofu m
 
 The `github.com/opentofu/tofu-exec` Go module in its entirety is versioned according to [Go module versioning](https://golang.org/ref/mod#versions) with Git tags. The latest version is automatically written to `internal/version/version.go` during the release process.
 
+## Releasing
+
+Releases are made on a reasonably regular basis by the maintainers, by using the Github UI. The following notes are only relevant to maintainers.
+
+Release process:
+
+1. Go to the [Draft a new release](https://github.com/opentofu/tofu-exec/releases/new) page;
+1. Click on "Choose a tag", type "vX.Y.Z", then click on the "Create a new tag: vX.Y.Z" label;
+1. Click on "Generate release notes" if you want to add an auto-generated description.
+1. Click on "Publish Release" to finish the process.
+
 ## Cosmetic changes, code formatting, and typos
 
 In general we do not accept PRs containing only the following changes:
