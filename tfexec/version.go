@@ -10,21 +10,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"regexp"
 	"strconv"
 	"strings"
 
 	"github.com/hashicorp/go-version"
 	tfjson "github.com/hashicorp/terraform-json"
-)
-
-var (
-	//Latest version of each minor release
-	tf1_6  = version.Must(version.NewVersion("1.6.3"))
-	tf1_7  = version.Must(version.NewVersion("1.7.10"))
-	tf1_8  = version.Must(version.NewVersion("1.8.11"))
-	tf1_9  = version.Must(version.NewVersion("1.9.3"))
-	tf1_10 = version.Must(version.NewVersion("1.10.5"))
 )
 
 // Version returns structured output from the tofu version command including both the OpenTofu CLI version
@@ -58,9 +48,7 @@ func (tf *Tofu) version(ctx context.Context) (*version.Version, map[string]*vers
 
 	tfVersion, providerVersions, err := parseJsonVersionOutput(outBuf.Bytes())
 	if err != nil {
-		if _, ok := err.(*json.SyntaxError); ok {
-			return tf.versionFromPlaintext(ctx)
-		}
+		return nil, nil, err
 	}
 
 	return tfVersion, providerVersions, err
@@ -78,7 +66,7 @@ func parseJsonVersionOutput(stdout []byte) (*version.Version, map[string]*versio
 		return nil, nil, fmt.Errorf("unable to parse version %q: %w", out.Version, err)
 	}
 
-	providerVersions := make(map[string]*version.Version, 0)
+	providerVersions := make(map[string]*version.Version)
 	for provider, versionStr := range out.ProviderSelections {
 		v, err := version.NewVersion(versionStr)
 		if err != nil {
@@ -89,63 +77,6 @@ func parseJsonVersionOutput(stdout []byte) (*version.Version, map[string]*versio
 	}
 
 	return tfVersion, providerVersions, nil
-}
-
-func (tf *Tofu) versionFromPlaintext(ctx context.Context) (*version.Version, map[string]*version.Version, error) {
-	versionCmd := tf.buildTofuCmd(ctx, nil, "version")
-
-	var outBuf strings.Builder
-	versionCmd.Stdout = &outBuf
-
-	err := tf.runTofuCmd(ctx, versionCmd)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	tfVersion, providerVersions, err := parsePlaintextVersionOutput(outBuf.String())
-	if err != nil {
-		return nil, nil, fmt.Errorf("unable to parse version: %w", err)
-	}
-
-	return tfVersion, providerVersions, nil
-}
-
-var (
-	simpleVersionRe = `v?(?P<version>[0-9]+(?:\.[0-9]+)*(?:-[A-Za-z0-9\.]+)?)`
-
-	versionOutputRe         = regexp.MustCompile(`OpenTofu ` + simpleVersionRe)
-	providerVersionOutputRe = regexp.MustCompile(`(\n\+ provider[\. ](?P<name>\S+) ` + simpleVersionRe + `)`)
-)
-
-func parsePlaintextVersionOutput(stdout string) (*version.Version, map[string]*version.Version, error) {
-	stdout = strings.TrimSpace(stdout)
-
-	submatches := versionOutputRe.FindStringSubmatch(stdout)
-	if len(submatches) != 2 {
-		return nil, nil, fmt.Errorf("unexpected number of version matches %d for %s", len(submatches), stdout)
-	}
-	v, err := version.NewVersion(submatches[1])
-	if err != nil {
-		return nil, nil, fmt.Errorf("unable to parse version %q: %w", submatches[1], err)
-	}
-
-	allSubmatches := providerVersionOutputRe.FindAllStringSubmatch(stdout, -1)
-	provV := map[string]*version.Version{}
-
-	for _, submatches := range allSubmatches {
-		if len(submatches) != 4 {
-			return nil, nil, fmt.Errorf("unexpected number of provider version matches %d for %s", len(submatches), stdout)
-		}
-
-		v, err := version.NewVersion(submatches[3])
-		if err != nil {
-			return nil, nil, fmt.Errorf("unable to parse provider version %q: %w", submatches[3], err)
-		}
-
-		provV[submatches[2]] = v
-	}
-
-	return v, provV, err
 }
 
 func errorVersionString(v *version.Version) string {
