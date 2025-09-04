@@ -7,7 +7,7 @@ package tfexec
 
 import "context"
 
-// WorkspaceSelect represents the workspace select subcommand to the Terraform CLI.
+// WorkspaceSelect represents the workspace select subcommand to the OpenTofu CLI.
 func (tf *Tofu) WorkspaceSelect(ctx context.Context, workspace string) error {
 	// TODO: [DIR] param option
 

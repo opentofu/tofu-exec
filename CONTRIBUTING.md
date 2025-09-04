@@ -63,18 +63,16 @@ By default, each test is run against the latest patch versions of all OpenTofu m
 
 The `github.com/opentofu/tofu-exec` Go module in its entirety is versioned according to [Go module versioning](https://golang.org/ref/mod#versions) with Git tags. The latest version is automatically written to `internal/version/version.go` during the release process.
 
-## Releases
+## Releasing
 
-Releases are made on a reasonably regular basis by the OpenTofu team, using our custom CI workflows. There is currently no set release schedule.
+Releases are made on a reasonably regular basis by the maintainers, by using the Github UI. The following notes are only relevant to maintainers.
 
-The following notes are only relevant to maintainers.
+Release process:
 
-1. Make sure [CHANGELOG.md](https://github.com/opentofu/tofu-exec/blob/main/CHANGELOG.md) has all **changes** and the first line has the **version** you're intending to release (with ` (Unreleased)` suffix).
-1. Trigger the [`release` workflow](https://github.com/opentofu/tofu-exec/actions/workflows/release.yml) from GitHub UI. This will run the [release script](https://github.com/opentofu/tofu-exec/blob/main/scripts/release/release.sh). As part of that script:
-  - `Unreleased`, `[GH-XXX]` will be replaced.
-  - The [version](https://github.com/opentofu/tofu-exec/blob/main/internal/version/version.go#L3) will be bumped to match the one parsed from `CHANGELOG.md`.
-  - Tag will be pushed
-1. [Create new release](https://github.com/opentofu/tofu-exec/releases/new) via GitHub UI to point to the new tag and copy the appropriate part of the CHANGELOG.md there.
+1. Go to the [Draft a new release](https://github.com/opentofu/tofu-exec/releases/new) page;
+1. Click on "Choose a tag", type "vX.Y.Z", then click on the "Create a new tag: vX.Y.Z" label;
+1. Click on "Generate release notes" if you want to add an auto-generated description.
+1. Click on "Publish Release" to finish the process.
 
 ## Cosmetic changes, code formatting, and typos
 

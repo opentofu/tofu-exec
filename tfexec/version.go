@@ -37,7 +37,7 @@ var (
 	tf1_6_0  = version.Must(version.NewVersion("1.6.0"))
 )
 
-// Version returns structured output from the terraform version command including both the Terraform CLI version
+// Version returns structured output from the tofu version command including both the OpenTofu CLI version
 // and any initialized provider versions. This will read cached values when present unless the skipCache parameter
 // is set to true.
 func (tf *Tofu) Version(ctx context.Context, skipCache bool) (tfVersion *version.Version, providerVersions map[string]*version.Version, err error) {
@@ -123,7 +123,7 @@ func (tf *Tofu) versionFromPlaintext(ctx context.Context) (*version.Version, map
 var (
 	simpleVersionRe = `v?(?P<version>[0-9]+(?:\.[0-9]+)*(?:-[A-Za-z0-9\.]+)?)`
 
-	versionOutputRe         = regexp.MustCompile(`Terraform ` + simpleVersionRe)
+	versionOutputRe         = regexp.MustCompile(`OpenTofu ` + simpleVersionRe)
 	providerVersionOutputRe = regexp.MustCompile(`(\n\+ provider[\. ](?P<name>\S+) ` + simpleVersionRe + `)`)
 )
 
@@ -165,7 +165,7 @@ func errorVersionString(v *version.Version) string {
 	return v.String()
 }
 
-// compatible asserts compatibility of the cached terraform version with the executable, and returns a well known error if not.
+// compatible asserts compatibility of the cached tofu version with the executable, and returns a well known error if not.
 func (tf *Tofu) compatible(ctx context.Context, minInclusive *version.Version, maxExclusive *version.Version) error {
 	tfv, _, err := tf.Version(ctx, false)
 	if err != nil {
@@ -195,7 +195,7 @@ func stripPrereleaseAndMeta(v *version.Version) *version.Version {
 	return clean
 }
 
-// versionInRange checks compatibility of the Terraform version. The minimum is inclusive and the max
+// versionInRange checks compatibility of the tofu version. The minimum is inclusive and the max
 // is exclusive, equivalent to min <= expected version < max.
 //
 // Pre-release information is ignored for comparison.

@@ -45,7 +45,7 @@ func (opt *LockTimeoutOption) configureUntaint(conf *untaintConfig) {
 	conf.lockTimeout = opt.timeout
 }
 
-// Untaint represents the terraform untaint subcommand.
+// Untaint represents the tofu untaint subcommand.
 func (tf *Tofu) Untaint(ctx context.Context, address string, opts ...UntaintOption) error {
 	err := tf.compatible(ctx, tf0_6_13, nil)
 	if err != nil {

@@ -27,17 +27,15 @@ func (opt *StateOption) configureOutput(conf *outputConfig) {
 	conf.state = opt.path
 }
 
-// OutputMeta represents the JSON output of 'terraform output -json',
+// OutputMeta represents the JSON output of 'tofu output -json',
 // which resembles state format version 3 due to a historical accident.
-// Please see hashicorp/terraform/command/output.go.
-// TODO KEM: Should this type be in terraform-json?
 type OutputMeta struct {
 	Sensitive bool            `json:"sensitive"`
 	Type      json.RawMessage `json:"type"`
 	Value     json.RawMessage `json:"value"`
 }
 
-// Output represents the terraform output subcommand.
+// Output represents the tofu output subcommand.
 func (tf *Tofu) Output(ctx context.Context, opts ...OutputOption) (map[string]OutputMeta, error) {
 	outputCmd := tf.outputCmd(ctx, opts...)
 

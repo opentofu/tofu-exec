@@ -107,7 +107,7 @@ func (opt *DestroyFlagOption) configureApply(conf *applyConfig) {
 	conf.destroy = opt.destroy
 }
 
-// Apply represents the terraform apply subcommand.
+// Apply represents the tofu apply subcommand.
 func (tf *Tofu) Apply(ctx context.Context, opts ...ApplyOption) error {
 	cmd, err := tf.applyCmd(ctx, opts...)
 	if err != nil {
@@ -116,15 +116,14 @@ func (tf *Tofu) Apply(ctx context.Context, opts ...ApplyOption) error {
 	return tf.runTofuCmd(ctx, cmd)
 }
 
-// ApplyJSON represents the terraform apply subcommand with the `-json` flag.
-// Using the `-json` flag will result in
-// [machine-readable](https://developer.hashicorp.com/terraform/internals/machine-readable-ui)
+// ApplyJSON represents the tofu apply subcommand with the `-json` flag.
+// Using the `-json` flag will result in machine-readable
 // JSON being written to the supplied `io.Writer`. ApplyJSON is likely to be
 // removed in a future major version in favour of Apply returning JSON by default.
 func (tf *Tofu) ApplyJSON(ctx context.Context, w io.Writer, opts ...ApplyOption) error {
 	err := tf.compatible(ctx, tf0_15_3, nil)
 	if err != nil {
-		return fmt.Errorf("terraform apply -json was added in 0.15.3: %w", err)
+		return fmt.Errorf("tofu apply -json was added in 0.15.3: %w", err)
 	}
 
 	tf.SetStdout(w)

@@ -12,7 +12,7 @@ import (
 	"strings"
 )
 
-// WorkspaceShow represents the workspace show subcommand to the Terraform CLI.
+// WorkspaceShow represents the workspace show subcommand to the OpenTofu CLI.
 func (tf *Tofu) WorkspaceShow(ctx context.Context) (string, error) {
 	workspaceShowCmd, err := tf.workspaceShowCmd(ctx)
 	if err != nil {

@@ -123,7 +123,7 @@ func envSlice(environ map[string]string) []string {
 }
 
 func (tf *Tofu) buildEnv(mergeEnv map[string]string) []string {
-	// set Terraform level env, if env is nil, fall back to os.Environ
+	// set OpenTofu level env, if env is nil, fall back to os.Environ
 	var env map[string]string
 	if tf.env == nil {
 		env = envMap(os.Environ())

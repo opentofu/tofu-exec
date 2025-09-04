@@ -73,7 +73,7 @@ func TestSetLog(t *testing.T) {
 	tf, err := NewTofu(td, tfVersion(t, testutil.Latest_v1))
 
 	if err != nil {
-		t.Fatalf("unexpected NewTerraform error: %s", err)
+		t.Fatalf("unexpected NewTofu error: %s", err)
 	}
 
 	// Required so all testing environment variables are not copied.
@@ -195,7 +195,7 @@ func TestSetLogCore(t *testing.T) {
 	tf, err := NewTofu(td, tfVersion(t, testutil.Latest_v1))
 
 	if err != nil {
-		t.Fatalf("unexpected NewTerraform error: %s", err)
+		t.Fatalf("unexpected NewTofu error: %s", err)
 	}
 
 	// Required so all testing environment variables are not copied.
@@ -317,7 +317,7 @@ func TestSetLogPath(t *testing.T) {
 	tf, err := NewTofu(td, tfVersion(t, testutil.Latest_v1))
 
 	if err != nil {
-		t.Fatalf("unexpected NewTerraform error: %s", err)
+		t.Fatalf("unexpected NewTofu error: %s", err)
 	}
 
 	// Required so all testing environment variables are not copied.
@@ -488,7 +488,7 @@ func TestSetLogProvider(t *testing.T) {
 	tf, err := NewTofu(td, tfVersion(t, testutil.Latest_v1))
 
 	if err != nil {
-		t.Fatalf("unexpected NewTerraform error: %s", err)
+		t.Fatalf("unexpected NewTofu error: %s", err)
 	}
 
 	// Required so all testing environment variables are not copied.
@@ -673,14 +673,14 @@ func TestCheckpointDisablePropagation_v1(t *testing.T) {
 	})
 }
 
-// test that a suitable error is returned if NewTerraform is called without a valid
+// test that a suitable error is returned if NewTofu is called without a valid
 // executable path
-func TestNoTerraformBinary(t *testing.T) {
+func TestNoTofuBinary(t *testing.T) {
 	td := t.TempDir()
 
 	_, err := NewTofu(td, "")
 	if err == nil {
-		t.Fatal("expected NewTerraform to error, but it did not")
+		t.Fatal("expected NewTofu to error, but it did not")
 	}
 
 	var e *ErrNoSuitableBinary

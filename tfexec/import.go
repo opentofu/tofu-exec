@@ -77,7 +77,7 @@ func (opt *VarFileOption) configureImport(conf *importConfig) {
 	conf.varFiles = append(conf.varFiles, opt.path)
 }
 
-// Import represents the terraform import subcommand.
+// Import represents the tofu import subcommand.
 func (tf *Tofu) Import(ctx context.Context, address, id string, opts ...ImportOption) error {
 	cmd, err := tf.importCmd(ctx, address, id, opts...)
 	if err != nil {
