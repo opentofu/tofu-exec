@@ -17,15 +17,6 @@ import (
 	tfjson "github.com/hashicorp/terraform-json"
 )
 
-var (
-	//Latest version of each minor release
-	tf1_6  = version.Must(version.NewVersion("1.6.3"))
-	tf1_7  = version.Must(version.NewVersion("1.7.10"))
-	tf1_8  = version.Must(version.NewVersion("1.8.11"))
-	tf1_9  = version.Must(version.NewVersion("1.9.3"))
-	tf1_10 = version.Must(version.NewVersion("1.10.5"))
-)
-
 // Version returns structured output from the tofu version command including both the OpenTofu CLI version
 // and any initialized provider versions. This will read cached values when present unless the skipCache parameter
 // is set to true.
