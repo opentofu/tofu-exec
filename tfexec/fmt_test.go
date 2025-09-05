@@ -21,7 +21,7 @@ func TestFormatCmd(t *testing.T) {
 	}
 
 	// empty env, to avoid environ mismatch in testing
-	tf.SetEnv(map[string]string{})
+	_ = tf.SetEnv(map[string]string{})
 
 	t.Run("defaults", func(t *testing.T) {
 		fmtCmd, err := tf.formatCmd(context.Background(), []string{})

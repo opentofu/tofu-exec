@@ -84,25 +84,25 @@ func TestVersionInRange(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			var min *version.Version
+			var minV *version.Version
 			if c.min != "" {
-				min, err = version.NewVersion(c.min)
+				minV, err = version.NewVersion(c.min)
 				if err != nil {
 					t.Fatal(err)
 				}
 			}
 
-			var max *version.Version
+			var maxV *version.Version
 			if c.max != "" {
-				max, err = version.NewVersion(c.max)
+				maxV, err = version.NewVersion(c.max)
 				if err != nil {
 					t.Fatal(err)
 				}
 			}
 
-			actual := versionInRange(tfv, min, max)
+			actual := versionInRange(tfv, minV, maxV)
 			if actual != c.expected {
-				t.Fatalf("expected %v, got %v: %s <= %s < %s", c.expected, actual, min, tfv, max)
+				t.Fatalf("expected %v, got %v: %s <= %s < %s", c.expected, actual, minV, tfv, maxV)
 			}
 		})
 	}

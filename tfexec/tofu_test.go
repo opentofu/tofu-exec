@@ -8,7 +8,6 @@ package tfexec
 import (
 	"context"
 	"errors"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
@@ -21,7 +20,7 @@ var tfCache *testutil.TFCache
 func TestMain(m *testing.M) {
 	os.Exit(func() int {
 		var err error
-		installDir, err := ioutil.TempDir("", "tfinstall")
+		installDir, err := os.MkdirTemp("", "tfinstall")
 		if err != nil {
 			panic(err)
 		}

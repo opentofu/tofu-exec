@@ -32,6 +32,7 @@ func runTest(t *testing.T, fixtureName string, cb func(t *testing.T, tfVersion *
 		testutil.Latest_v1_9,
 		testutil.Latest_v1_8,
 		testutil.Latest_v1_7,
+		testutil.Latest_v1_6,
 	}
 	if override := os.Getenv("TFEXEC_E2ETEST_VERSIONS"); override != "" {
 		versions = strings.Split(override, ",")
@@ -52,7 +53,7 @@ func runTest(t *testing.T, fixtureName string, cb func(t *testing.T, tfVersion *
 			t.Fatal(err)
 		}
 
-		ltf.SetAppendUserAgent("tfexec-e2etest")
+		_ = ltf.SetAppendUserAgent("tfexec-e2etest")
 
 		lVersion, _, err := ltf.Version(context.Background(), false)
 		if err != nil {
@@ -96,7 +97,7 @@ func runTestWithVersions(t *testing.T, versions []string, fixtureName string, cb
 				t.Fatal(err)
 			}
 
-			tf.SetAppendUserAgent("tfexec-e2etest")
+			_ = tf.SetAppendUserAgent("tfexec-e2etest")
 
 			runningVersion, _, err := tf.Version(context.Background(), false)
 			if err != nil {
@@ -210,12 +211,12 @@ func copyFile(path string, dstPath string) error {
 
 // filesEqual asserts that two files have the same contents.
 func textFilesEqual(t *testing.T, expected, actual string) {
-	eb, err := ioutil.ReadFile(expected)
+	eb, err := os.ReadFile(expected)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	ab, err := ioutil.ReadFile(actual)
+	ab, err := os.ReadFile(actual)
 	if err != nil {
 		t.Fatal(err)
 	}

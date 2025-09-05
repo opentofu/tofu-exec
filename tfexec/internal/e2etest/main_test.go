@@ -6,7 +6,6 @@
 package e2etest
 
 import (
-	"io/ioutil"
 	"os"
 	"testing"
 
@@ -17,7 +16,7 @@ var tfcache *testutil.TFCache
 
 func TestMain(m *testing.M) {
 	os.Exit(func() int {
-		installDir, err := ioutil.TempDir("", "tfinstall")
+		installDir, err := os.MkdirTemp("", "tfinstall")
 		if err != nil {
 			panic(err)
 		}
