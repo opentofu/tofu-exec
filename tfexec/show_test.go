@@ -21,7 +21,7 @@ func TestShowCmd(t *testing.T) {
 	}
 
 	// empty env, to avoid environ mismatch in testing
-	tf.SetEnv(map[string]string{})
+	_ = tf.SetEnv(map[string]string{})
 
 	// defaults
 	showCmd := tf.showCmd(context.Background(), true, nil)
@@ -42,7 +42,7 @@ func TestShowStateFileCmd(t *testing.T) {
 	}
 
 	// empty env, to avoid environ mismatch in testing
-	tf.SetEnv(map[string]string{})
+	_ = tf.SetEnv(map[string]string{})
 
 	showCmd := tf.showCmd(context.Background(), true, nil, "statefilepath")
 
@@ -54,6 +54,53 @@ func TestShowStateFileCmd(t *testing.T) {
 	}, nil, showCmd)
 }
 
+func TestShowModule_unsupportedTofuVersion(t *testing.T) {
+	tf, err := NewTofu(t.TempDir(), tfVersion(t, testutil.Latest_v1))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_ = tf.SetEnv(map[string]string{})
+
+	_, err = tf.ShowModule(context.Background(), "foo/bar")
+	if err == nil {
+		t.Fatalf("expected error for unsupported version, got nil")
+	}
+}
+
+func TestShowModuleCmd(t *testing.T) {
+	td := t.TempDir()
+
+	tf, err := NewTofu(td, tfVersion(t, testutil.Latest_v1_11))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_ = tf.SetEnv(map[string]string{})
+
+	showCmd := tf.showCmd(context.Background(), true, nil, "-module=foo/bar")
+	assertCmd(t, []string{
+		"show",
+		"-json",
+		"-no-color",
+		"-module=foo/bar",
+	}, nil, showCmd)
+}
+
+func TestShowModule_blankDir(t *testing.T) {
+	td := t.TempDir()
+	tf, err := NewTofu(td, tfVersion(t, testutil.Latest_v1_11))
+	if err != nil {
+		t.Fatal(err)
+	}
+	_ = tf.SetEnv(map[string]string{})
+
+	_, err = tf.ShowModule(context.Background(), "")
+	if err == nil {
+		t.Fatalf("expected error for blank moduleDir, got nil")
+	}
+}
+
 func TestShowPlanFileCmd(t *testing.T) {
 	td := t.TempDir()
 
@@ -63,7 +110,7 @@ func TestShowPlanFileCmd(t *testing.T) {
 	}
 
 	// empty env, to avoid environ mismatch in testing
-	tf.SetEnv(map[string]string{})
+	_ = tf.SetEnv(map[string]string{})
 
 	showCmd := tf.showCmd(context.Background(), true, nil, "planfilepath")
 
@@ -84,7 +131,7 @@ func TestShowPlanFileRawCmd(t *testing.T) {
 	}
 
 	// empty env, to avoid environ mismatch in testing
-	tf.SetEnv(map[string]string{})
+	_ = tf.SetEnv(map[string]string{})
 
 	showCmd := tf.showCmd(context.Background(), false, nil, "planfilepath")
 
