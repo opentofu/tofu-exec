@@ -9,11 +9,12 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	tfjson "github.com/hashicorp/terraform-json"
+
+	"github.com/opentofu/tofu-exec/jsontypes"
 )
 
 // Validate represents the validate subcommand to the OpenTofu CLI.
-func (tf *Tofu) Validate(ctx context.Context) (*tfjson.ValidateOutput, error) {
+func (tf *Tofu) Validate(ctx context.Context) (*jsontypes.ValidateOutput, error) {
 	cmd := tf.buildTofuCmd(ctx, nil, "validate", "-no-color", "-json")
 
 	var outBuf = bytes.Buffer{}
@@ -25,7 +26,7 @@ func (tf *Tofu) Validate(ctx context.Context) (*tfjson.ValidateOutput, error) {
 		return nil, err
 	}
 
-	var ret tfjson.ValidateOutput
+	var ret jsontypes.ValidateOutput
 	// TODO: ret.UseJSONNumber(true) validate output should support JSON numbers
 	jsonErr := json.Unmarshal(outBuf.Bytes(), &ret)
 	if jsonErr != nil {

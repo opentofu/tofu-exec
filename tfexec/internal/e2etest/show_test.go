@@ -11,8 +11,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/go-version"
-	tfjson "github.com/hashicorp/terraform-json"
-
+	"github.com/opentofu/tofu-exec/jsontypes"
 	"github.com/opentofu/tofu-exec/tfexec"
 )
 
@@ -22,19 +21,19 @@ func TestShow(t *testing.T) {
 		var sensitiveValues json.RawMessage = []byte("{}")
 		formatVersion := "1.0"
 
-		expected := &tfjson.State{
+		expected := &jsontypes.State{
 			FormatVersion: formatVersion,
 			// TerraformVersion is ignored to facilitate latest version testing
-			Values: &tfjson.StateValues{
-				RootModule: &tfjson.StateModule{
-					Resources: []*tfjson.StateResource{{
+			Values: &jsontypes.StateValues{
+				RootModule: &jsontypes.StateModule{
+					Resources: []*jsontypes.StateResource{{
 						Address: "null_resource.foo",
 						AttributeValues: map[string]interface{}{
 							"id":       "5510719323588825107",
 							"triggers": nil,
 						},
 						SensitiveValues: sensitiveValues,
-						Mode:            tfjson.ManagedResourceMode,
+						Mode:            jsontypes.ManagedResourceMode,
 						Type:            "null_resource",
 						Name:            "foo",
 						ProviderName:    providerName,
@@ -63,7 +62,7 @@ func TestShow_emptyDir(t *testing.T) {
 	runTest(t, "empty", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
 		formatVersion := "1.0"
 
-		expected := &tfjson.State{
+		expected := &jsontypes.State{
 			FormatVersion: formatVersion,
 		}
 
@@ -83,7 +82,7 @@ func TestShow_noInitBasic(t *testing.T) {
 	// From v1.2.0 onwards, running show before init in the basic case returns
 	// an empty state with no error.
 	runTest(t, "basic", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		expected := &tfjson.State{
+		expected := &jsontypes.State{
 			FormatVersion: "1.0",
 		}
 
@@ -102,7 +101,7 @@ func TestShow_noInitModule(t *testing.T) {
 	t.Parallel()
 
 	runTest(t, "registry_module", func(t *testing.T, tfv *version.Version, tf *tfexec.Tofu) {
-		expected := &tfjson.State{
+		expected := &jsontypes.State{
 			FormatVersion: "1.0",
 		}
 
@@ -173,12 +172,12 @@ func TestShowBigInt(t *testing.T) {
 		var sensitiveValues json.RawMessage = []byte("{}")
 		formatVersion := "1.0"
 
-		expected := &tfjson.State{
+		expected := &jsontypes.State{
 			FormatVersion: formatVersion,
 			// TerraformVersion is ignored to facilitate latest version testing
-			Values: &tfjson.StateValues{
-				RootModule: &tfjson.StateModule{
-					Resources: []*tfjson.StateResource{{
+			Values: &jsontypes.StateValues{
+				RootModule: &jsontypes.StateModule{
+					Resources: []*jsontypes.StateResource{{
 						Address: "random_integer.bigint",
 						AttributeValues: map[string]interface{}{
 							"id":      "7227701560655103598",
@@ -189,7 +188,7 @@ func TestShowBigInt(t *testing.T) {
 							"keepers": nil,
 						},
 						SensitiveValues: sensitiveValues,
-						Mode:            tfjson.ManagedResourceMode,
+						Mode:            jsontypes.ManagedResourceMode,
 						Type:            "random_integer",
 						Name:            "bigint",
 						ProviderName:    providerName,

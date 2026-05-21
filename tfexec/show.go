@@ -12,7 +12,7 @@ import (
 	"strings"
 
 	"github.com/hashicorp/go-version"
-	tfjson "github.com/hashicorp/terraform-json"
+	tfjson "github.com/opentofu/tofu-exec/jsontypes"
 )
 
 type showConfig struct {
@@ -177,7 +177,7 @@ func (tf *Tofu) ShowPlanFileRaw(ctx context.Context, planPath string, opts ...Sh
 
 // ShowModule returns module config based on moduleDir located in local filesystem.
 // This command was added in tofu version 1.11
-func (tf *Tofu) ShowModule(ctx context.Context, moduleDir string) (*Module, error) {
+func (tf *Tofu) ShowModule(ctx context.Context, moduleDir string) (*tfjson.Module, error) {
 	// tf.compatible check with stripped pre-release parts, so any 1.11 release will work including betas and rcs
 	err := tf.compatible(ctx, version.Must(version.NewVersion("1.11.0")), nil)
 	if err != nil {
@@ -188,7 +188,7 @@ func (tf *Tofu) ShowModule(ctx context.Context, moduleDir string) (*Module, erro
 	}
 
 	showCmd := tf.showCmd(ctx, true, nil, "-module="+moduleDir)
-	var ret ModuleRoot
+	var ret tfjson.ModuleRoot
 	err = tf.runTofuCmdJSON(ctx, showCmd, &ret)
 	if err != nil {
 		return nil, err
@@ -196,6 +196,7 @@ func (tf *Tofu) ShowModule(ctx context.Context, moduleDir string) (*Module, erro
 
 	return &ret.Module, nil
 }
+
 func (tf *Tofu) showCmd(ctx context.Context, jsonOutput bool, mergeEnv map[string]string, args ...string) *exec.Cmd {
 	allArgs := []string{"show"}
 	if mergeEnv == nil {

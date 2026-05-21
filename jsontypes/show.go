@@ -3,13 +3,7 @@
 // Copyright (c) 2023 HashiCorp, Inc.
 // SPDX-License-Identifier: MPL-2.0
 
-// This file is essentially a copy of the following in the opentofu core codebase.
-// https://github.com/opentofu/opentofu/blob/28493bc63f83aaa5fb2ff5063f050d80f9c51f4f/internal/command/jsonconfig/config.go
-// 2 things are modified.
-// - Types are exported, since this is intended to be public API.
-// - And expressions are removed, since those aren't marshaled during module config generation
-
-package tfexec
+package jsontypes
 
 import "encoding/json"
 
@@ -23,13 +17,6 @@ type Module struct {
 	Resources   []Resource            `json:"resources,omitempty"`
 	ModuleCalls map[string]ModuleCall `json:"module_calls,omitempty"`
 	Variables   Variables             `json:"variables,omitempty"`
-}
-
-type ModuleCall struct {
-	Source            string   `json:"source,omitempty"`
-	Module            *Module  `json:"module,omitempty"`
-	VersionConstraint string   `json:"version_constraint,omitempty"`
-	DependsOn         []string `json:"depends_on,omitempty"`
 }
 
 // Variables is the json representation of the Variables provided to the current

@@ -11,8 +11,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/go-version"
-	tfjson "github.com/hashicorp/terraform-json"
-
+	"github.com/opentofu/tofu-exec/jsontypes"
 	"github.com/opentofu/tofu-exec/tfexec"
 )
 
@@ -34,19 +33,19 @@ func TestStateMv(t *testing.T) {
 		var sensitiveValues json.RawMessage = []byte("{}")
 
 		// test that the new state is as expected
-		expected := &tfjson.State{
+		expected := &jsontypes.State{
 			FormatVersion: formatVersion,
 			// TerraformVersion is ignored to facilitate latest version testing
-			Values: &tfjson.StateValues{
-				RootModule: &tfjson.StateModule{
-					Resources: []*tfjson.StateResource{{
+			Values: &jsontypes.StateValues{
+				RootModule: &jsontypes.StateModule{
+					Resources: []*jsontypes.StateResource{{
 						Address: "null_resource.bar",
 						AttributeValues: map[string]interface{}{
 							"id":       "5510719323588825107",
 							"triggers": nil,
 						},
 						SensitiveValues: sensitiveValues,
-						Mode:            tfjson.ManagedResourceMode,
+						Mode:            jsontypes.ManagedResourceMode,
 						Type:            "null_resource",
 						Name:            "bar",
 						ProviderName:    providerName,

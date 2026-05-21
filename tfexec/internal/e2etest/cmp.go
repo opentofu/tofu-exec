@@ -8,7 +8,7 @@ package e2etest
 import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	tfjson "github.com/hashicorp/terraform-json"
+	"github.com/opentofu/tofu-exec/jsontypes"
 	"github.com/zclconf/go-cty-debug/ctydebug"
 )
 
@@ -16,18 +16,18 @@ import (
 
 // diffState returns a human-readable report of the differences between two
 // state values. It returns an empty string if the two values are equal.
-func diffState(expected *tfjson.State, actual *tfjson.State) string {
-	return cmp.Diff(expected, actual, cmpopts.IgnoreFields(tfjson.State{}, "TerraformVersion"), cmpopts.IgnoreFields(tfjson.State{}, "useJSONNumber"))
+func diffState(expected *jsontypes.State, actual *jsontypes.State) string {
+	return cmp.Diff(expected, actual, cmpopts.IgnoreFields(jsontypes.State{}, "TerraformVersion"), cmpopts.IgnoreFields(jsontypes.State{}, "useJSONNumber"))
 }
 
 // diffPlan returns a human-readable report of the differences between two
 // plan values. It returns an empty string if the two values are equal.
-func diffPlan(expected *tfjson.Plan, actual *tfjson.Plan) string {
-	return cmp.Diff(expected, actual, cmpopts.IgnoreFields(tfjson.Plan{}, "TerraformVersion"))
+func diffPlan(expected *jsontypes.Plan, actual *jsontypes.Plan) string {
+	return cmp.Diff(expected, actual, cmpopts.IgnoreFields(jsontypes.Plan{}, "TerraformVersion"))
 }
 
 // diffSchema returns a human-readable report of the differences between two
 // schema values. It returns an empty string if the two values are equal.
-func diffSchema(expected *tfjson.ProviderSchemas, actual *tfjson.ProviderSchemas) string {
+func diffSchema(expected *jsontypes.ProviderSchemas, actual *jsontypes.ProviderSchemas) string {
 	return cmp.Diff(expected, actual, ctydebug.CmpOptions)
 }
