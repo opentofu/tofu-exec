@@ -28,6 +28,7 @@ func runTest(t *testing.T, fixtureName string, cb func(t *testing.T, tfVersion *
 	t.Helper()
 
 	versions := []string{
+		testutil.Latest_v1_11,
 		testutil.Latest_v1,
 		testutil.Latest_v1_9,
 		testutil.Latest_v1_8,

@@ -76,6 +76,8 @@ func TestVersionInRange(t *testing.T) {
 		{true, "1.7.0", "1.7.0-beta3", "1.8.0"},
 		{true, "", "1.7.0-beta3", "1.8.0"},
 		{expected: true, min: "1.11.0-dev", tfv: "1.11.0", max: ""},
+		{expected: true, min: "1.11.0-rc1", tfv: "1.11.0", max: ""},
+		{expected: true, min: "1.11.0", tfv: "1.11.0-beta1", max: ""},
 		{expected: false, min: "1.11.0-dev", tfv: "1.10.0", max: ""},
 	} {
 		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
