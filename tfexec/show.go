@@ -12,7 +12,7 @@ import (
 	"strings"
 
 	"github.com/hashicorp/go-version"
-	tfjson "github.com/opentofu/tofu-exec/jsontypes"
+	"github.com/opentofu/tofu-exec/jsontypes"
 )
 
 type showConfig struct {
@@ -31,7 +31,7 @@ func (opt *ReattachOption) configureShow(conf *showConfig) {
 
 // Show reads the default state path and outputs the state.
 // To read a state or plan file, ShowState or ShowPlan must be used instead.
-func (tf *Tofu) Show(ctx context.Context, opts ...ShowOption) (*tfjson.State, error) {
+func (tf *Tofu) Show(ctx context.Context, opts ...ShowOption) (*jsontypes.State, error) {
 	c := defaultShowOptions
 
 	for _, o := range opts {
@@ -49,7 +49,7 @@ func (tf *Tofu) Show(ctx context.Context, opts ...ShowOption) (*tfjson.State, er
 
 	showCmd := tf.showCmd(ctx, true, mergeEnv)
 
-	var ret tfjson.State
+	var ret jsontypes.State
 	ret.UseJSONNumber(true)
 	err := tf.runTofuCmdJSON(ctx, showCmd, &ret)
 	if err != nil {
@@ -65,7 +65,7 @@ func (tf *Tofu) Show(ctx context.Context, opts ...ShowOption) (*tfjson.State, er
 }
 
 // ShowStateFile reads a given state file and outputs the state.
-func (tf *Tofu) ShowStateFile(ctx context.Context, statePath string, opts ...ShowOption) (*tfjson.State, error) {
+func (tf *Tofu) ShowStateFile(ctx context.Context, statePath string, opts ...ShowOption) (*jsontypes.State, error) {
 	if statePath == "" {
 		return nil, fmt.Errorf("statePath cannot be blank: use Show() if not passing statePath")
 	}
@@ -87,7 +87,7 @@ func (tf *Tofu) ShowStateFile(ctx context.Context, statePath string, opts ...Sho
 
 	showCmd := tf.showCmd(ctx, true, mergeEnv, statePath)
 
-	var ret tfjson.State
+	var ret jsontypes.State
 	ret.UseJSONNumber(true)
 	err := tf.runTofuCmdJSON(ctx, showCmd, &ret)
 	if err != nil {
@@ -103,7 +103,7 @@ func (tf *Tofu) ShowStateFile(ctx context.Context, statePath string, opts ...Sho
 }
 
 // ShowPlanFile reads a given plan file and outputs the plan.
-func (tf *Tofu) ShowPlanFile(ctx context.Context, planPath string, opts ...ShowOption) (*tfjson.Plan, error) {
+func (tf *Tofu) ShowPlanFile(ctx context.Context, planPath string, opts ...ShowOption) (*jsontypes.Plan, error) {
 	if planPath == "" {
 		return nil, fmt.Errorf("planPath cannot be blank: use Show() if not passing planPath")
 	}
@@ -125,7 +125,7 @@ func (tf *Tofu) ShowPlanFile(ctx context.Context, planPath string, opts ...ShowO
 
 	showCmd := tf.showCmd(ctx, true, mergeEnv, planPath)
 
-	var ret tfjson.Plan
+	var ret jsontypes.Plan
 	err := tf.runTofuCmdJSON(ctx, showCmd, &ret)
 	if err != nil {
 		return nil, err
@@ -177,7 +177,7 @@ func (tf *Tofu) ShowPlanFileRaw(ctx context.Context, planPath string, opts ...Sh
 
 // ShowModule returns module config based on moduleDir located in local filesystem.
 // This command was added in tofu version 1.11
-func (tf *Tofu) ShowModule(ctx context.Context, moduleDir string) (*tfjson.Module, error) {
+func (tf *Tofu) ShowModule(ctx context.Context, moduleDir string) (*jsontypes.Module, error) {
 	// tf.compatible check with stripped pre-release parts, so any 1.11 release will work including betas and rcs
 	err := tf.compatible(ctx, version.Must(version.NewVersion("1.11.0")), nil)
 	if err != nil {
@@ -188,7 +188,7 @@ func (tf *Tofu) ShowModule(ctx context.Context, moduleDir string) (*tfjson.Modul
 	}
 
 	showCmd := tf.showCmd(ctx, true, nil, "-module="+moduleDir)
-	var ret tfjson.ModuleRoot
+	var ret jsontypes.ModuleRoot
 	err = tf.runTofuCmdJSON(ctx, showCmd, &ret)
 	if err != nil {
 		return nil, err
