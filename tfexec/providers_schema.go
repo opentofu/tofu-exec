@@ -9,14 +9,14 @@ import (
 	"context"
 	"os/exec"
 
-	tfjson "github.com/hashicorp/terraform-json"
+	"github.com/opentofu/tofu-exec/jsontypes"
 )
 
 // ProvidersSchema represents the tofu providers schema -json subcommand.
-func (tf *Tofu) ProvidersSchema(ctx context.Context) (*tfjson.ProviderSchemas, error) {
+func (tf *Tofu) ProvidersSchema(ctx context.Context) (*jsontypes.ProviderSchemas, error) {
 	schemaCmd := tf.providersSchemaCmd(ctx)
 
-	var ret tfjson.ProviderSchemas
+	var ret jsontypes.ProviderSchemas
 	err := tf.runTofuCmdJSON(ctx, schemaCmd, &ret)
 	if err != nil {
 		return nil, err

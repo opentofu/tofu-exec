@@ -14,7 +14,7 @@ import (
 	"strings"
 
 	"github.com/hashicorp/go-version"
-	tfjson "github.com/hashicorp/terraform-json"
+	"github.com/opentofu/tofu-exec/jsontypes"
 )
 
 // Version returns structured output from the tofu version command including both the OpenTofu CLI version
@@ -55,7 +55,7 @@ func (tf *Tofu) version(ctx context.Context) (*version.Version, map[string]*vers
 }
 
 func parseJsonVersionOutput(stdout []byte) (*version.Version, map[string]*version.Version, error) {
-	var out tfjson.VersionOutput
+	var out jsontypes.VersionOutput
 	err := json.Unmarshal(stdout, &out)
 	if err != nil {
 		return nil, nil, err

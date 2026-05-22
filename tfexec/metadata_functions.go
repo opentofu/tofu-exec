@@ -9,14 +9,14 @@ import (
 	"context"
 	"os/exec"
 
-	tfjson "github.com/hashicorp/terraform-json"
+	"github.com/opentofu/tofu-exec/jsontypes"
 )
 
 // MetadataFunctions represents the tofu metadata functions -json subcommand.
-func (tf *Tofu) MetadataFunctions(ctx context.Context) (*tfjson.MetadataFunctions, error) {
+func (tf *Tofu) MetadataFunctions(ctx context.Context) (*jsontypes.Functions, error) {
 	functionsCmd := tf.metadataFunctionsCmd(ctx)
 
-	var ret tfjson.MetadataFunctions
+	var ret jsontypes.Functions
 	err := tf.runTofuCmdJSON(ctx, functionsCmd, &ret)
 	if err != nil {
 		return nil, err

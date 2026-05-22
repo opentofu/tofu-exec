@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/go-version"
-	tfjson "github.com/hashicorp/terraform-json"
+	"github.com/opentofu/tofu-exec/jsontypes"
 
 	"github.com/opentofu/tofu-exec/tfexec"
 )
@@ -30,7 +30,7 @@ func TestStateRm(t *testing.T) {
 		formatVersion := "1.0"
 
 		// test that the new state is as expected
-		expected := &tfjson.State{
+		expected := &jsontypes.State{
 			FormatVersion: formatVersion,
 			// TerraformVersion is ignored to facilitate latest version testing
 			Values: nil,

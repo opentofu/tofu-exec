@@ -11,7 +11,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/go-version"
-	tfjson "github.com/hashicorp/terraform-json"
+	"github.com/opentofu/tofu-exec/jsontypes"
 	"github.com/zclconf/go-cty/cty"
 
 	"github.com/opentofu/tofu-exec/tfexec"
@@ -20,20 +20,20 @@ import (
 func TestProvidersSchema(t *testing.T) {
 	for i, c := range []struct {
 		fixtureDir string
-		expected   func(*version.Version) *tfjson.ProviderSchemas
+		expected   func(*version.Version) *jsontypes.ProviderSchemas
 	}{
 		{
-			"basic", func(tfv *version.Version) *tfjson.ProviderSchemas {
-				nullSchema := &tfjson.ProviderSchema{
-					ConfigSchema: &tfjson.Schema{
+			"basic", func(tfv *version.Version) *jsontypes.ProviderSchemas {
+				nullSchema := &jsontypes.ProviderSchema{
+					ConfigSchema: &jsontypes.Schema{
 						Version: 0,
-						Block:   &tfjson.SchemaBlock{},
+						Block:   &jsontypes.SchemaBlock{},
 					},
-					ResourceSchemas: map[string]*tfjson.Schema{
+					ResourceSchemas: map[string]*jsontypes.Schema{
 						"null_resource": {
 							Version: 0,
-							Block: &tfjson.SchemaBlock{
-								Attributes: map[string]*tfjson.SchemaAttribute{
+							Block: &jsontypes.SchemaBlock{
+								Attributes: map[string]*jsontypes.SchemaAttribute{
 									"id": {
 										AttributeType: cty.String,
 										Optional:      false,
@@ -49,12 +49,12 @@ func TestProvidersSchema(t *testing.T) {
 							},
 						},
 					},
-					DataSourceSchemas: map[string]*tfjson.Schema{
+					DataSourceSchemas: map[string]*jsontypes.Schema{
 						"null_data_source": {
 							Version: 0,
-							Block: &tfjson.SchemaBlock{
+							Block: &jsontypes.SchemaBlock{
 								Deprecated: false,
-								Attributes: map[string]*tfjson.SchemaAttribute{
+								Attributes: map[string]*jsontypes.SchemaAttribute{
 									"has_computed_default": {
 										AttributeType: cty.String,
 										Optional:      true,
@@ -91,42 +91,42 @@ func TestProvidersSchema(t *testing.T) {
 
 				providerAddr := "registry.opentofu.org/hashicorp/null"
 
-				nullSchema = &tfjson.ProviderSchema{
-					ConfigSchema: &tfjson.Schema{
+				nullSchema = &jsontypes.ProviderSchema{
+					ConfigSchema: &jsontypes.Schema{
 						Version: 0,
-						Block: &tfjson.SchemaBlock{
-							DescriptionKind: tfjson.SchemaDescriptionKindPlain,
+						Block: &jsontypes.SchemaBlock{
+							DescriptionKind: jsontypes.SchemaDescriptionKindPlain,
 						},
 					},
-					ResourceSchemas: map[string]*tfjson.Schema{
+					ResourceSchemas: map[string]*jsontypes.Schema{
 						"null_resource": {
 							Version: 0,
-							Block: &tfjson.SchemaBlock{
-								DescriptionKind: tfjson.SchemaDescriptionKindMarkdown,
+							Block: &jsontypes.SchemaBlock{
+								DescriptionKind: jsontypes.SchemaDescriptionKindMarkdown,
 								Description:     "The `null_resource` resource implements the standard resource lifecycle but takes no further action.\n\nThe `triggers` argument allows specifying an arbitrary set of values that, when changed, will cause the resource to be replaced.",
-								Attributes: map[string]*tfjson.SchemaAttribute{
+								Attributes: map[string]*jsontypes.SchemaAttribute{
 									"id": {
 										AttributeType:   cty.String,
 										Optional:        false,
 										Computed:        true,
-										DescriptionKind: tfjson.SchemaDescriptionKindMarkdown,
+										DescriptionKind: jsontypes.SchemaDescriptionKindMarkdown,
 										Description:     "This is set to a random value at create time.",
 									},
 									"triggers": {
 										AttributeType:   cty.Map(cty.String),
 										Optional:        true,
-										DescriptionKind: tfjson.SchemaDescriptionKindMarkdown,
+										DescriptionKind: jsontypes.SchemaDescriptionKindMarkdown,
 										Description:     "A map of arbitrary strings that, when changed, will force the null resource to be replaced, re-running any associated provisioners.",
 									},
 								},
 							},
 						},
 					},
-					DataSourceSchemas: map[string]*tfjson.Schema{
+					DataSourceSchemas: map[string]*jsontypes.Schema{
 						"null_data_source": {
 							Version: 0,
-							Block: &tfjson.SchemaBlock{
-								DescriptionKind: tfjson.SchemaDescriptionKindMarkdown,
+							Block: &jsontypes.SchemaBlock{
+								DescriptionKind: jsontypes.SchemaDescriptionKindMarkdown,
 								Description: `The ` + "`null_data_source`" + ` data source implements the standard data source lifecycle but does not
 interact with any external APIs.
 
@@ -134,38 +134,38 @@ Historically, the ` + "`null_data_source`" + ` was typically used to construct i
 same can now be achieved using [locals](https://www.terraform.io/docs/language/values/locals.html).
 `,
 								Deprecated: true,
-								Attributes: map[string]*tfjson.SchemaAttribute{
+								Attributes: map[string]*jsontypes.SchemaAttribute{
 									"has_computed_default": {
 										AttributeType:   cty.String,
 										Optional:        true,
 										Computed:        true,
-										DescriptionKind: tfjson.SchemaDescriptionKindMarkdown,
+										DescriptionKind: jsontypes.SchemaDescriptionKindMarkdown,
 										Description:     "If set, its literal value will be stored and returned. If not, its value defaults to `\"default\"`. This argument exists primarily for testing and has little practical use.",
 									},
 									"id": {
 										AttributeType:   cty.String,
 										Optional:        false,
 										Computed:        true,
-										DescriptionKind: tfjson.SchemaDescriptionKindMarkdown,
+										DescriptionKind: jsontypes.SchemaDescriptionKindMarkdown,
 										Description:     "This attribute is only present for some legacy compatibility issues and should not be used. It will be removed in a future version.",
 										Deprecated:      true,
 									},
 									"inputs": {
 										AttributeType:   cty.Map(cty.String),
 										Optional:        true,
-										DescriptionKind: tfjson.SchemaDescriptionKindMarkdown,
+										DescriptionKind: jsontypes.SchemaDescriptionKindMarkdown,
 										Description:     "A map of arbitrary strings that is copied into the `outputs` attribute, and accessible directly for interpolation.",
 									},
 									"outputs": {
 										AttributeType:   cty.Map(cty.String),
 										Computed:        true,
-										DescriptionKind: tfjson.SchemaDescriptionKindMarkdown,
+										DescriptionKind: jsontypes.SchemaDescriptionKindMarkdown,
 										Description:     "After the data source is \"read\", a copy of the `inputs` map.",
 									},
 									"random": {
 										AttributeType:   cty.String,
 										Computed:        true,
-										DescriptionKind: tfjson.SchemaDescriptionKindMarkdown,
+										DescriptionKind: jsontypes.SchemaDescriptionKindMarkdown,
 										Description:     "A random value. This is primarily for testing and has little practical use; prefer the [hashicorp/random provider](https://registry.terraform.io/providers/hashicorp/random) for more practical random number use-cases.",
 									},
 								},
@@ -175,9 +175,9 @@ same can now be achieved using [locals](https://www.terraform.io/docs/language/v
 				}
 				formatVersion := "1.0"
 
-				providerSchema := &tfjson.ProviderSchemas{
+				providerSchema := &jsontypes.ProviderSchemas{
 					FormatVersion: formatVersion,
-					Schemas: map[string]*tfjson.ProviderSchema{
+					Schemas: map[string]*jsontypes.ProviderSchema{
 						providerAddr: nullSchema,
 					},
 				}
@@ -186,8 +186,8 @@ same can now be achieved using [locals](https://www.terraform.io/docs/language/v
 			},
 		},
 		{
-			"empty_with_tf_file", func(tfv *version.Version) *tfjson.ProviderSchemas {
-				return &tfjson.ProviderSchemas{
+			"empty_with_tf_file", func(tfv *version.Version) *jsontypes.ProviderSchemas {
+				return &jsontypes.ProviderSchemas{
 					FormatVersion: "1.0",
 					Schemas:       nil,
 				}
