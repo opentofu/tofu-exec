@@ -19,9 +19,7 @@ jobs:
   copyright:
     permissions:
       contents: read
-    uses: opentofu/scripts/.github/workflows/copyright.yml@copyright-workflow-nwa
-    with:
-      search-patterns: '"**/*.go"'
+    uses: opentofu/scripts/.github/workflows/copyright.yml@copyright-workflow-bash
 
   # resolve-versions allows us to show resolved Go versions in job titles
   # for added clarity and quick orientation in a long list of past jobs
