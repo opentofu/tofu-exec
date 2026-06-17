@@ -61,4 +61,4 @@ jobs:
   copyright:
     permissions:
       contents: read
-    uses: opentofu/scripts/.github/workflows/copyright.yml@copyright-workflow-bash
+    uses: opentofu/scripts/.github/workflows/copyright.yml@main
