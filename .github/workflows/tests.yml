@@ -12,16 +12,10 @@ env:
   GOPROXY: https://proxy.golang.org/
 
 jobs:
-  copywrite:
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # https://github.com/actions/checkout/releases/tag/v4.1.0
-      - name: Install copywrite
-        uses: hashicorp/setup-copywrite@v1.1.2
-      - name: Validate Header Compliance
-        run: copywrite headers --plan
+  copyright:
+    permissions:
+      contents: read
+    uses: opentofu/scripts/.github/workflows/copyright.yml@main
 
   # resolve-versions allows us to show resolved Go versions in job titles
   # for added clarity and quick orientation in a long list of past jobs
