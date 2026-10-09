@@ -66,7 +66,7 @@ func (tf *Tofu) statePushCmd(ctx context.Context, path string, opts ...StatePush
 		args = append(args, "-lock-timeout="+c.lockTimeout)
 	}
 
-	args = append(args, path)
+	positional := []string{path}
 
-	return tf.buildTofuCmd(ctx, nil, args...), nil
+	return tf.buildTofuCmd(ctx, nil, positional, args...), nil
 }

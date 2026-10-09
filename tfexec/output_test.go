@@ -44,4 +44,19 @@ func TestOutputCmd(t *testing.T) {
 			"-state=teststate",
 		}, nil, outputCmd)
 	})
+
+	t.Run("with output namme", func(t *testing.T) {
+		outputCmd := tf.outputCmd(context.Background(),
+			State("teststate"),
+			OutputName("output-name"))
+
+		assertCmd(t, []string{
+			"output",
+			"-no-color",
+			"-json",
+			"-state=teststate",
+			"--",
+			"output-name",
+		}, nil, outputCmd)
+	})
 }

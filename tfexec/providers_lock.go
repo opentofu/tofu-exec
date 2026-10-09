@@ -72,10 +72,5 @@ func (tf *Tofu) providersLockCmd(ctx context.Context, opts ...ProvidersLockOptio
 		args = append(args, "-platform="+p)
 	}
 
-	// positional providers argument
-	for _, p := range c.providers {
-		args = append(args, p)
-	}
-
-	return tf.buildTofuCmd(ctx, nil, args...)
+	return tf.buildTofuCmd(ctx, nil, c.providers, args...)
 }

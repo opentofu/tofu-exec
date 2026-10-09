@@ -37,7 +37,7 @@ func TestFormatCmd(t *testing.T) {
 
 	t.Run("override all defaults", func(t *testing.T) {
 		fmtCmd, err := tf.formatCmd(context.Background(),
-			[]string{"string1", "string2"},
+			[]string{"-diff"},
 			Recursive(true),
 			Dir("mydir"))
 		if err != nil {
@@ -47,9 +47,9 @@ func TestFormatCmd(t *testing.T) {
 		assertCmd(t, []string{
 			"fmt",
 			"-no-color",
-			"string1",
-			"string2",
+			"-diff",
 			"-recursive",
+			"--",
 			"mydir",
 		}, nil, fmtCmd)
 	})

@@ -31,6 +31,7 @@ func TestStatePushCmd(t *testing.T) {
 			"push",
 			"-lock=false",
 			"-lock-timeout=0s",
+			"--",
 			"testpath",
 		}, nil, statePushCmd)
 	})
@@ -47,6 +48,7 @@ func TestStatePushCmd(t *testing.T) {
 			"-force",
 			"-lock=true",
 			"-lock-timeout=10s",
+			"--",
 			"testpath",
 		}, nil, statePushCmd)
 	})

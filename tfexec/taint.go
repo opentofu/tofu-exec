@@ -72,7 +72,8 @@ func (tf *Tofu) taintCmd(ctx context.Context, address string, opts ...TaintOptio
 	if c.allowMissing {
 		args = append(args, "-allow-missing")
 	}
-	args = append(args, address)
+	// positional arguments
+	positional := []string{address}
 
-	return tf.buildTofuCmd(ctx, nil, args...)
+	return tf.buildTofuCmd(ctx, nil, positional, args...)
 }

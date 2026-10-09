@@ -30,5 +30,5 @@ func (tf *Tofu) WorkspaceShow(ctx context.Context) (string, error) {
 }
 
 func (tf *Tofu) workspaceShowCmd(ctx context.Context) (*exec.Cmd, error) {
-	return tf.buildTofuCmd(ctx, nil, "workspace", "show", "-no-color"), nil
+	return tf.buildTofuCmd(ctx, nil, nil, "workspace", "show", "-no-color"), nil
 }

@@ -130,22 +130,22 @@ func (tf *Tofu) FormatCheck(ctx context.Context, opts ...FormatOption) (bool, []
 	return false, nil, err
 }
 
-func (tf *Tofu) formatCmd(ctx context.Context, args []string, opts ...FormatOption) (*exec.Cmd, error) {
+func (tf *Tofu) formatCmd(ctx context.Context, additionalFlags []string, opts ...FormatOption) (*exec.Cmd, error) {
 	c := defaultFormatConfig
 
 	for _, o := range opts {
 		o.configureFormat(&c)
 	}
 
-	args = append([]string{"fmt", "-no-color"}, args...)
+	additionalFlags = append([]string{"fmt", "-no-color"}, additionalFlags...)
 
 	if c.recursive {
-		args = append(args, "-recursive")
+		additionalFlags = append(additionalFlags, "-recursive")
 	}
-
+	var positional []string
 	if c.dir != "" {
-		args = append(args, c.dir)
+		positional = append(positional, c.dir)
 	}
 
-	return tf.buildTofuCmd(ctx, nil, args...), nil
+	return tf.buildTofuCmd(ctx, nil, positional, additionalFlags...), nil
 }

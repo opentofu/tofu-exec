@@ -49,9 +49,10 @@ func (tf *Tofu) getCmd(ctx context.Context, opts ...GetCmdOption) (*exec.Cmd, er
 
 	args = append(args, "-update="+fmt.Sprint(c.update))
 
+	var positional []string
 	if c.dir != "" {
-		args = append(args, c.dir)
+		positional = append(positional, c.dir)
 	}
 
-	return tf.buildTofuCmd(ctx, nil, args...), nil
+	return tf.buildTofuCmd(ctx, nil, positional, args...), nil
 }

@@ -70,10 +70,10 @@ func (tf *Tofu) workspaceNewCmd(ctx context.Context, workspace string, opts ...W
 	if c.copyState != "" {
 		args = append(args, "-state="+c.copyState)
 	}
+	// positional arguments
+	positional := []string{workspace}
 
-	args = append(args, workspace)
-
-	cmd := tf.buildTofuCmd(ctx, nil, args...)
+	cmd := tf.buildTofuCmd(ctx, nil, positional, args...)
 
 	return cmd, nil
 }

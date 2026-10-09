@@ -183,8 +183,9 @@ func (tf *Tofu) buildDestroyArgs(c destroyConfig) []string {
 
 func (tf *Tofu) buildDestroyCmd(ctx context.Context, c destroyConfig, args []string) (*exec.Cmd, error) {
 	// optional positional argument
+	var positional []string
 	if c.dir != "" {
-		args = append(args, c.dir)
+		positional = append(positional, c.dir)
 	}
 
 	mergeEnv := map[string]string{}
@@ -196,5 +197,5 @@ func (tf *Tofu) buildDestroyCmd(ctx context.Context, c destroyConfig, args []str
 		mergeEnv[reattachEnvVar] = reattachStr
 	}
 
-	return tf.buildTofuCmd(ctx, mergeEnv, args...), nil
+	return tf.buildTofuCmd(ctx, mergeEnv, positional, args...), nil
 }

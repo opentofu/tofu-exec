@@ -47,7 +47,7 @@ func (tf *Tofu) Show(ctx context.Context, opts ...ShowOption) (*tfjson.State, er
 		mergeEnv[reattachEnvVar] = reattachStr
 	}
 
-	showCmd := tf.showCmd(ctx, true, mergeEnv)
+	showCmd := tf.showCmd(ctx, true, mergeEnv, nil)
 
 	var ret tfjson.State
 	ret.UseJSONNumber(true)
@@ -85,7 +85,7 @@ func (tf *Tofu) ShowStateFile(ctx context.Context, statePath string, opts ...Sho
 		mergeEnv[reattachEnvVar] = reattachStr
 	}
 
-	showCmd := tf.showCmd(ctx, true, mergeEnv, statePath)
+	showCmd := tf.showCmd(ctx, true, mergeEnv, []string{statePath})
 
 	var ret tfjson.State
 	ret.UseJSONNumber(true)
@@ -123,7 +123,7 @@ func (tf *Tofu) ShowPlanFile(ctx context.Context, planPath string, opts ...ShowO
 		mergeEnv[reattachEnvVar] = reattachStr
 	}
 
-	showCmd := tf.showCmd(ctx, true, mergeEnv, planPath)
+	showCmd := tf.showCmd(ctx, true, mergeEnv, []string{planPath})
 
 	var ret tfjson.Plan
 	err := tf.runTofuCmdJSON(ctx, showCmd, &ret)
@@ -162,7 +162,7 @@ func (tf *Tofu) ShowPlanFileRaw(ctx context.Context, planPath string, opts ...Sh
 		mergeEnv[reattachEnvVar] = reattachStr
 	}
 
-	showCmd := tf.showCmd(ctx, false, mergeEnv, planPath)
+	showCmd := tf.showCmd(ctx, false, mergeEnv, []string{planPath})
 
 	var outBuf strings.Builder
 	showCmd.Stdout = &outBuf
@@ -187,7 +187,7 @@ func (tf *Tofu) ShowModule(ctx context.Context, moduleDir string) (*Module, erro
 		return nil, fmt.Errorf("moduleDir cannot be blank")
 	}
 
-	showCmd := tf.showCmd(ctx, true, nil, "-module="+moduleDir)
+	showCmd := tf.showCmd(ctx, true, nil, nil, "-module="+moduleDir)
 	var ret ModuleRoot
 	err = tf.runTofuCmdJSON(ctx, showCmd, &ret)
 	if err != nil {
@@ -196,7 +196,9 @@ func (tf *Tofu) ShowModule(ctx context.Context, moduleDir string) (*Module, erro
 
 	return &ret.Module, nil
 }
-func (tf *Tofu) showCmd(ctx context.Context, jsonOutput bool, mergeEnv map[string]string, args ...string) *exec.Cmd {
+
+// additionalFlags can be only a list of flags. Any other possible future positional argument should be handled separate from this parameter.
+func (tf *Tofu) showCmd(ctx context.Context, jsonOutput bool, mergeEnv map[string]string, positional []string, additionalFlags ...string) *exec.Cmd {
 	allArgs := []string{"show"}
 	if mergeEnv == nil {
 		mergeEnv = map[string]string{}
@@ -205,7 +207,7 @@ func (tf *Tofu) showCmd(ctx context.Context, jsonOutput bool, mergeEnv map[strin
 		allArgs = append(allArgs, "-json")
 	}
 	allArgs = append(allArgs, "-no-color")
-	allArgs = append(allArgs, args...)
+	allArgs = append(allArgs, additionalFlags...)
 
-	return tf.buildTofuCmd(ctx, mergeEnv, allArgs...)
+	return tf.buildTofuCmd(ctx, mergeEnv, positional, allArgs...)
 }
