@@ -30,6 +30,7 @@ func TestUntaintCmd(t *testing.T) {
 			"untaint",
 			"-no-color",
 			"-lock=true",
+			"--",
 			"aws_instance.foo",
 		}, nil, untaintCmd)
 	})
@@ -48,6 +49,7 @@ func TestUntaintCmd(t *testing.T) {
 			"-state=teststate",
 			"-lock=false",
 			"-allow-missing",
+			"--",
 			"aws_instance.foo",
 		}, nil, untaintCmd)
 	})

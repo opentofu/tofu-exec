@@ -221,8 +221,9 @@ func (tf *Tofu) buildApplyArgs(c applyConfig) ([]string, error) {
 
 func (tf *Tofu) buildApplyCmd(ctx context.Context, c applyConfig, args []string) (*exec.Cmd, error) {
 	// string argument: pass if set
+	var positional []string
 	if c.dirOrPlan != "" {
-		args = append(args, c.dirOrPlan)
+		positional = append(positional, c.dirOrPlan)
 	}
 
 	mergeEnv := map[string]string{}
@@ -234,5 +235,5 @@ func (tf *Tofu) buildApplyCmd(ctx context.Context, c applyConfig, args []string)
 		mergeEnv[reattachEnvVar] = reattachStr
 	}
 
-	return tf.buildTofuCmd(ctx, mergeEnv, args...), nil
+	return tf.buildTofuCmd(ctx, mergeEnv, positional, args...), nil
 }

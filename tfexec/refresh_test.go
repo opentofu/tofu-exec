@@ -58,6 +58,7 @@ func TestRefreshCmd(t *testing.T) {
 			"-target=target2",
 			"-var", "var1=foo",
 			"-var", "var2=bar",
+			"--",
 			"refreshdir",
 		}, nil, refreshCmd)
 	})
@@ -111,6 +112,7 @@ func TestRefreshJSONCmd(t *testing.T) {
 			"-var", "var1=foo",
 			"-var", "var2=bar",
 			"-json",
+			"--",
 			"refreshdir",
 		}, nil, refreshCmd)
 	})

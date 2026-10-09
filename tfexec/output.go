@@ -12,8 +12,9 @@ import (
 )
 
 type outputConfig struct {
-	state string
-	json  bool
+	state      string
+	json       bool
+	outputName string
 }
 
 var defaultOutputOptions = outputConfig{}
@@ -25,6 +26,18 @@ type OutputOption interface {
 
 func (opt *StateOption) configureOutput(conf *outputConfig) {
 	conf.state = opt.path
+}
+
+type OutputNameOption struct {
+	name string
+}
+
+func OutputName(n string) *OutputNameOption {
+	return &OutputNameOption{name: n}
+}
+
+func (opt *OutputNameOption) configureOutput(conf *outputConfig) {
+	conf.outputName = opt.name
 }
 
 // OutputMeta represents the JSON output of 'tofu output -json',
@@ -61,6 +74,10 @@ func (tf *Tofu) outputCmd(ctx context.Context, opts ...OutputOption) *exec.Cmd {
 	if c.state != "" {
 		args = append(args, "-state="+c.state)
 	}
+	var positional []string
+	if c.outputName != "" {
+		positional = append(positional, c.outputName)
+	}
 
-	return tf.buildTofuCmd(ctx, nil, args...)
+	return tf.buildTofuCmd(ctx, nil, positional, args...)
 }

@@ -59,6 +59,7 @@ func TestInitCmd_v1(t *testing.T) {
 			"-backend-config=confpath2",
 			"-plugin-dir=testdir1",
 			"-plugin-dir=testdir2",
+			"--",
 			"initdir",
 		}, nil, initCmd)
 	})

@@ -46,13 +46,14 @@ func (tf *Tofu) forceUnlockCmd(ctx context.Context, lockID string, opts ...Force
 	}
 	args := []string{"force-unlock", "-no-color", "-force"}
 
-	// positional arguments
-	args = append(args, lockID)
-
 	// optional positional arguments
+	var positional []string
 	if c.dir != "" {
-		args = append(args, c.dir)
+		positional = append(positional, c.dir)
 	}
 
-	return tf.buildTofuCmd(ctx, nil, args...), nil
+	// positional arguments
+	positional = append(positional, lockID)
+
+	return tf.buildTofuCmd(ctx, nil, positional, args...), nil
 }

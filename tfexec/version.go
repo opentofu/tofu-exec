@@ -36,7 +36,7 @@ func (tf *Tofu) Version(ctx context.Context, skipCache bool) (tfVersion *version
 
 // version does not use the locking on the Tofu instance and should probably not be used directly, prefer Version.
 func (tf *Tofu) version(ctx context.Context) (*version.Version, map[string]*version.Version, error) {
-	versionCmd := tf.buildTofuCmd(ctx, nil, "version", "-json")
+	versionCmd := tf.buildTofuCmd(ctx, nil, nil, "version", "-json")
 
 	var outBuf bytes.Buffer
 	versionCmd.Stdout = &outBuf

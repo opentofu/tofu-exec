@@ -29,5 +29,5 @@ func (tf *Tofu) metadataFunctionsCmd(ctx context.Context, args ...string) *exec.
 	allArgs := []string{"metadata", "functions", "-json"}
 	allArgs = append(allArgs, args...)
 
-	return tf.buildTofuCmd(ctx, nil, allArgs...)
+	return tf.buildTofuCmd(ctx, nil, nil, allArgs...)
 }

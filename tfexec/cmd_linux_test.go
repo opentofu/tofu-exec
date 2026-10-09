@@ -26,7 +26,7 @@ func Test_runTofuCmd_linux(t *testing.T) {
 
 	ctx, cancel := context.WithCancel(context.Background())
 
-	cmd := tf.buildTofuCmd(ctx, nil, "hello tf-exec!")
+	cmd := tf.buildTofuCmd(ctx, nil, []string{"hello tf-exec!"})
 	err := tf.runTofuCmd(ctx, cmd)
 	if err != nil {
 		t.Fatal(err)

@@ -24,7 +24,7 @@ func TestShowCmd(t *testing.T) {
 	_ = tf.SetEnv(map[string]string{})
 
 	// defaults
-	showCmd := tf.showCmd(context.Background(), true, nil)
+	showCmd := tf.showCmd(context.Background(), true, nil, nil)
 
 	assertCmd(t, []string{
 		"show",
@@ -44,12 +44,13 @@ func TestShowStateFileCmd(t *testing.T) {
 	// empty env, to avoid environ mismatch in testing
 	_ = tf.SetEnv(map[string]string{})
 
-	showCmd := tf.showCmd(context.Background(), true, nil, "statefilepath")
+	showCmd := tf.showCmd(context.Background(), true, nil, []string{"statefilepath"})
 
 	assertCmd(t, []string{
 		"show",
 		"-json",
 		"-no-color",
+		"--",
 		"statefilepath",
 	}, nil, showCmd)
 }
@@ -78,7 +79,7 @@ func TestShowModuleCmd(t *testing.T) {
 
 	_ = tf.SetEnv(map[string]string{})
 
-	showCmd := tf.showCmd(context.Background(), true, nil, "-module=foo/bar")
+	showCmd := tf.showCmd(context.Background(), true, nil, nil, "-module=foo/bar")
 	assertCmd(t, []string{
 		"show",
 		"-json",
@@ -112,12 +113,13 @@ func TestShowPlanFileCmd(t *testing.T) {
 	// empty env, to avoid environ mismatch in testing
 	_ = tf.SetEnv(map[string]string{})
 
-	showCmd := tf.showCmd(context.Background(), true, nil, "planfilepath")
+	showCmd := tf.showCmd(context.Background(), true, nil, []string{"planfilepath"})
 
 	assertCmd(t, []string{
 		"show",
 		"-json",
 		"-no-color",
+		"--",
 		"planfilepath",
 	}, nil, showCmd)
 }
@@ -133,11 +135,12 @@ func TestShowPlanFileRawCmd(t *testing.T) {
 	// empty env, to avoid environ mismatch in testing
 	_ = tf.SetEnv(map[string]string{})
 
-	showCmd := tf.showCmd(context.Background(), false, nil, "planfilepath")
+	showCmd := tf.showCmd(context.Background(), false, nil, []string{"planfilepath"})
 
 	assertCmd(t, []string{
 		"show",
 		"-no-color",
+		"--",
 		"planfilepath",
 	}, nil, showCmd)
 }

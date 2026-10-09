@@ -103,8 +103,7 @@ func (tf *Tofu) stateMvCmd(ctx context.Context, source string, destination strin
 	}
 
 	// positional arguments
-	args = append(args, source)
-	args = append(args, destination)
+	positional := []string{source, destination}
 
-	return tf.buildTofuCmd(ctx, nil, args...), nil
+	return tf.buildTofuCmd(ctx, nil, positional, args...), nil
 }

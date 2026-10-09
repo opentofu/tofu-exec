@@ -13,7 +13,7 @@ import (
 // WorkspaceList represents the workspace list subcommand to the OpenTofu CLI.
 func (tf *Tofu) WorkspaceList(ctx context.Context) ([]string, string, error) {
 	// TODO: [DIR] param option
-	wlCmd := tf.buildTofuCmd(ctx, nil, "workspace", "list", "-no-color")
+	wlCmd := tf.buildTofuCmd(ctx, nil, nil, "workspace", "list", "-no-color")
 
 	var outBuf strings.Builder
 	wlCmd.Stdout = &outBuf

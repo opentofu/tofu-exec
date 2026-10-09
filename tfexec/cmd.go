@@ -174,8 +174,14 @@ func (tf *Tofu) buildEnv(mergeEnv map[string]string) []string {
 	return envSlice(env)
 }
 
-func (tf *Tofu) buildTofuCmd(ctx context.Context, mergeEnv map[string]string, args ...string) *exec.Cmd {
-	cmd := exec.CommandContext(ctx, tf.execPath, args...)
+func (tf *Tofu) buildTofuCmd(ctx context.Context, mergeEnv map[string]string, positionalArgs []string, args ...string) *exec.Cmd {
+	allArgs := args
+	if len(positionalArgs) > 0 {
+		allArgs = append(allArgs, "--")
+		allArgs = append(allArgs, positionalArgs...)
+	}
+
+	cmd := exec.CommandContext(ctx, tf.execPath, allArgs...)
 
 	cmd.Env = tf.buildEnv(mergeEnv)
 	cmd.Dir = tf.workingDir

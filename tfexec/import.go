@@ -130,9 +130,6 @@ func (tf *Tofu) importCmd(ctx context.Context, address, id string, opts ...Impor
 		}
 	}
 
-	// required args, always pass
-	args = append(args, address, id)
-
 	mergeEnv := map[string]string{}
 	if c.reattachInfo != nil {
 		reattachStr, err := c.reattachInfo.marshalString()
@@ -142,5 +139,6 @@ func (tf *Tofu) importCmd(ctx context.Context, address, id string, opts ...Impor
 		mergeEnv[reattachEnvVar] = reattachStr
 	}
 
-	return tf.buildTofuCmd(ctx, mergeEnv, args...), nil
+	positional := []string{address, id}
+	return tf.buildTofuCmd(ctx, mergeEnv, positional, args...), nil
 }

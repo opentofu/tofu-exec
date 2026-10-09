@@ -56,5 +56,5 @@ func (tf *Tofu) testCmd(ctx context.Context, opts ...TestOption) *exec.Cmd {
 		args = append(args, "-tests-directory="+c.testsDirectory)
 	}
 
-	return tf.buildTofuCmd(ctx, nil, args...)
+	return tf.buildTofuCmd(ctx, nil, nil, args...)
 }

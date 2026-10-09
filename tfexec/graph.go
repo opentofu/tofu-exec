@@ -72,5 +72,5 @@ func (tf *Tofu) graphCmd(ctx context.Context, opts ...GraphOption) (*exec.Cmd, e
 		args = append(args, "-type="+c.graphType)
 	}
 
-	return tf.buildTofuCmd(ctx, nil, args...), nil
+	return tf.buildTofuCmd(ctx, nil, nil, args...), nil
 }

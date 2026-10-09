@@ -34,5 +34,5 @@ func (tf *Tofu) providersSchemaCmd(ctx context.Context, args ...string) *exec.Cm
 	allArgs := []string{"providers", "schema", "-json", "-no-color"}
 	allArgs = append(allArgs, args...)
 
-	return tf.buildTofuCmd(ctx, nil, allArgs...)
+	return tf.buildTofuCmd(ctx, nil, nil, allArgs...)
 }

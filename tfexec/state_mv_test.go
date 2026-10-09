@@ -35,6 +35,7 @@ func TestStateMvCmd(t *testing.T) {
 			"-no-color",
 			"-lock-timeout=0s",
 			"-lock=true",
+			"--",
 			"testsource",
 			"testdestination",
 		}, nil, stateMvCmd)
@@ -56,6 +57,7 @@ func TestStateMvCmd(t *testing.T) {
 			"-state=teststate",
 			"-state-out=teststateout",
 			"-lock=false",
+			"--",
 			"testsrc",
 			"testdest",
 		}, nil, stateMvCmd)

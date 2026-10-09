@@ -29,7 +29,7 @@ func Test_runTofuCmd_default(t *testing.T) {
 
 	ctx, cancel := context.WithCancel(context.Background())
 
-	cmd := tf.buildTofuCmd(ctx, nil, "hello tf-exec!")
+	cmd := tf.buildTofuCmd(ctx, nil, nil, "hello tf-exec!")
 	err := tf.runTofuCmd(ctx, cmd)
 	if err != nil {
 		t.Fatal(err)

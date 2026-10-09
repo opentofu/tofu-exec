@@ -66,10 +66,10 @@ func (tf *Tofu) workspaceDeleteCmd(ctx context.Context, workspace string, opts .
 	if !c.lock {
 		args = append(args, "-lock="+strconv.FormatBool(c.lock))
 	}
+	// positional arguments
+	positional := []string{workspace}
 
-	args = append(args, workspace)
-
-	cmd := tf.buildTofuCmd(ctx, nil, args...)
+	cmd := tf.buildTofuCmd(ctx, nil, positional, args...)
 
 	return cmd, nil
 }

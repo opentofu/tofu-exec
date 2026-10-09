@@ -9,12 +9,13 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+
 	tfjson "github.com/hashicorp/terraform-json"
 )
 
 // Validate represents the validate subcommand to the OpenTofu CLI.
 func (tf *Tofu) Validate(ctx context.Context) (*tfjson.ValidateOutput, error) {
-	cmd := tf.buildTofuCmd(ctx, nil, "validate", "-no-color", "-json")
+	cmd := tf.buildTofuCmd(ctx, nil, nil, "validate", "-no-color", "-json")
 
 	var outBuf = bytes.Buffer{}
 	cmd.Stdout = &outBuf
