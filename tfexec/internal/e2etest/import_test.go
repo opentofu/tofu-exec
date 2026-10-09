@@ -7,6 +7,8 @@ package e2etest
 
 import (
 	"context"
+	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/hashicorp/go-version"
@@ -33,7 +35,15 @@ func TestImport(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-
+		{ // resource id with dash - https://github.com/opentofu/opentofu/issues/4644
+			err := tf.Import(ctx, resourceAddress, fmt.Sprintf("--%s", expectedID), tfexec.DisableBackup(), tfexec.Config(tf.WorkingDir()))
+			if err == nil {
+				t.Fatal("expected an error but got none")
+			}
+			if strings.Contains(err.Error(), "to parse command") {
+				t.Fatalf("import command does not use the POSIX compliant positional arguments separator: %s", err)
+			}
+		}
 		state, err := tf.Show(ctx)
 		if err != nil {
 			t.Fatal(err)

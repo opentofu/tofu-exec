@@ -24,6 +24,7 @@ const (
 	Latest_v1_9  = "1.9.3"
 	Latest_v1_10 = "1.10.5"
 	Latest_v1_11 = "1.11.1"
+	Latest_v1_13 = "1.13.1"
 	Latest_v1    = Latest_v1_10
 )
 
